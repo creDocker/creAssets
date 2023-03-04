@@ -1,0 +1,42 @@
+JS,CSS
+jquery
+vue,axios
+leaflet
+openlayer
+openseadragon
+konami
+d3,c3
+crossfilter
+three
+table dynatable
+treefolder fancytree
+bootstrap, styles(color): neumorphism, glass
+
+#https://github.com/webedu/preparation/tree/master/vue-components/w4u-main
+#https://github.com/webedu/preparation/blob/master/vue-components/w4u-main/todo.txt
+pannellum
+snapsvg
+
+ICONS
+font-awesome
+mapghyphon (secure)
+
+FONTS
+
+google-fonts
+ weather
+
+
+
+
+
+
+
+
+
+local, github, remote(cloudflare,jsdelivr)
+
+
+
+
+
