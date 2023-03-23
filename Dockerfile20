@@ -25,18 +25,24 @@ LABEL Name="Assets for CRE" \
       OS="Ubuntu:$UBUNTU_VERSION" \
       Build_=$BUILD_TAG 
 
+COPY cre /cre
+WORKDIR "/cre/node"
 #Install js,css via npm
 
-RUN npm install -g jquery
-RUN npm install -g vue vuex axios 
-#RUN npm install -g primevue primeicons
-RUN npm install -g leaflet
-RUN npm install -g ol
-RUN npm install -g d3
+RUN npm init -y
+RUN npm install jquery
+RUN npm install vue vuex axios 
+#RUN npm install primevue primeicons
+RUN npm install leaflet
+RUN npm install ol
+RUN npm install d3
 
 RUN npm-install-peers
-RUN npm list -g
+
 RUN npm root -g
+RUN npm list -g 
+RUN npm root
+RUN npm list 
 
 #RUN ls -l -a /cre/node/
 RUN ls -l -a /cre/node/.npm-global
@@ -45,8 +51,6 @@ RUN ls -l -a /cre/node/.npm-global/lib/node_modules
 
 COPY cre /cre
 WORKDIR "/cre/assets"
-
-
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
     echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \

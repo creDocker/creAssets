@@ -43,6 +43,9 @@ DATA
 local, github, remote(cloudflare,jsdelivr)
 
 version-strategy and version file should be similiar to python requirements (ubuntu: python-init)
+https://github.com/eromano/package-json-merge
+https://www.npmjs.com/package/merge-packages
+
 
 
 
