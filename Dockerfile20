@@ -38,7 +38,8 @@ RUN npm install -g d3
 RUN npm list -g
 RUN npm root -g
 
-RUN ls -l /cre/node/
+RUN ls -l -a /cre/node/
+RUN ls -l -a /cre/node/.npm-global/lib/node_modules
 
 COPY cre /cre
 WORKDIR "/cre/assets"
