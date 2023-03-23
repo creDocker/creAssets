@@ -34,17 +34,18 @@ RUN npm install -g leaflet
 RUN npm install -g ol
 RUN npm install -g d3
 
-RUN npm-install-peers
+## RUN npm-install-peers
+RUN npm list -g
 
 
 COPY cre /cre
-WORKDIR "/cre"
+WORKDIR "/cre/assets"
 
 
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
     echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
-    echo "$(date +'%F %R') \t  $(npm --version)" >> /cre/versions.txt
+    echo "$(date +'%F %R') \t  $(npm list -g jquery | grep jquery)" >> /cre/versions.txt
  
 
 #EXPOSE 8080 
