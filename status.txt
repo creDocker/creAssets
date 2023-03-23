@@ -42,6 +42,8 @@ DATA
 
 local, github, remote(cloudflare,jsdelivr)
 
+version-strategy and version file should be similiar to python requirements (ubuntu: python-init)
+
 
 
 
