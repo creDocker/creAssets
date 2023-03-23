@@ -34,7 +34,7 @@ RUN npm install -g leaflet
 RUN npm install -g ol
 RUN npm install -g d3
 
-## RUN npm-install-peers
+RUN npm-install-peers
 RUN npm list -g
 RUN npm root -g
 
