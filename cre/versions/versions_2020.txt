@@ -9,3 +9,5 @@ creBuild 	 2023.03
   node 	 v14.21.3
   npm 	 6.14.18
   sdk 	 5.18.0
+ creAssets 	 2020.0
+  6.14.18
