@@ -29,7 +29,15 @@ COPY cre /cre
 WORKDIR "/cre/node"
 #Install js,css via npm
 
+RUN npm config list
+
+RUN npm config set init-author-name "jaketrent"
+RUN npm config set init-author-email "your-email@example.com"
+RUN npm config set init-author-url  "https://my-domain/user"
+RUN npm config set init-version 0.0.2
+RUN npm config set init-license "MIT"
 RUN npm init -y
+
 RUN npm install jquery
 RUN npm install vue vuex axios 
 #RUN npm install primevue primeicons
@@ -54,7 +62,7 @@ WORKDIR "/cre/assets"
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
     echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
-    echo "$(date +'%F %R') \t  $(npm list -g jquery | grep jquery)" >> /cre/versions.txt
+    echo "$(date +'%F %R') \t  $(npm list jquery | grep jquery)" >> /cre/versions.txt
  
 
 #EXPOSE 8080 
