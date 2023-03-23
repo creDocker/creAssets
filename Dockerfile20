@@ -58,13 +58,11 @@ RUN ls -l -a /cre/node/.npm-global/lib
 RUN ls -l -a /cre/node/.npm-global/lib/node_modules
 
 COPY cre /cre
-WORKDIR "/cre/assets"
-
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
     echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list jquery | grep jquery)" >> /cre/versions.txt
  
-
+WORKDIR "/cre/assets"
 #EXPOSE 8080 
 
 ENTRYPOINT ["/cre/assets-entrypoint.sh"]
