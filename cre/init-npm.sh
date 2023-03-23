@@ -11,10 +11,12 @@ cd "/cre/node"
 
 ##TODO
 ##if exists package.2020.json then copy to node package.json
+##if exists /cre/assets/package.*.json thn copy to node
 ##(else use current)
 ##npm install
 ##copy dist/* to assets.
 ##(In version, cp package.json to package.2020.json and submit)
+##Here: cp package.json and package.lock.json to /cre/assets
 
 ########### FROM PYTHON
 # Creates requirements.txt
