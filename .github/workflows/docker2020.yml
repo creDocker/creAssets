@@ -39,7 +39,7 @@ jobs:
       -
         name: Test
         run: |
-          docker run credocker/creassets:check20 /cre/creassets-test.sh   
+          docker run credocker/creassets:check20 /cre/assets-test.sh   
 
       -
         name: Build and push

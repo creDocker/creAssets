@@ -1,0 +1,11 @@
+creBuild 	 2023.03
+ creUbuntu 	 18.04.6 LTS
+  UbuntuName 	 bionic
+  OpenSSL 1.1.1  11 Sep 2018
+  Java 	 openjdk version "1.8.0_362"
+  Python3 	 Python 3.6.9
+ creNode 	 14
+  ldd 	 ldd (Ubuntu GLIBC 2.27-3ubuntu1.6) 2.27
+  node 	 v14.21.3
+  npm 	 6.14.18
+  sdk 	 [1;33m5.18.0[0m

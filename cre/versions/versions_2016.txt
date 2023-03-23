@@ -1,0 +1,11 @@
+creBuild 	 2023.03
+ creUbuntu 	 16.04.7 LTS
+  UbuntuName 	 xenial
+  OpenSSL 1.0.2g  1 Mar 2016
+  Java 	 openjdk version "1.8.0_292"
+  Python3 	 Python 3.5.2
+ creNode 	 12
+  ldd 	 ldd (Ubuntu GLIBC 2.23-0ubuntu11.3) 2.23
+  node 	 v12.22.12
+  npm 	 6.14.16
+  sdk 	 [1;33m5.18.0[0m
