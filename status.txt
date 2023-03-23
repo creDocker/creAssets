@@ -1,4 +1,5 @@
 JS,CSS
+# https://www.npmjs.com/package/freeze-deps
 jquery
 vue,axios
 leaflet
@@ -27,7 +28,12 @@ google-fonts
  weather
 
 
-
+DATA
+ countries
+ languages
+ ipcc-areas
+ cc-licenses
+ 
 
 
 

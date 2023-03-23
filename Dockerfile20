@@ -1,0 +1,54 @@
+# Adapted from 
+FROM tamboraorg/creinstall:2020.0
+MAINTAINER Michael Kahle <michael.kahle@yahoo.de>
+
+ARG BUILD_YEAR=2020
+ARG BUILD_MONTH=0
+ARG BUILD_TAG=2020.0
+
+#ENV DEBIAN_FRONTEND noninteractive
+#ENV INITRD No
+#ENV LANG en_US.UTF-8
+
+#ENV JAVA_FAMILY open
+ENV ASSETS_VERSION 2020.0
+#ENV KOTLIN_VERSION 1.8.0
+#ENV BUILD_SYSTEM maven
+#ENV GRADLE_VERSION 7.6
+#ENV MAVEN_VERSION 3.9.0
+
+LABEL Name="Assets for CRE" \
+      CRE=$CRE_VERSION \ 
+      Year=$BUILD_YEAR \
+      Month=$BUILD_MONTH \
+      Version=$ASSETS_VERSION \
+      OS="Ubuntu:$UBUNTU_VERSION" \
+      Build_=$BUILD_TAG 
+
+#Install js,css via npm
+
+RUN npm install -g jquery
+RUN npm install -g vue vuex axios 
+#RUN npm install -g primevue primeicons
+RUN npm install -g leaflet
+RUN npm install -g ol
+RUN npm install -g d3
+
+RUN npm-install-peers
+
+
+COPY cre /cre
+WORKDIR "/cre"
+
+
+
+RUN mkdir -p /cre && touch /cre/versions.txt && \ 
+    echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm --version)" >> /cre/versions.txt
+ 
+
+#EXPOSE 8080 
+
+ENTRYPOINT ["/cre/assets-entrypoint.sh"]
+
+CMD ["shoreman", "/cre/assets-procfile"]
