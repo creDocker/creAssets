@@ -58,6 +58,21 @@ RUN ls -l -a /cre/node/.npm-global/lib
 RUN ls -l -a /cre/node/.npm-global/lib/node_modules
 
 COPY cre /cre
+
+#Download IPCC areas
+# https://github.com/IPCC-WG1/Atlas or https://github.com/climdata/IPCCAtlas 
+RUN mkdir -p /cre/assets/ipcc
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGI-reference-regions-v4.geojson -O /cre/assets/ipcc/IPCC-WGI-reference-regions-v4.geojson
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGII-continental-regions.geojson -O /cre/assets/ipcc/IPCC-WGII-continental-regions.geojson
+# https://github.com/IPCC-WG1/colormaps or https://github.com/climdata/IPCCcolormaps (temp,prec,cryo,...)
+# contains multiple pallettes with different number of parameters (i.e 7) or continous list
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/temp_div_disc.txt -O /cre/assets/ipcc/temp_div_disc.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/temp_div.txt -O /cre/assets/ipcc/temp_div.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/prec_div_disc.txt -O /cre/assets/ipcc/prec_div_disc.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/prec_div.txt -O /cre/assets/ipcc/prec_div.txt
+
+
+
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
     echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list jquery | grep jquery)" >> /cre/versions.txt
