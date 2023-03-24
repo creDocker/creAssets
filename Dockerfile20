@@ -75,14 +75,14 @@ RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_
 # http://download.geonames.org/export/dump/
 RUN mkdir -p /cre/assets/geonames
 RUN wget http://download.geonames.org/export/dump/shapes_simplified_low.json.zip -O /cre/assets/geonames/shapes_simplified_low.json.zip && \
-    unzip -o /cre/assets/geonames/shapes_simplified_low.json.zip && \
-    rm -f /cre/assets/geonames/shapes_simplified_low.json.zip
+    unzip -o /cre/assets/geonames/shapes_simplified_low.json.zip -d /cre/assets/geonames/ && \
+    rm -f /cre/assets/geonames/shapes_simplified_low.json.zip 
 RUN wget http://download.geonames.org/export/dump/iso-languagecodes.txt -O /cre/assets/geonames/iso-languagecodes.txt && \
     cat /cre/assets/geonames/iso-languagecodes.txt | sed -e "s|,|;|g" -e "s|\t|,|g" | grep -v ",," > /cre/assets/geonames/iso-languagecodes.csv && \
     rm -f /cre/assets/geonames/iso-languagecodes.txt 
 RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets/geonames/countryInfo.txt && \
-    cat /cre/assets/geonames/iso-countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/geonames/iso-countryInfo.csv && \
-    rm -f /cre/assets/geonames/iso-countryInfo.txt 
+    cat /cre/assets/geonames/countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/geonames/countryInfo.csv && \
+    rm -f /cre/assets/geonames/countryInfo.txt 
 
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 

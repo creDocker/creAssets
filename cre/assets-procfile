@@ -1,2 +1,4 @@
+npm: /cre/init-npm.sh
 start: /cre/run.sh
+
 
