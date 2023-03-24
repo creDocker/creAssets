@@ -59,7 +59,7 @@ RUN ls -l -a /cre/node/.npm-global/lib/node_modules
 
 COPY cre /cre
 
-#Download IPCC areas
+# Download IPCC areas
 # https://github.com/IPCC-WG1/Atlas or https://github.com/climdata/IPCCAtlas 
 RUN mkdir -p /cre/assets/ipcc
 RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGI-reference-regions-v4.geojson -O /cre/assets/ipcc/IPCC-WGI-reference-regions-v4.geojson
@@ -71,6 +71,18 @@ RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_
 RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/prec_div_disc.txt -O /cre/assets/ipcc/prec_div_disc.txt
 RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/prec_div.txt -O /cre/assets/ipcc/prec_div.txt
 
+# Download IPCC areas
+# http://download.geonames.org/export/dump/
+RUN mkdir -p /cre/assets/geonames
+RUN wget http://download.geonames.org/export/dump/shapes_simplified_low.json.zip -O /cre/assets/geonames/shapes_simplified_low.json.zip && \
+    unzip -o /cre/assets/geonames/shapes_simplified_low.json.zip && \
+    rm -f /cre/assets/geonames/shapes_simplified_low.json.zip
+RUN wget http://download.geonames.org/export/dump/iso-languagecodes.txt -O /cre/assets/geonames/iso-languagecodes.txt && \
+    cat /cre/assets/geonames/iso-languagecodes.txt | sed -e "s|,|;|g" -e "s|\t|,|g" | grep -v ",," > /cre/assets/geonames/iso-languagecodes.csv && \
+    rm -f /cre/assets/geonames/iso-languagecodes.txt 
+RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets/geonames/countryInfo.txt && \
+    cat /cre/assets/geonames/iso-countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/geonames/iso-countryInfo.csv && \
+    rm -f /cre/assets/geonames/iso-countryInfo.txt 
 
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
