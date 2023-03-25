@@ -20,6 +20,7 @@
 currentRoot=""
 if [ ! -z $GITHUB_REPOSITORY ]; then
     currentRoot="$(pwd)"
+    echo "current root: $currentRoot"
 fi
 packageFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package.json"  
 lockFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package.lock.json"
