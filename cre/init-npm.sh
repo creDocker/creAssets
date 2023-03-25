@@ -17,7 +17,7 @@ if [ ! -z $GITHUB_REPOSITORY ]; then
 fi
 packageFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package.json"  
 lockFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package-lock.json"
-publicAssets="$currentRoot/cre/versions/u$UBUNTU_VERSION/assets/public/"
+publicAssets="$currentRoot/cre/versions/u$UBUNTU_VERSION/assets/"
 
 if [ -f $packageFile ]; then
     cp -f $packageFile /cre/node/package.json
