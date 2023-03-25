@@ -32,6 +32,7 @@ if [ -f $packageFile ]; then
     fi
 fi
 
+#may better merge in if possible
 if [ -f /cre/assets/package.json ]; then
     cp -f /cre/assets/package.json /cre/node/package.json
     if [ -f /cre/assets/package.lock.json ]; then
