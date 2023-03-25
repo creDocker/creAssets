@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd "/cre/node"
+
 
 #/cre/node/.npm-global/lib   -> tools, etc
 #/cre/node                   -> local, current     package-lock.json
@@ -40,6 +40,7 @@ if [ -f /cre/assets/package.json ]; then
     fi
 fi
 
+cd "/cre/node"
 npm install
 
 ##copy dist/* to assets.
