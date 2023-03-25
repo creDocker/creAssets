@@ -44,6 +44,7 @@ RUN npm install jquery jquery.cookie jquery.fancytree ui-contextmenu
 RUN npm install @popperjs/core bootstrap
 # https://semantic-ui.com/
 ## RUN npm install semantic-ui  # gulp error
+RUN npm install semantic-ui-css
 # https://jqueryui.com
 RUN npm install jquery-ui
 RUN npm install vue vuex axios 
