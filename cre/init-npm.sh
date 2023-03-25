@@ -62,6 +62,7 @@ fi
 ##(In version, cp package.json to u<version> and submit)
 ##(In version, cp /cre/assets/public/ to u<version> and submit)
 if [ ! -z $GITHUB_REPOSITORY ]; then
+    mkdir -p $publicAssets
     #only once!
     if [ ! -f $packageFile ]; then
         cp -f /cre/node/package.json $packageFile
