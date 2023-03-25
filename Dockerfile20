@@ -39,11 +39,11 @@ RUN npm config set init-license "MIT"
 RUN npm init -y
 
 # llok for https://github.com/mar10/wunderbaum   npm install wunderbaum
-RUN npm install jquery jquery.cookie jquery.fancytree
+RUN npm install jquery jquery.cookie jquery.fancytree ui-contextmenu
 # npm install popper.js  # old version # needed for bootstrap #
 RUN npm install @popperjs/core bootstrap
 # https://semantic-ui.com/
-RUN npm install semantic-ui
+## RUN npm install semantic-ui  # gulp error
 # https://jqueryui.com
 RUN npm install jquery-ui
 RUN npm install vue vuex axios 
