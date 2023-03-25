@@ -39,12 +39,13 @@ RUN npm config set init-license "MIT"
 RUN npm init -y
 
 RUN npm install jquery
-RUN npm install bootstrap
+# npm i popper.js  # old version # needed for bootstrap #
+RUN npm install @popperjs/core bootstrap
 RUN npm install vue vuex axios 
 RUN npm install primevue primeicons
 RUN npm install leaflet
 RUN npm install ol
-RUN npm install d3
+RUN npm install  d3
 RUN npm install three
 RUN npm install @fortawesome/fontawesome-free
 
