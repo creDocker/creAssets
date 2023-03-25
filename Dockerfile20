@@ -39,11 +39,14 @@ RUN npm config set init-license "MIT"
 RUN npm init -y
 
 RUN npm install jquery
+RUN npm install bootstrap
 RUN npm install vue vuex axios 
-#RUN npm install primevue primeicons
+RUN npm install primevue primeicons
 RUN npm install leaflet
 RUN npm install ol
 RUN npm install d3
+RUN npm install three
+RUN npm install @fortawesome/fontawesome-free
 
 RUN npm-install-peers
 
@@ -58,6 +61,14 @@ RUN ls -l -a /cre/node/.npm-global/lib
 RUN ls -l -a /cre/node/.npm-global/lib/node_modules
 
 COPY cre /cre
+
+# Dowload Fontawesome
+# https://fontawesome.com
+# https://www.npmjs.com/package/@fortawesome/fontawesome-free?activeTab=versions
+# npm install --save @fortawesome/fontawesome-free
+#https://use.fontawesome.com/releases/v6.3.0/fontawesome-free-6.3.0-web.zip
+#https://use.fontawesome.com/releases/v5.15.4/fontawesome-free-5.15.4-web.zip
+#https://use.fontawesome.com/releases/v5.15.4/fontawesome-free-5.15.4-desktop.zip
 
 # Download IPCC areas
 # https://github.com/IPCC-WG1/Atlas or https://github.com/climdata/IPCCAtlas 
