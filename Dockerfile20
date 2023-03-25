@@ -43,11 +43,13 @@ RUN npm install jquery
 RUN npm install @popperjs/core bootstrap
 RUN npm install vue vuex axios 
 RUN npm install primevue primeicons
-RUN npm install leaflet
+RUN npm install leaflet leaflet.markercluster
 RUN npm install ol
 RUN npm install  d3
 RUN npm install three
 RUN npm install @fortawesome/fontawesome-free
+#https://www.npmjs.com/package/@tweenjs/tween.js
+
 
 RUN npm-install-peers
 

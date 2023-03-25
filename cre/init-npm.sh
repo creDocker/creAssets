@@ -14,7 +14,7 @@ cd "/cre/node"
 ##(else use current)
 ##npm install
 ##copy dist/* to assets.
-##(In version, cp package.json to package.2020.json and submit)
+
 ##Here: cp package.json and package.lock.json to /cre/assets
 
 currentRoot=""
@@ -23,10 +23,12 @@ if [ ! -z $GITHUB_REPOSITORY ]; then
 fi
 packageFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package.json"  
 lockFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package.lock.json"
-if [ -f packageFile ]; then
-    cp -f packageFile /cre/node/package.json
-    if [ -f lockFile ]; then
-        cp -f lockFile /cre/node/package.lock.json
+publicAssets="$currentRoot/cre/versions/u$UBUNTU_VERSION/assets/public/"
+
+if [ -f $packageFile ]; then
+    cp -f $packageFile /cre/node/package.json
+    if [ -f $lockFile ]; then
+        cp -f $lockFile /cre/node/package.lock.json
     fi
 fi
 
@@ -40,12 +42,13 @@ fi
 npm install
 
 ##copy dist/* to assets.
-mkdir -p /cre/assets/vendor/jquery/js
-cp -f /cre/node/node_modules/jquery/dist/*.* /cre/assets/vendor/jquery/js
-mkdir -p /cre/assets/vendor/ol/js
-cp -f /cre/node/node_modules/ol/dist/*.* /cre/assets/vendor/ol/js
-mkdir -p /cre/assets/vendor/ol/css
-cp -f /cre/node/node_modules/ol/*.css /cre/assets/vendor/ol/css
+mkdir -p /cre/assets/public/jquery/js
+cp -f /cre/node/node_modules/jquery/dist/*.* /cre/assets/public/jquery/js
+mkdir -p /cre/assets/public/ol/js
+cp -f /cre/node/node_modules/ol/dist/*.* /cre/assets/public/ol/js
+mkdir -p /cre/assets/public/ol/css
+cp -f /cre/node/node_modules/ol/*.css /cre/assets/public/ol/css
+## mkdir -p /cre/assets/private/mapglyph
 
 if [ -f /cre/node/package.json ]; then
     cp -f /cre/node/package.json /cre/assets/package.json
@@ -54,14 +57,18 @@ if [ -f /cre/node/package.json ]; then
     fi
 fi
 
-#only once!
+##(In version, cp package.json to u<version> and submit)
+##(In version, cp /cre/assets/public/ to u<version> and submit)
 if [ ! -z $GITHUB_REPOSITORY ]; then
-    if [ ! -f packageFile ]; then
-        cp -f /cre/node/package.json packageFile
+    #only once!
+    if [ ! -f $packageFile ]; then
+        cp -f /cre/node/package.json $packageFile
     fi
-    if [ ! -f lockFile ]; then
-        cp -f /cre/node/package.lock.json lockFile
-    fi
+    if [ ! -f $lockFile ]; then
+        cp -f /cre/node/package.lock.json $lockFile
+    fi 
+    #always
+    cp -R -f /cre/assets/public/ $publicAssets
 fi
 
 cd "/cre/assets"
