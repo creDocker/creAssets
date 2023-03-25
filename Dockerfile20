@@ -38,18 +38,27 @@ RUN npm config set init-version 0.0.2
 RUN npm config set init-license "MIT"
 RUN npm init -y
 
-RUN npm install jquery
-# npm i popper.js  # old version # needed for bootstrap #
+# llok for https://github.com/mar10/wunderbaum   npm install wunderbaum
+RUN npm install jquery jquery.cookie jquery.fancytree
+# npm install popper.js  # old version # needed for bootstrap #
 RUN npm install @popperjs/core bootstrap
+# https://semantic-ui.com/
+RUN npm install semantic-ui
+# https://jqueryui.com
+RUN npm install jquery-ui
 RUN npm install vue vuex axios 
 RUN npm install primevue primeicons
-RUN npm install leaflet leaflet.markercluster
-RUN npm install ol
-RUN npm install  d3
+RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf
+# https://github.com/bjornharrtell/jsts
+RUN npm install ol jsts
+# https://www.npmjs.com/package/javascript.util & http://bjornharrtell.github.io/javascript.util/doc/
+RUN npm install javascript.util
+RUN npm install d3 c3
 RUN npm install three
 RUN npm install @fortawesome/fontawesome-free
 #https://www.npmjs.com/package/@tweenjs/tween.js
 
+#compile list with descriptions and links....
 
 RUN npm-install-peers
 
