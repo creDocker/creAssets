@@ -78,41 +78,43 @@ COPY cre /cre
 # Dowload Fontawesome
 # https://fontawesome.com
 # https://www.npmjs.com/package/@fortawesome/fontawesome-free?activeTab=versions
-# npm install --save @fortawesome/fontawesome-free
+# npm install --save @fortawesome/fontawesome-free DONE
 #https://use.fontawesome.com/releases/v6.3.0/fontawesome-free-6.3.0-web.zip
 #https://use.fontawesome.com/releases/v5.15.4/fontawesome-free-5.15.4-web.zip
 #https://use.fontawesome.com/releases/v5.15.4/fontawesome-free-5.15.4-desktop.zip
 
+## ??? use asset-dir ??? it will be mounted ... on the other hand npm-init will cp and submit files in public.
 # Download IPCC areas
 # https://github.com/IPCC-WG1/Atlas or https://github.com/climdata/IPCCAtlas 
 RUN mkdir -p /cre/assets/ipcc
-RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGI-reference-regions-v4.geojson -O /cre/assets/ipcc/IPCC-WGI-reference-regions-v4.geojson
-RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGII-continental-regions.geojson -O /cre/assets/ipcc/IPCC-WGII-continental-regions.geojson
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGI-reference-regions-v4.geojson -O /cre/assets/public/ipcc/IPCC-WGI-reference-regions-v4.geojson
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGII-continental-regions.geojson -O /cre/assets/public/ipcc/IPCC-WGII-continental-regions.geojson
 # https://github.com/IPCC-WG1/colormaps or https://github.com/climdata/IPCCcolormaps (temp,prec,cryo,...)
 # contains multiple pallettes with different number of parameters (i.e 7) or continous list
-RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/temp_div_disc.txt -O /cre/assets/ipcc/temp_div_disc.txt
-RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/temp_div.txt -O /cre/assets/ipcc/temp_div.txt
-RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/prec_div_disc.txt -O /cre/assets/ipcc/prec_div_disc.txt
-RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/prec_div.txt -O /cre/assets/ipcc/prec_div.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/temp_div_disc.txt -O /cre/assets/public/ipcc/temp_div_disc.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/temp_div.txt -O /cre/assets/public/ipcc/temp_div.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/prec_div_disc.txt -O /cre/assets/public/ipcc/prec_div_disc.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/prec_div.txt -O /cre/assets/public/ipcc/prec_div.txt
 
 # Download IPCC areas
 # http://download.geonames.org/export/dump/
-RUN mkdir -p /cre/assets/geonames
-RUN wget http://download.geonames.org/export/dump/shapes_simplified_low.json.zip -O /cre/assets/geonames/shapes_simplified_low.json.zip && \
-    unzip -o /cre/assets/geonames/shapes_simplified_low.json.zip -d /cre/assets/geonames/ && \
-    rm -f /cre/assets/geonames/shapes_simplified_low.json.zip 
-RUN wget http://download.geonames.org/export/dump/iso-languagecodes.txt -O /cre/assets/geonames/iso-languagecodes.txt && \
-    cat /cre/assets/geonames/iso-languagecodes.txt | sed -e "s|,|;|g" -e "s|\t|,|g" | grep -v ",," > /cre/assets/geonames/iso-languagecodes.csv && \
-    rm -f /cre/assets/geonames/iso-languagecodes.txt 
-RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets/geonames/countryInfo.txt && \
-    cat /cre/assets/geonames/countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/geonames/countryInfo.csv && \
-    rm -f /cre/assets/geonames/countryInfo.txt 
+RUN mkdir -p /cre/assets/public/geonames
+RUN wget http://download.geonames.org/export/dump/shapes_simplified_low.json.zip -O /cre/assets/public/geonames/shapes_simplified_low.json.zip && \
+    unzip -o /cre/assets/public/geonames/shapes_simplified_low.json.zip -d /cre/assets/public/geonames/ && \
+    rm -f /cre/assets/public/geonames/shapes_simplified_low.json.zip 
+RUN wget http://download.geonames.org/export/dump/iso-languagecodes.txt -O /cre/assets/public/geonames/iso-languagecodes.txt && \
+    cat /cre/assets/public/geonames/iso-languagecodes.txt | sed -e "s|,|;|g" -e "s|\t|,|g" | grep -v ",," > /cre/assets/public/geonames/iso-languagecodes.csv && \
+    rm -f /cre/assets/public/geonames/iso-languagecodes.txt 
+RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets/public/geonames/countryInfo.txt && \
+    cat /cre/assets/public/geonames/countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/public/geonames/countryInfo.csv && \
+    rm -f /cre/assets/public/geonames/countryInfo.txt 
 
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
     echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
-    echo "$(date +'%F %R') \t  $(npm list jquery | grep jquery)" >> /cre/versions.txt
- 
+    echo "$(date +'%F %R') \t  $(npm list jquery | grep -v deduped | grep 'jquery@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list jquery-ui | grep -v deduped | grep 'jquery-ui@')" >> /cre/versions.txt
+
 WORKDIR "/cre/assets"
 #EXPOSE 8080 
 
