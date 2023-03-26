@@ -86,7 +86,7 @@ COPY cre /cre
 ## ??? use asset-dir ??? it will be mounted ... on the other hand npm-init will cp and submit files in public.
 # Download IPCC areas
 # https://github.com/IPCC-WG1/Atlas or https://github.com/climdata/IPCCAtlas 
-RUN mkdir -p /cre/assets/ipcc
+RUN mkdir -p /cre/assets/public/ipcc
 RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGI-reference-regions-v4.geojson -O /cre/assets/public/ipcc/IPCC-WGI-reference-regions-v4.geojson
 RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGII-continental-regions.geojson -O /cre/assets/public/ipcc/IPCC-WGII-continental-regions.geojson
 # https://github.com/IPCC-WG1/colormaps or https://github.com/climdata/IPCCcolormaps (temp,prec,cryo,...)
