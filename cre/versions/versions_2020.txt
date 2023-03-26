@@ -11,7 +11,4 @@ creBuild 	 2023.03
   sdk 	 5.18.0
  creAssets 	 2020.0
   ├── jquery@3.6.4 
-├─┬ jquery-ui@1.13.2
-│ └── jquery@3.6.4  deduped
-│ └── jquery@3.6.4  deduped
-  └── jquery@3.6.4  deduped
+  └── jquery-ui@1.13.2 
