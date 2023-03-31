@@ -96,11 +96,13 @@ RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_
 RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/prec_div_disc.txt -O /cre/assets/public/ipcc/prec_div_disc.txt
 RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/prec_div.txt -O /cre/assets/public/ipcc/prec_div.txt
 
-# Download IPCC areas
+# Download geonames areas
 # http://download.geonames.org/export/dump/
 RUN mkdir -p /cre/assets/public/geonames
 RUN wget http://download.geonames.org/export/dump/shapes_simplified_low.json.zip -O /cre/assets/public/geonames/shapes_simplified_low.json.zip && \
     unzip -o /cre/assets/public/geonames/shapes_simplified_low.json.zip -d /cre/assets/public/geonames/ && \
+    cat /cre/assets/public/geonames/shapes_simplified_low.json | sed -e "s|{\"type|\n{\"type|g" >/cre/assets/public/geonames/shapes_countries.json && \
+    rm -f /cre/assets/public/geonames/shapes_simplified_low.json && \
     rm -f /cre/assets/public/geonames/shapes_simplified_low.json.zip 
 RUN wget http://download.geonames.org/export/dump/iso-languagecodes.txt -O /cre/assets/public/geonames/iso-languagecodes.txt && \
     cat /cre/assets/public/geonames/iso-languagecodes.txt | sed -e "s|,|;|g" -e "s|\t|,|g" | grep -v ",," > /cre/assets/public/geonames/iso-languagecodes.csv && \
