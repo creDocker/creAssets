@@ -47,7 +47,8 @@ RUN npm install @popperjs/core bootstrap
 RUN npm install semantic-ui-css
 # https://jqueryui.com
 RUN npm install jquery-ui
-RUN npm install vue vuex axios 
+# https://vueuse.org/  
+RUN npm install vue vuex axios @vueuse/core
 RUN npm install primevue primeicons
 RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf
 # https://github.com/bjornharrtell/jsts
@@ -110,6 +111,32 @@ RUN wget http://download.geonames.org/export/dump/iso-languagecodes.txt -O /cre/
 RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets/public/geonames/countryInfo.txt && \
     cat /cre/assets/public/geonames/countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/public/geonames/countryInfo.csv && \
     rm -f /cre/assets/public/geonames/countryInfo.txt 
+
+
+#https://p.yusukekamiyamane.com/
+#https://p.yusukekamiyamane.com/icons/downloads/fugue-icons-3.5.6.zip
+# https://fonts.google.com/
+# https://simplify-everything.com/en/blog/2019/05/30/how-to-host-google-fonts-local-through-css/
+# https://fonts.google.com/knowledge/using_type/self_hosting_web_fonts
+# Merriweather, Alkatra, Lato, Aboreto, Noto Color Emoji, Lilita One
+
+#https://p.yusukekamiyamane.com/fonts/(5points)
+
+##https://cd.uni-freiburg.de/
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.92.png
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.97.png
+#https://cd.uni-freiburg.de/app/uploads/2022/09/ufr-logo-email.png
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.921.png
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.99.png
+
+#https://intranet.uni-freiburg.de/intern/downloads/saz/logo-bildschirmfarben.zip
+#https://intranet.uni-freiburg.de/intern/downloads/saz/logo-webfarben.zip
+#https://intranet.uni-freiburg.de/intern/downloads/saz/logo-druckfarben.zip
+##https://cd.uni-freiburg.de/farben/
+
+
+#Social, Arial
+
 
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
