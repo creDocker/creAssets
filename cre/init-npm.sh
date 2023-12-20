@@ -52,13 +52,13 @@ cp -f /cre/node/node_modules/vuex/dist/vue.global.js /cre/assets/public/vue/js
 cp -f /cre/node/node_modules/axios/dist/axios.* /cre/assets/public/vue/js
 
 mkdir -p /cre/assets/public/bootstrap/js
-cp -f /cre/node/node_modules/vue/dist/js/bootstrap.js /cre/assets/public/bootstrap/js
-cp -f /cre/node/node_modules/vue/dist/js/bootstrap.min.js /cre/assets/public/bootstrap/js
-cp -f /cre/node/node_modules/vue/dist/js/bootstrap.js.map /cre/assets/public/bootstrap/js
+cp -f /cre/node/node_modules/bootstrap/dist/js/bootstrap.js /cre/assets/public/bootstrap/js
+cp -f /cre/node/node_modules/bootstrap/dist/js/bootstrap.min.js /cre/assets/public/bootstrap/js
+cp -f /cre/node/node_modules/bootstrap/dist/js/bootstrap.js.map /cre/assets/public/bootstrap/js
 mkdir -p /cre/assets/public/bootstrap/css
-cp -f /cre/node/node_modules/vue/dist/css/bootstrap.min.css /cre/assets/public/bootstrap/css
-cp -f /cre/node/node_modules/vue/dist/css/bootstrap.css /cre/assets/public/bootstrap/css
-cp -f /cre/node/node_modules/vue/dist/css/bootstrap.min.css.map /cre/assets/public/bootstrap/css
+cp -f /cre/node/node_modules/bootstrap/dist/css/bootstrap.min.css /cre/assets/public/bootstrap/css
+cp -f /cre/node/node_modules/bootstrap/dist/css/bootstrap.css /cre/assets/public/bootstrap/css
+cp -f /cre/node/node_modules/bootstrap/dist/css/bootstrap.min.css.map /cre/assets/public/bootstrap/css
 cp -f /cre/extra/css/*.css /cre/assets/public/bootstrap/css
 
 
