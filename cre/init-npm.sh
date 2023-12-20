@@ -40,10 +40,28 @@ npm install
 ##copy dist/* to assets.
 mkdir -p /cre/assets/public/jquery/js
 cp -f /cre/node/node_modules/jquery/dist/*.* /cre/assets/public/jquery/js
+
 mkdir -p /cre/assets/public/ol/js
 cp -f /cre/node/node_modules/ol/dist/*.* /cre/assets/public/ol/js
 mkdir -p /cre/assets/public/ol/css
 cp -f /cre/node/node_modules/ol/*.css /cre/assets/public/ol/css
+
+mkdir -p /cre/assets/public/vue/js
+cp -f /cre/node/node_modules/vue/dist/vue.global.js /cre/assets/public/vue/js
+cp -f /cre/node/node_modules/vuex/dist/vue.global.js /cre/assets/public/vue/js
+cp -f /cre/node/node_modules/axios/dist/axios.* /cre/assets/public/vue/js
+
+mkdir -p /cre/assets/public/bootstrap/js
+cp -f /cre/node/node_modules/vue/dist/js/bootstrap.js /cre/assets/public/bootstrap/js
+cp -f /cre/node/node_modules/vue/dist/js/bootstrap.min.js /cre/assets/public/bootstrap/js
+cp -f /cre/node/node_modules/vue/dist/js/bootstrap.js.map /cre/assets/public/bootstrap/js
+mkdir -p /cre/assets/public/bootstrap/css
+cp -f /cre/node/node_modules/vue/dist/css/bootstrap.min.css /cre/assets/public/bootstrap/css
+cp -f /cre/node/node_modules/vue/dist/css/bootstrap.css /cre/assets/public/bootstrap/css
+cp -f /cre/node/node_modules/vue/dist/css/bootstrap.min.css.map /cre/assets/public/bootstrap/css
+cp -f /cre/extra/css/*.css /cre/assets/public/bootstrap/css
+
+
 ## mkdir -p /cre/assets/private/mapglyph
 
 if [ -f /cre/node/package.json ]; then
