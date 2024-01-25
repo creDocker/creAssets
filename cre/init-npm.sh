@@ -48,7 +48,7 @@ cp -f /cre/node/node_modules/ol/*.css /cre/assets/public/ol/css
 
 mkdir -p /cre/assets/public/vue/js
 cp -f /cre/node/node_modules/vue/dist/vue.global.js /cre/assets/public/vue/js
-cp -f /cre/node/node_modules/vuex/dist/vue.global.js /cre/assets/public/vue/js
+cp -f /cre/node/node_modules/vuex/dist/vuex.global.js /cre/assets/public/vue/js
 cp -f /cre/node/node_modules/axios/dist/axios.* /cre/assets/public/vue/js
 
 mkdir -p /cre/assets/public/bootstrap/js
