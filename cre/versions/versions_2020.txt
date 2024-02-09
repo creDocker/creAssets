@@ -4,7 +4,7 @@ creBuild 	 2024.02
   OpenSSL 1.1.1f  31 Mar 2020
   Java 	 openjdk version "11.0.21" 2023-10-17
   Python3 	 Python 3.8.10
-   Flask 	 Flask 3.0.1
+   Flask 	 Flask 3.0.2
  creNode 	 14
   ldd 	 ldd (Ubuntu GLIBC 2.31-0ubuntu9.14) 2.31
   node 	 v14.21.3
