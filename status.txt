@@ -14,6 +14,9 @@ treefolder fancytree
 bootstrap, styles(color): neumorphism, glass
 https://dev.to/jon_snow789/glassmorphism-css-generator-k90
 
+csv
+https://codedamn.com/news/javascript/how-to-read-csv-with-javascript
+https://www.papaparse.com/
 
 #https://github.com/webedu/preparation/tree/master/vue-components/w4u-main
 #https://github.com/webedu/preparation/blob/master/vue-components/w4u-main/todo.txt
@@ -23,6 +26,11 @@ snapsvg
 ICONS
 font-awesome
 mapghyphon (secure)
+
+https://erikflowers.github.io/weather-icons/
+https://github.com/erikflowers/weather-icons/archive/master.zip
+https://www.quantargo.com/help/r/latest/packages/leaflet.extras/1.0.0/weatherMarkers
+
 
 FONTS
 

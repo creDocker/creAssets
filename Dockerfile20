@@ -112,6 +112,14 @@ RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets
     cat /cre/assets/public/geonames/countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/public/geonames/countryInfo.csv && \
     rm -f /cre/assets/public/geonames/countryInfo.txt 
 
+# Download weather icons
+# https://erikflowers.github.io/weather-icons/
+# https://github.com/erikflowers/weather-icons/archive/master.zip
+# https://www.quantargo.com/help/r/latest/packages/leaflet.extras/1.0.0/weatherMarkers
+RUN mkdir -p /cre/assets/public/icons/weather
+RUN wget https://github.com/erikflowers/weather-icons/archive/master.zip -O /cre/assets/public/icons/weather/master.zip && \
+    unzip -o /cre/assets/public/icons/weather/master.json.zip -d /cre/assets/public/icons/weather/ && \
+    rm -f /cre/assets/public/icons/weather/master.zip
 
 #https://p.yusukekamiyamane.com/
 #https://p.yusukekamiyamane.com/icons/downloads/fugue-icons-3.5.6.zip
@@ -136,6 +144,12 @@ RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets
 
 
 #Social, Arial
+
+# DejaVU UTF8 fonts
+# https://dejavu-fonts.github.io/Download.html
+# sudo apt-get install -y ttf-dejavu
+
+# https://notofonts.github.io/
 
 
 

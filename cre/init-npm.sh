@@ -1,6 +1,5 @@
 #!/bin/bash
-
-
+sleep 1
 
 #/cre/node/.npm-global/lib   -> tools, etc
 #/cre/node                   -> local, current     package-lock.json
