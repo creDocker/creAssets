@@ -49,6 +49,7 @@ RUN npm install semantic-ui-css
 RUN npm install jquery-ui
 # https://vueuse.org/  
 RUN npm install vue vuex axios @vueuse/core
+# RUN npm install @formkit/vue @formkit/themes
 RUN npm install primevue primeicons
 RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf
 # https://github.com/bjornharrtell/jsts
