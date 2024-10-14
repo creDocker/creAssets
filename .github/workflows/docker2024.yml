@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: dockerhub:2020.0
+name: dockerhub:2024.0
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
   schedule:
     # * is a special character in YAML so you have to quote this string 1:00  weekly,Wednesday,1:00 #m h d/m m d/w 
-    - cron:  '39 3 * * 5'
+    - cron:  '39 3 * * 0'
 
 jobs:
   docker:
@@ -32,22 +32,22 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v3
         with:
-          file: ./Dockerfile20
+          file: ./Dockerfile24
           push: true
-          tags: credocker/creassets:check20 
+          tags: credocker/creassets:check24
 
       -
         name: Test
         run: |
-          docker run credocker/creassets:check20 /cre/assets-test.sh   
+          docker run credocker/creassets:check24 /cre/assets-test.sh   
 
       -
         name: Build and push
         id: docker_push
         uses: docker/build-push-action@v3
         with:
-          file: ./Dockerfile20
+          file: ./Dockerfile24
           push: true
-          tags: credocker/creassets:2020.0 
+          tags: credocker/creassets:2024.0, credocker/creassets:latest 
       
 

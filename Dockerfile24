@@ -1,0 +1,172 @@
+# Adapted from 
+FROM credocker/creinstall:2024.0
+MAINTAINER Michael Kahle <michael.kahle@yahoo.de>
+
+ARG BUILD_YEAR=2024
+ARG BUILD_MONTH=0
+ARG BUILD_TAG=2024.0
+
+#ENV DEBIAN_FRONTEND noninteractive
+#ENV INITRD No
+#ENV LANG en_US.UTF-8
+
+#ENV JAVA_FAMILY open
+ENV ASSETS_VERSION 2024.0
+#ENV KOTLIN_VERSION 1.8.0
+#ENV BUILD_SYSTEM maven
+#ENV GRADLE_VERSION 7.6
+#ENV MAVEN_VERSION 3.9.0
+
+LABEL Name="Assets for CRE" \
+      CRE=$CRE_VERSION \ 
+      Year=$BUILD_YEAR \
+      Month=$BUILD_MONTH \
+      Version=$ASSETS_VERSION \
+      OS="Ubuntu:$UBUNTU_VERSION" \
+      Build_=$BUILD_TAG 
+
+COPY cre /cre
+WORKDIR "/cre/node"
+#Install js,css via npm
+
+RUN npm config list
+
+RUN npm config set init-author-name "jaketrent"
+RUN npm config set init-author-email "your-email@example.com"
+RUN npm config set init-author-url  "https://my-domain/user"
+RUN npm config set init-version 0.0.4
+RUN npm config set init-license "MIT"
+RUN npm init -y
+
+# llok for https://github.com/mar10/wunderbaum   npm install wunderbaum
+RUN npm install jquery jquery.cookie jquery.fancytree ui-contextmenu
+# npm install popper.js  # old version # needed for bootstrap #
+RUN npm install @popperjs/core bootstrap
+# https://semantic-ui.com/
+## RUN npm install semantic-ui  # gulp error
+RUN npm install semantic-ui-css
+# https://jqueryui.com
+RUN npm install jquery-ui
+# https://vueuse.org/  
+RUN npm install vue vuex axios @vueuse/core
+# RUN npm install @formkit/vue @formkit/themes
+RUN npm install primevue primeicons
+RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf
+# https://github.com/bjornharrtell/jsts
+RUN npm install ol jsts
+# https://www.npmjs.com/package/javascript.util & http://bjornharrtell.github.io/javascript.util/doc/
+RUN npm install javascript.util
+RUN npm install d3 c3
+RUN npm install three
+RUN npm install @fortawesome/fontawesome-free
+#https://www.npmjs.com/package/@tweenjs/tween.js
+RUN npm install jspdf
+RUN npm install jszip
+
+
+
+
+#compile list with descriptions and links....
+
+RUN npm-install-peers
+
+RUN npm root -g
+RUN npm list -g 
+RUN npm root
+RUN npm list 
+
+#RUN ls -l -a /cre/node/
+RUN ls -l -a /cre/node/.npm-global
+RUN ls -l -a /cre/node/.npm-global/lib
+RUN ls -l -a /cre/node/.npm-global/lib/node_modules
+
+COPY cre /cre
+
+# Dowload Fontawesome
+# https://fontawesome.com
+# https://www.npmjs.com/package/@fortawesome/fontawesome-free?activeTab=versions
+# npm install --save @fortawesome/fontawesome-free DONE
+#https://use.fontawesome.com/releases/v6.3.0/fontawesome-free-6.3.0-web.zip
+#https://use.fontawesome.com/releases/v5.15.4/fontawesome-free-5.15.4-web.zip
+#https://use.fontawesome.com/releases/v5.15.4/fontawesome-free-5.15.4-desktop.zip
+
+## ??? use asset-dir ??? it will be mounted ... on the other hand npm-init will cp and submit files in public.
+# Download IPCC areas
+# https://github.com/IPCC-WG1/Atlas or https://github.com/climdata/IPCCAtlas 
+RUN mkdir -p /cre/assets/public/ipcc
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGI-reference-regions-v4.geojson -O /cre/assets/public/ipcc/IPCC-WGI-reference-regions-v4.geojson
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/Atlas/main/reference-regions/IPCC-WGII-continental-regions.geojson -O /cre/assets/public/ipcc/IPCC-WGII-continental-regions.geojson
+# https://github.com/IPCC-WG1/colormaps or https://github.com/climdata/IPCCcolormaps (temp,prec,cryo,...)
+# contains multiple pallettes with different number of parameters (i.e 7) or continous list
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/temp_div_disc.txt -O /cre/assets/public/ipcc/temp_div_disc.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/temp_div.txt -O /cre/assets/public/ipcc/temp_div.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/discrete_colormaps_rgb_0-255/prec_div_disc.txt -O /cre/assets/public/ipcc/prec_div_disc.txt
+RUN wget https://raw.githubusercontent.com/IPCC-WG1/colormaps/master/continuous_colormaps_rgb_0-255/prec_div.txt -O /cre/assets/public/ipcc/prec_div.txt
+
+# Download geonames areas
+# http://download.geonames.org/export/dump/
+RUN mkdir -p /cre/assets/public/geonames
+RUN wget http://download.geonames.org/export/dump/shapes_simplified_low.json.zip -O /cre/assets/public/geonames/shapes_simplified_low.json.zip && \
+    unzip -o /cre/assets/public/geonames/shapes_simplified_low.json.zip -d /cre/assets/public/geonames/ && \
+    cat /cre/assets/public/geonames/shapes_simplified_low.json | sed -e "s|{\"type|\n{\"type|g" >/cre/assets/public/geonames/shapes_countries.json && \
+    rm -f /cre/assets/public/geonames/shapes_simplified_low.json && \
+    rm -f /cre/assets/public/geonames/shapes_simplified_low.json.zip 
+RUN wget http://download.geonames.org/export/dump/iso-languagecodes.txt -O /cre/assets/public/geonames/iso-languagecodes.txt && \
+    cat /cre/assets/public/geonames/iso-languagecodes.txt | sed -e "s|,|;|g" -e "s|\t|,|g" | grep -v ",," > /cre/assets/public/geonames/iso-languagecodes.csv && \
+    rm -f /cre/assets/public/geonames/iso-languagecodes.txt 
+RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets/public/geonames/countryInfo.txt && \
+    cat /cre/assets/public/geonames/countryInfo.txt | sed -e "s|,|;|g" -e "s|#ISO|ISO|g" -e "s|\t|,|g" | sed '/^#/d'> /cre/assets/public/geonames/countryInfo.csv && \
+    rm -f /cre/assets/public/geonames/countryInfo.txt 
+
+# Download weather icons
+# https://erikflowers.github.io/weather-icons/
+# https://github.com/erikflowers/weather-icons/archive/master.zip
+# https://www.quantargo.com/help/r/latest/packages/leaflet.extras/1.0.0/weatherMarkers
+RUN mkdir -p /cre/assets/public/icons/weather
+RUN wget https://github.com/erikflowers/weather-icons/archive/master.zip -O /cre/assets/public/icons/weather/master.zip && \
+    unzip -o /cre/assets/public/icons/weather/master.json.zip -d /cre/assets/public/icons/weather/ && \
+    rm -f /cre/assets/public/icons/weather/master.zip
+
+#https://p.yusukekamiyamane.com/
+#https://p.yusukekamiyamane.com/icons/downloads/fugue-icons-3.5.6.zip
+# https://fonts.google.com/
+# https://simplify-everything.com/en/blog/2019/05/30/how-to-host-google-fonts-local-through-css/
+# https://fonts.google.com/knowledge/using_type/self_hosting_web_fonts
+# Merriweather, Alkatra, Lato, Aboreto, Noto Color Emoji, Lilita One
+
+#https://p.yusukekamiyamane.com/fonts/(5points)
+
+##https://cd.uni-freiburg.de/
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.92.png
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.97.png
+#https://cd.uni-freiburg.de/app/uploads/2022/09/ufr-logo-email.png
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.921.png
+#https://cd.uni-freiburg.de/app/uploads/2023/02/UFR-vorlage-designsystem-typo-farben-V1.99.png
+
+#https://intranet.uni-freiburg.de/intern/downloads/saz/logo-bildschirmfarben.zip
+#https://intranet.uni-freiburg.de/intern/downloads/saz/logo-webfarben.zip
+#https://intranet.uni-freiburg.de/intern/downloads/saz/logo-druckfarben.zip
+##https://cd.uni-freiburg.de/farben/
+
+
+#Social, Arial
+
+# DejaVU UTF8 fonts
+# https://dejavu-fonts.github.io/Download.html
+# sudo apt-get install -y ttf-dejavu
+
+# https://notofonts.github.io/
+
+
+
+RUN mkdir -p /cre && touch /cre/versions.txt && \ 
+    echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list jquery | grep -v deduped | grep 'jquery@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list jquery-ui | grep -v deduped | grep 'jquery-ui@')" >> /cre/versions.txt
+
+WORKDIR "/cre/assets"
+#EXPOSE 8080 
+
+ENTRYPOINT ["/cre/assets-entrypoint.sh"]
+
+CMD ["shoreman", "/cre/assets-procfile"]
