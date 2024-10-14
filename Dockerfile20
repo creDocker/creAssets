@@ -60,6 +60,11 @@ RUN npm install d3 c3
 RUN npm install three
 RUN npm install @fortawesome/fontawesome-free
 #https://www.npmjs.com/package/@tweenjs/tween.js
+RUN npm install jspdf
+RUN npm install jszip
+
+
+
 
 #compile list with descriptions and links....
 

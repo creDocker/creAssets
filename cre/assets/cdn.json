@@ -1,0 +1,44 @@
+[
+{"name": "NAME",
+ "latest": { 
+   "js": ["URL"],
+   "css": [],
+   "other": []
+  },
+ "versioned": {
+   "js": ["URL/<version>/name.js"],
+   "css": [],
+   "other": []
+  }
+},
+{"name": "jspdf",
+ "latest": { 
+   "js": ["https://cdn.jsdelivr.net/npm/jspdf/dist/jspdf.es.min.js"],
+   "css": [],
+   "other": []
+  },
+ "versioned": {
+   "js": ["https://cdnjs.cloudflare.com/ajax/libs/jspdf/<version>/jspdf.umd.min.js"],
+   "css": [],
+   "other": []
+  }
+},
+{"name": "jszip",
+ "latest": { 
+   "js": ["https://cdn.jsdelivr.net/npm/jszip/dist/jszip.min.js"],
+   "css": [],
+   "other": []
+  },
+ "versioned": {
+   "js": ["https://cdnjs.cloudflare.com/ajax/libs/jszip/<version>/jszip.min.js"],
+   "css": [],
+   "other": []
+  }
+},
+
+
+
+
+
+
+]

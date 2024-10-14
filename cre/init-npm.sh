@@ -60,6 +60,13 @@ cp -f /cre/node/node_modules/bootstrap/dist/css/bootstrap.css /cre/assets/public
 cp -f /cre/node/node_modules/bootstrap/dist/css/bootstrap.min.css.map /cre/assets/public/bootstrap/css
 cp -f /cre/extra/css/*.css /cre/assets/public/bootstrap/css
 
+mkdir -p /cre/assets/public/jszip/js
+cp -f /cre/node/node_modules/jszip/dist/*.* /cre/assets/public/jszip/js
+
+mkdir -p /cre/assets/public/jspdf/js
+cp -f /cre/node/node_modules/jspdf/dist/*.* /cre/assets/public/jspdf/js
+
+
 
 ## mkdir -p /cre/assets/private/mapglyph
 
