@@ -1,0 +1,16 @@
+creBuild 	 2024.10
+ creUbuntu 	 24.04.1 LTS
+  UbuntuName 	 noble
+  OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
+  msmtp version 1.8.24
+  Java 	 openjdk version "21.0.4" 2024-07-16
+  Python3 	 Python 3.12.3
+   Flask 	 
+ creNode 	 16
+  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.3) 2.39
+  node 	 v16.20.2
+  npm 	 8.19.4
+  sdk 	 5.18.2
+ creAssets 	 2024.0
+  ├── jquery@3.7.1
+  └── jquery-ui@1.14.0

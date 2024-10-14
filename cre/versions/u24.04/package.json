@@ -1,0 +1,41 @@
+{
+  "name": "node",
+  "version": "2024.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "jaketrent <your-email@example.com> (https://my-domain/user)",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "@popperjs/core": "^2.11.8",
+    "@vueuse/core": "^11.1.0",
+    "axios": "^1.7.7",
+    "bootstrap": "^5.3.3",
+    "c3": "^0.7.20",
+    "d3": "^7.9.0",
+    "javascript.util": "^0.12.12",
+    "jquery": "^3.7.1",
+    "jquery-ui": "^1.14.0",
+    "jquery.cookie": "^1.4.1",
+    "jquery.fancytree": "^2.38.3",
+    "jspdf": "^2.5.2",
+    "jsts": "^2.11.3",
+    "jszip": "^3.10.1",
+    "leaflet": "^1.9.4",
+    "leaflet-dvf": "^0.3.1",
+    "leaflet-extra-markers": "^1.2.2",
+    "leaflet.markercluster": "^1.5.3",
+    "ol": "^10.2.1",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.1.0",
+    "semantic-ui-css": "^2.5.0",
+    "three": "^0.169.0",
+    "ui-contextmenu": "^1.18.1",
+    "vue": "^3.5.12",
+    "vuex": "^4.1.0"
+  }
+}
