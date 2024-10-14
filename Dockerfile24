@@ -124,7 +124,7 @@ RUN wget http://download.geonames.org/export/dump/countryInfo.txt -O /cre/assets
 # https://www.quantargo.com/help/r/latest/packages/leaflet.extras/1.0.0/weatherMarkers
 RUN mkdir -p /cre/assets/public/icons/weather
 RUN wget https://github.com/erikflowers/weather-icons/archive/master.zip -O /cre/assets/public/icons/weather/master.zip && \
-    unzip -o /cre/assets/public/icons/weather/master.json.zip -d /cre/assets/public/icons/weather/ && \
+    unzip -o /cre/assets/public/icons/weather/master.zip -d /cre/assets/public/icons/weather/ && \
     rm -f /cre/assets/public/icons/weather/master.zip
 
 #https://p.yusukekamiyamane.com/
