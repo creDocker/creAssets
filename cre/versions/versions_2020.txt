@@ -1,4 +1,4 @@
-creBuild 	 2024.10
+creBuild 	 2024.11
  creUbuntu 	 20.04.6 LTS
   UbuntuName 	 focal
   OpenSSL 1.1.1f  31 Mar 2020
@@ -12,4 +12,4 @@ creBuild 	 2024.10
   sdk 	 5.18.2
  creAssets 	 2020.0
   ├── jquery@3.7.1 
-  └── jquery-ui@1.14.0 
+  └── jquery-ui@1.14.1 
