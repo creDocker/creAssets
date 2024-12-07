@@ -1,12 +1,12 @@
 # Adapted from 
-FROM credocker/creinstall:2024.0
+FROM credocker/creinstall:2022.0
 MAINTAINER Michael Kahle <michael.kahle@yahoo.de>
 
-ARG BUILD_YEAR=2024
+ARG BUILD_YEAR=2022
 ARG BUILD_MONTH=0
-ARG BUILD_TAG=2024.0
+ARG BUILD_TAG=2022.0
 
-ENV ASSETS_VERSION 2024.0
+ENV ASSETS_VERSION 2022.0
 
 LABEL Name="Assets for CRE" \
       CRE=$CRE_VERSION \ 
@@ -25,7 +25,7 @@ RUN npm config list
 RUN npm config set init-author-name "kmicha"
 RUN npm config set init-author-email "your-email@example.com"
 RUN npm config set init-author-url  "https://my-domain/user"
-RUN npm config set init-version 2024.0.0
+RUN npm config set init-version 2022.0.0
 RUN npm config set init-license "MIT"
 RUN npm init -y
 

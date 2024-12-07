@@ -10,12 +10,8 @@ ARG BUILD_TAG=2020.0
 #ENV INITRD No
 #ENV LANG en_US.UTF-8
 
-#ENV JAVA_FAMILY open
+
 ENV ASSETS_VERSION 2020.0
-#ENV KOTLIN_VERSION 1.8.0
-#ENV BUILD_SYSTEM maven
-#ENV GRADLE_VERSION 7.6
-#ENV MAVEN_VERSION 3.9.0
 
 LABEL Name="Assets for CRE" \
       CRE=$CRE_VERSION \ 
@@ -31,10 +27,10 @@ WORKDIR "/cre/node"
 
 RUN npm config list
 
-RUN npm config set init-author-name "jaketrent"
+RUN npm config set init-author-name "kmicha"
 RUN npm config set init-author-email "your-email@example.com"
 RUN npm config set init-author-url  "https://my-domain/user"
-RUN npm config set init-version 0.0.2
+RUN npm config set init-version 2020.0.0
 RUN npm config set init-license "MIT"
 RUN npm init -y
 
