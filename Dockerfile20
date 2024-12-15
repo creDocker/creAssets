@@ -58,7 +58,8 @@ RUN npm install @fortawesome/fontawesome-free
 #https://www.npmjs.com/package/@tweenjs/tween.js
 RUN npm install jspdf
 RUN npm install jszip
-
+# https://github.com/yomotsu/gl-slideshow & https://github.com/gl-transitions/gl-transitions
+RUN npm install GLSlideshow
 
 
 
