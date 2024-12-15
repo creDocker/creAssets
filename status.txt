@@ -15,6 +15,10 @@ treefolder fancytree
 bootstrap, styles(color): neumorphism, glass
 https://dev.to/jon_snow789/glassmorphism-css-generator-k90
 
+slideshow
+https://github.com/yomotsu/gl-slideshow
+https://github.com/gl-transitions/gl-transitions
+
 zip
 https://stuk.github.io/jszip/
 https://github.com/Stuk/jszip

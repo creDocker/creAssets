@@ -33,7 +33,30 @@
    "js": ["https://cdnjs.cloudflare.com/ajax/libs/jszip/<version>/jszip.min.js"],
    "css": [],
    "other": []
+  },
+{"name": "GLSlideshow",
+ "latest": { 
+   "js": ["https://cdn.jsdelivr.net/npm/GLSlideshow/dist/gl-slideshow.module.min.js"],
+   "css": [],
+   "other": []
+  },
+ "versioned": {
+   "js": ["https://cdn.jsdelivr.net/npm/GLSlideshow@<version>/dist/gl-slideshow.module.min.js"],
+   "css": [],
+   "other": []
+  },
+{"name": "gl-transitions",
+ "latest": { 
+   "js": ["https://cdn.jsdelivr.net/npm/gl-transitions/index.min.js"],
+   "css": [],
+   "other": []
+  },
+ "versioned": {
+   "js": ["https://cdn.jsdelivr.net/npm/gl-transitions@<version>/index.min.js"],
+   "css": [],
+   "other": []
   }
+
 },
 
 
