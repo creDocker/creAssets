@@ -10,7 +10,7 @@ creBuild 	 2025.01
   ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.8) 2.35
   node 	 v16.20.2
   npm 	 8.19.4
-  sdk 	 5.18.2
+  sdk 	 5.19.0
  creAssets 	 2022.0
   ├── jquery@3.7.1
   └── jquery-ui@1.14.1
