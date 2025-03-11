@@ -14,6 +14,7 @@ table dynatable
 treefolder fancytree
 bootstrap, styles(color): neumorphism, glass
 https://dev.to/jon_snow789/glassmorphism-css-generator-k90
+intro.js : https://github.com/usablica/intro.js/   https://introjs.com/
 
 slideshow
 https://github.com/yomotsu/gl-slideshow
@@ -82,6 +83,7 @@ https://lodash.com/
 https://www.infoworld.com/article/3715491/11-fun-ways-to-get-started-with-webassembly.html
 
 
-
+https://tanstack.com/
+https://github.com/TanStack
 
 
