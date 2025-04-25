@@ -159,8 +159,15 @@ RUN wget https://github.com/erikflowers/weather-icons/archive/master.zip -O /cre
 
 RUN mkdir -p /cre && touch /cre/versions.txt && \ 
     echo "$(date +'%F %R') \t creAssets \t ${ASSETS_VERSION}" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list bootstrap | grep -v deduped | grep 'bootstrap@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list c3 | grep -v deduped | grep 'c3@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list d3 | grep -v deduped | grep 'd3@')" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list jquery | grep -v deduped | grep 'jquery@')" >> /cre/versions.txt && \
-    echo "$(date +'%F %R') \t  $(npm list jquery-ui | grep -v deduped | grep 'jquery-ui@')" >> /cre/versions.txt
+    echo "$(date +'%F %R') \t  $(npm list jquery-ui | grep -v deduped | grep 'jquery-ui@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list jspdf | grep -v deduped | grep 'jspdf@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list jszip | grep -v deduped | grep 'jszip@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list ol | grep -v deduped | grep 'ol@')" >> /cre/versions.txt && \
+    echo "$(date +'%F %R') \t  $(npm list vue | grep -v deduped | grep 'vue@')" >> /cre/versions.txt
 
 WORKDIR "/cre/assets"
 #EXPOSE 8080 
