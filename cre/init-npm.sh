@@ -109,12 +109,12 @@ cp -f /cre/node/node_modules/d3-zoom/dist/*.js /cre/assets/public/d3/js
 cp -f /cre/node/node_modules/c3/*.js /cre/assets/public/d3/js
 cp -f /cre/node/node_modules/c3/*.css /cre/assets/public/d3/css
 
-mkdir -p /cre/assets/public/slideshow/js
-mkdir -p /cre/assets/public/slideshow/css
-mkdir -p /cre/assets/public/slideshow/transitions
-cp -f /cre/node/node_modules/gl-transitions/*.js /cre/assets/public/slideshow/js
-cp -f /cre/node/node_modules/gl-transitions/transitions/*.glsl /cre/assets/public/slideshow/transitions
-cp -f /cre/node/node_modules/GLSlideshow/dist/*.js /cre/assets/public/slideshow/js
+mkdir -p /cre/assets/public/gl-slideshow/js
+mkdir -p /cre/assets/public/gl-slideshow/css
+mkdir -p /cre/assets/public/gl-slideshow/transitions
+cp -f /cre/node/node_modules/gl-transitions/*.js /cre/assets/public/gl-slideshow/js
+cp -f /cre/node/node_modules/gl-transitions/transitions/*.glsl /cre/assets/public/gl-slideshow/transitions
+cp -f /cre/node/node_modules/GLSlideshow/dist/*.js /cre/assets/public/gl-slideshow/js
 
 ## mkdir -p /cre/assets/private/mapglyph
 
