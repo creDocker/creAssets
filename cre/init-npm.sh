@@ -36,6 +36,8 @@ fi
 cd "/cre/node"
 npm install
 
+# sudo docker run credocker/creassets:2024.0  ls -l /cre/node/node_modules/
+
 ##copy dist/* to assets.
 mkdir -p /cre/assets/public/jquery/js
 cp -f /cre/node/node_modules/jquery/dist/*.* /cre/assets/public/jquery/js
@@ -67,6 +69,52 @@ mkdir -p /cre/assets/public/jspdf/js
 cp -f /cre/node/node_modules/jspdf/dist/*.* /cre/assets/public/jspdf/js
 
 
+mkdir -p /cre/assets/public/d3/js
+mkdir -p /cre/assets/public/d3/css
+cp -f /cre/node/node_modules/d3/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3/dist/*.js /cre/assets/public/d3/js
+# d3-array ... d3-zoom 
+cp -f /cre/node/node_modules/d3-array/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-axis/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-brush/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-chord/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-collection/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-color/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-contour/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-delaunay/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-dispatch/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-drag/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-dsv/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-ease/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-fetch/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-force/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-format/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-geo/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-hierarchy/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-interpolate/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-path/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-polygon/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-quadtree/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-random/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-scale/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-scale-chromatic/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-selection/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-shape/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-time/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-time-format/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-timer/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-transition/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-voronoi/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/d3-zoom/dist/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/c3/*.js /cre/assets/public/d3/js
+cp -f /cre/node/node_modules/c3/*.css /cre/assets/public/d3/css
+
+mkdir -p /cre/assets/public/slideshow/js
+mkdir -p /cre/assets/public/slideshow/css
+mkdir -p /cre/assets/public/slideshow/transitions
+cp -f /cre/node/node_modules/gl-transitions/*.js /cre/assets/public/slideshow/js
+cp -f /cre/node/node_modules/gl-transitions/transitions/*.glsl /cre/assets/public/slideshow/transitions
+cp -f /cre/node/node_modules/GLSlideshow/dist/*.js /cre/assets/public/slideshow/js
 
 ## mkdir -p /cre/assets/private/mapglyph
 

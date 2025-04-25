@@ -1,34 +1,49 @@
 JS,CSS
 # https://www.npmjs.com/package/freeze-deps
-jquery
-vue,axios, 
+=jquery
+=vue,axios, 
  https://formkit.com/  https://github.com/formkit/formkit
 leaflet
-openlayer
+=openlayer
 openseadragon
 konami
-d3,c3 :  https://d3js.org/
+d3,c3 :  https://d3js.org/ https://github.com/d3/d3 &  https://c3js.org/, https://github.com/c3js/c3  
 crossfilter
 three:  https://threejs.org/
 table dynatable
 treefolder fancytree
-bootstrap, styles(color): neumorphism, glass
+=bootstrap, styles(color): neumorphism, glass
 https://dev.to/jon_snow789/glassmorphism-css-generator-k90
 intro.js : https://github.com/usablica/intro.js/   https://introjs.com/
 
 slideshow
+==========
 https://github.com/yomotsu/gl-slideshow
-https://github.com/gl-transitions/gl-transitions
+https://github.com/gl-transitions/gl-transitions          https://gl-transitions.com/
+
+
+timeline (to decide)
+========
+* vis
+ https://visjs.github.io/vis-timeline/examples/timeline/
+ https://visjs.github.io/vis-timeline/docs/timeline/
+* https://timeline.knightlab.com/
+ https://timeline.knightlab.com/docs/instantiate-a-timeline.html
+ https://github.com/NUKnightLab/TimelineJS3
+ https://www.npmjs.com/package/@knight-lab/timelinejs
 
 zip
-https://stuk.github.io/jszip/
-https://github.com/Stuk/jszip
-(https://github.com/eligrey/FileSaver.js/, https://github.com/jimmywarting/StreamSaver.js)
-https://davidwalsh.name/javascript-zip
+=https://stuk.github.io/jszip/
+=https://github.com/Stuk/jszip
+https://davidwalsh.name/javascript-zip (How to)
+(https://github.com/eligrey/FileSaver.js/, https://github.com/jimmywarting/StreamSaver.js, https://github.com/whatwg/fs -> large files)
 
-pdf
+
+pdf (same?)
 https://artskydj.github.io/jsPDF/docs/jsPDF.html
+https://rawgit.com/MrRio/jsPDF/master/docs/
 https://github.com/parallax/jsPDF
+https://parall.ax/products/jspdf
 
 csv
 https://codedamn.com/news/javascript/how-to-read-csv-with-javascript
@@ -85,5 +100,8 @@ https://www.infoworld.com/article/3715491/11-fun-ways-to-get-started-with-webass
 
 https://tanstack.com/
 https://github.com/TanStack
+
+
+https://zenodo.org/records/15173234    PID icons
 
 
