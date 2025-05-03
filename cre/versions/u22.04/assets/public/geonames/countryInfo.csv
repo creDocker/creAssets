@@ -248,6 +248,6 @@ YE,YEM,887,YM,Yemen,Sanaa,527970,28498687,AS,.ye,YER,Rial,967,,,ar-YE,69543,SA;O
 YT,MYT,175,MF,Mayotte,Mamoudzou,374,279471,AF,.yt,EUR,Euro,262,#####,^(\d{5})$,fr-YT,1024031,,
 ZA,ZAF,710,SF,South Africa,Pretoria,1219912,57779622,AF,.za,ZAR,Rand,27,####,^(\d{4})$,zu;xh;af;nso;en-ZA;tn;st;ts;ss;ve;nr,953987,ZW;SZ;MZ;BW;NA;LS,
 ZM,ZMB,894,ZA,Zambia,Lusaka,752614,17351822,AF,.zm,ZMW,Kwacha,260,#####,^(\d{5})$,en-ZM;bem;loz;lun;lue;ny;toi,895949,ZW;TZ;MZ;CD;NA;MW;AO,
-ZW,ZWE,716,ZI,Zimbabwe,Harare,390580,14439018,AF,.zw,ZWG,Zimbabwe Gold,263,,,en-ZW;sn;nr;nd,878675,ZA;MZ;BW;ZM,
+ZW,ZWE,716,ZI,Zimbabwe,Harare,390580,16868409,AF,.zw,ZWG,Zimbabwe Gold,263,,,en-ZW;sn;nr;nd,878675,ZA;MZ;BW;ZM,
 CS,SCG,891,YI,Serbia and Montenegro,Belgrade,102350,10829175,EU,.cs,RSD,Dinar,381,#####,^(\d{5})$,cu;hu;sq;sr,8505033,AL;HU;MK;RO;HR;BA;BG,
 AN,ANT,530,NT,Netherlands Antilles,Willemstad,960,300000,NA,.an,ANG,Guilder,599,,,nl-AN;en;es,8505032,GP,
