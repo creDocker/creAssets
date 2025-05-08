@@ -47,9 +47,9 @@ RUN npm install jquery-ui
 RUN npm install vue vuex axios @vueuse/core
 # RUN npm install @formkit/vue @formkit/themes
 RUN npm install primevue primeicons
-RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf
+RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf tambora-leaflet
 # https://github.com/bjornharrtell/jsts
-RUN npm install ol jsts
+RUN npm install ol jsts tambora-openlayer
 # https://www.npmjs.com/package/javascript.util & http://bjornharrtell.github.io/javascript.util/doc/
 RUN npm install javascript.util
 RUN npm install d3 c3

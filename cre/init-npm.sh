@@ -121,6 +121,23 @@ mkdir -p /cre/assets/public/openseadragon/images
 cp -f /cre/node/node_modules/openseadragon/build/openseadragon/*.js /cre/assets/public/openseadragon/js
 cp -f /cre/node/node_modules/openseadragon/build/openseadragon/images/*.png /cre/assets/public/openseadragon/images
 
+mkdir -p /cre/assets/public/leaflet/js
+mkdir -p /cre/assets/public/leaflet/css
+mkdir -p /cre/assets/public/leaflet/images
+cp -f /cre/node/node_modules/leaflet/dist/*.js /cre/assets/public/leaflet/js
+cp -f /cre/node/node_modules/leaflet/dist/images/*.png /cre/assets/public/leaflet/images
+cp -f /cre/node/node_modules/leaflet-dvf/dist/*.js /cre/assets/public/leaflet/js
+cp -f /cre/node/node_modules/leaflet-dvf/dist/data/*.js /cre/assets/public/leaflet/js
+cp -f /cre/node/node_modules/leaflet-dvf/dist/css/*.css /cre/assets/public/leaflet/css
+cp -f /cre/node/node_modules/leaflet-extra-markers/dist/js/*.js /cre/assets/public/leaflet/js
+cp -f /cre/node/node_modules/leaflet-extra-markers/dist/css/*.css /cre/assets/public/leaflet/css
+cp -f /cre/node/node_modules/leaflet-extra-markers/dist/img/*.png /cre/assets/public/leaflet/images
+cp -f /cre/node/node_modules/leaflet.markercluster/dist/*.js /cre/assets/public/leaflet/js
+cp -f /cre/node/node_modules/leaflet.markercluster/dist/*.css /cre/assets/public/leaflet/css
+
+
+
+
 ## NOT WORKING !?!
 ls -l /cre/node/node_modules/
 ls -l /cre/node/node_modules/gl-transitions/
