@@ -7,9 +7,11 @@ leaflet
 =openlayer
 openseadragon
 konami
-d3,c3 :  https://d3js.org/ https://github.com/d3/d3 &  https://c3js.org/, https://github.com/c3js/c3  
+=d3,c3 :  https://d3js.org/ https://github.com/d3/d3 &  https://c3js.org/, https://github.com/c3js/c3  
 crossfilter
-three:  https://threejs.org/
+three:  =https://threejs.org/
+        https://www.theatrejs.com/
+
 table dynatable
 treefolder fancytree
 =bootstrap, styles(color): neumorphism, glass
@@ -20,7 +22,6 @@ slideshow
 ==========
 https://github.com/yomotsu/gl-slideshow
 https://github.com/gl-transitions/gl-transitions          https://gl-transitions.com/
-
 
 timeline (to decide)
 ========
