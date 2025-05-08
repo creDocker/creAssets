@@ -116,6 +116,13 @@ cp -f /cre/node/node_modules/gl-transitions/*.js /cre/assets/public/gl-slideshow
 cp -f /cre/node/node_modules/gl-transitions/transitions/*.glsl /cre/assets/public/gl-slideshow/transitions
 cp -f /cre/node/node_modules/GLSlideshow/dist/*.js /cre/assets/public/gl-slideshow/js
 
+mkdir -p /cre/assets/public/three/js
+mkdir -p /cre/assets/public/three/images
+cp -f /cre/node/node_modules/three/build/*.js /cre/assets/public/three/js
+cp -f /cre/extra/js/globe.js /cre/assets/public/three/js
+cp -f /cre/extra/js/TrackballControls.js /cre/assets/public/three/js
+cp -f /cre/extra/images/earth*1k.jpg /cre/assets/public/three/images
+
 ## mkdir -p /cre/assets/private/mapglyph
 
 if [ -f /cre/node/package.json ]; then
