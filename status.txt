@@ -39,6 +39,17 @@ zip
 https://davidwalsh.name/javascript-zip (How to)
 (https://github.com/eligrey/FileSaver.js/, https://github.com/jimmywarting/StreamSaver.js, https://github.com/whatwg/fs -> large files)
 
+Map Visualization
+https://github.com/visgl/deck.gl
+https://github.com/keplergl/kepler.gl
+Visualization
+https://luma.gl/examples/
+https://github.com/visgl/luma.gl
+
+
+
+
+
 
 pdf (same?)
 https://artskydj.github.io/jsPDF/docs/jsPDF.html
@@ -105,4 +116,9 @@ https://github.com/TanStack
 
 https://zenodo.org/records/15173234    PID icons
 
+
+??? here or python
+https://github.com/uber/h3?uclick_id=634eeb2c-dc35-4026-8476-d03bbffcc8ce
+https://www.uber.com/en-DE/blog/h3/
+???
 
