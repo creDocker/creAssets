@@ -44,7 +44,7 @@ RUN npm install vue vuex axios @vueuse/core
 RUN npm install primevue primeicons
 RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf tambora-leaflet
 # https://github.com/bjornharrtell/jsts
-RUN npm install ol tambora-openlayer
+RUN npm install ol@^8.2.0 tambora-openlayer
 RUN npm install jsts@^2.10.0 
 # https://www.npmjs.com/package/javascript.util & http://bjornharrtell.github.io/javascript.util/doc/
 RUN npm install javascript.util
