@@ -8,7 +8,7 @@ creBuild 	 2025.05
    pandas 	 1.2.0
    Flask 	 Flask 3.0.3
  creNode 	 14
-  ldd 	 ldd (Ubuntu GLIBC 2.31-0ubuntu9.17) 2.31
+  ldd 	 ldd (Ubuntu GLIBC 2.31-0ubuntu9.18) 2.31
   node 	 v14.21.3
   npm 	 6.14.18
   sdk 	 5.19.0
@@ -22,4 +22,4 @@ creBuild 	 2025.05
   └── jspdf@3.0.1 
   └── jszip@3.10.1 
   ├── ol@10.5.0 
-  └── vue@3.5.14 
+  └── vue@3.5.16 
