@@ -1,4 +1,4 @@
-creBuild 	 2025.05
+creBuild 	 2025.06
  creUbuntu 	 24.04.2 LTS
   UbuntuName 	 noble
   OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
@@ -25,4 +25,4 @@ creBuild 	 2025.05
   └── jszip@3.10.1
   
   ├─┬ primevue@4.3.4
-├─┬ vue@3.5.14
+├─┬ vue@3.5.16
