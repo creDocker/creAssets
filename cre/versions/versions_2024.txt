@@ -10,7 +10,7 @@ creBuild 	 2025.07
    pandas 	 2.3.1
    Flask 	 
  creNode 	 16
-  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.4) 2.39
+  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.5) 2.39
   node 	 v16.20.2
   npm 	 8.19.4
   sdk 	 5.19.0
