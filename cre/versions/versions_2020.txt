@@ -1,4 +1,4 @@
-creBuild 	 2025.07
+creBuild 	 2025.08
  creUbuntu 	 20.04.6 LTS
   UbuntuName 	 focal
   OpenSSL 1.1.1f  31 Mar 2020
@@ -11,7 +11,7 @@ creBuild 	 2025.07
   ldd 	 ldd (Ubuntu GLIBC 2.31-0ubuntu9.18) 2.31
   node 	 v14.21.3
   npm 	 6.14.18
-  sdk 	 5.19.0
+  sdk 	 5.20.0
  creAssets 	 2020.0
   └── bootstrap@5.3.7 
   └── c3@0.7.20 
