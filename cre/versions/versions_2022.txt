@@ -1,4 +1,4 @@
-creBuild 	 2025.07
+creBuild 	 2025.08
  creUbuntu 	 22.04.5 LTS
   UbuntuName 	 jammy
   OpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022)
@@ -12,7 +12,7 @@ creBuild 	 2025.07
   ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.10) 2.35
   node 	 v16.20.2
   npm 	 8.19.4
-  sdk 	 5.19.0
+  sdk 	 5.20.0
  creAssets 	 2022.0
   └── bootstrap@5.3.7
   └── c3@0.7.20
@@ -23,5 +23,5 @@ creBuild 	 2025.07
   └── jspdf@3.0.1
   └── jszip@3.10.1
   
-  ├─┬ primevue@4.3.6
+  ├─┬ primevue@4.3.7
 ├─┬ vue@3.5.18
