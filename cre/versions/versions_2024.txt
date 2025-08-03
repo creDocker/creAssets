@@ -1,4 +1,4 @@
-creBuild 	 2025.07
+creBuild 	 2025.08
  creUbuntu 	 24.04.2 LTS
   UbuntuName 	 noble
   OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
@@ -13,7 +13,7 @@ creBuild 	 2025.07
   ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.5) 2.39
   node 	 v16.20.2
   npm 	 8.19.4
-  sdk 	 5.19.0
+  sdk 	 5.20.0
  creAssets 	 2024.0
   └── bootstrap@5.3.7
   └── c3@0.7.20
@@ -24,5 +24,5 @@ creBuild 	 2025.07
   └── jspdf@3.0.1
   └── jszip@3.10.1
   
-  ├─┬ primevue@4.3.6
+  ├─┬ primevue@4.3.7
 ├─┬ vue@3.5.18
