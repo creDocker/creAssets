@@ -6,7 +6,7 @@ creBuild 	 2025.08
   Java 	 openjdk version "17.0.16" 2025-07-15
   Python3 	 Python 3.10.12
    numpy 	 2.2.6
-   pandas 	 2.3.1
+   pandas 	 2.3.2
    Flask 	 
  creNode 	 16
   ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.10) 2.35
@@ -24,4 +24,4 @@ creBuild 	 2025.08
   └── jszip@3.10.1
   
   ├─┬ primevue@4.3.7
-├─┬ vue@3.5.18
+├─┬ vue@3.5.19
