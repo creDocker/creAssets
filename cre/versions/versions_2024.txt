@@ -7,7 +7,7 @@ creBuild 	 2025.08
   Python3 	 Python 3.12.3
    numpy 	 1.26.4
    scipy 	 1.11.4
-   pandas 	 2.3.1
+   pandas 	 2.3.2
    Flask 	 
  creNode 	 16
   ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.5) 2.39
@@ -25,4 +25,4 @@ creBuild 	 2025.08
   └── jszip@3.10.1
   
   ├─┬ primevue@4.3.7
-├─┬ vue@3.5.18
+├─┬ vue@3.5.19
