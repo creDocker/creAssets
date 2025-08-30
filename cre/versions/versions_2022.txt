@@ -14,14 +14,14 @@ creBuild 	 2025.08
   npm 	 8.19.4
   sdk 	 5.20.0
  creAssets 	 2022.0
-  └── bootstrap@5.3.7
+  └── bootstrap@5.3.8
   └── c3@0.7.20
   │ └── d3@5.16.0
 └── d3@7.9.0
   ├── jquery@3.7.1
   └── jquery-ui@1.14.1
-  └── jspdf@3.0.1
+  └── jspdf@3.0.2
   └── jszip@3.10.1
   
   ├─┬ primevue@4.3.7
-├─┬ vue@3.5.19
+├─┬ vue@3.5.20
