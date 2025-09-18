@@ -122,3 +122,22 @@ https://github.com/uber/h3?uclick_id=634eeb2c-dc35-4026-8476-d03bbffcc8ce
 https://www.uber.com/en-DE/blog/h3/
 ???
 
+##SECRETS
+
+#encrypt
+zip -r -P mypassword directory.zip path/directory
+gpg --batch --output directory.zip.gpg --passphrase mypassword --symmetric directory.zip
+rm -R -f path/directory 
+rm -f directory.zip
+
+#decrypt
+gpg --batch --output directory.zip --passphrase mypassword --decrypt directory.zip.gpg
+unzip -P your-password directory.zip -d path/directory
+rm -R f directory.zip.gpg
+rm -f directory.zip
+
+
+
+https://www.baeldung.com/linux/encrypt-decrypt-files
+
+
