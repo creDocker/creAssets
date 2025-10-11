@@ -23,5 +23,5 @@ creBuild 	 2025.10
   └── jspdf@3.0.3
   └── jszip@3.10.1
   
-  ├─┬ primevue@4.4.0
+  ├─┬ primevue@4.4.1
 ├─┬ vue@3.5.22
