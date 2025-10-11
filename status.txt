@@ -103,6 +103,9 @@ https://www.npmjs.com/package/merge-packages
 
 # https://www.npmjs.com/package/freeze-deps
 
+#local and server DB api!
+https://zero.rocicorp.dev/
+https://github.com/danielroe/zero-vue
 
 
 https://lodash.com/
