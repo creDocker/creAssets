@@ -148,6 +148,9 @@ cp -f /cre/node/node_modules/gl-transitions/*.js /cre/assets/public/gl-slideshow
 cp -f /cre/node/node_modules/gl-transitions/transitions/*.glsl /cre/assets/public/gl-slideshow/transitions
 cp -f /cre/node/node_modules/GLSlideshow/dist/*.js /cre/assets/public/gl-slideshow/js
 
+##
+echo "reveal.js ??"
+ls -l /cre/node/node_modules/
 
 ## mkdir -p /cre/assets/private/mapglyph
 

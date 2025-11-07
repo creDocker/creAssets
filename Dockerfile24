@@ -57,7 +57,8 @@ RUN npm install jszip
 # https://github.com/yomotsu/gl-slideshow & https://github.com/gl-transitions/gl-transitions
 RUN npm install GLSlideshow gl-transitions
 RUN npm install openseadragon
-
+#new
+RUN npm install reveal.js
 
 
 #compile list with descriptions and links....

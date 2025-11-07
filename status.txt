@@ -23,6 +23,8 @@ slideshow
 https://github.com/yomotsu/gl-slideshow
 https://github.com/gl-transitions/gl-transitions          https://gl-transitions.com/
 
+https://revealjs.com/  (presentation: to decide)
+
 timeline (to decide)
 ========
 * vis
