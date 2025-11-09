@@ -17,7 +17,6 @@ declare namespace ol {
     export { $ol$Observable as Observable };
     export { $ol$Overlay as Overlay };
     export { $ol$Tile as Tile };
-    export { $ol$TileCache as TileCache };
     export { $ol$TileQueue as TileQueue };
     export { $ol$TileRange as TileRange };
     export { $ol$VectorRenderTile as VectorRenderTile };
@@ -49,7 +48,6 @@ declare namespace ol {
         export { _ol_color$fromString as fromString };
         export { _ol_color$isStringColor as isStringColor };
         export { _ol_color$lchaToRgba as lchaToRgba };
-        export { _ol_color$normalize as normalize };
         export { _ol_color$rgbaToLcha as rgbaToLcha };
         export { _ol_color$toString as toString };
         export { _ol_color$withAlpha as withAlpha };
@@ -103,11 +101,14 @@ declare namespace ol {
         export { _ol_css$CLASS_SELECTABLE as CLASS_SELECTABLE };
         export { _ol_css$CLASS_UNSELECTABLE as CLASS_UNSELECTABLE };
         export { _ol_css$CLASS_UNSUPPORTED as CLASS_UNSUPPORTED };
+        export { _ol_css$fontWeights as fontWeights };
         export { _ol_css$getFontParameters as getFontParameters };
     }
     export namespace dom {
         export { _ol_dom$createCanvasContext2D as createCanvasContext2D };
+        export { _ol_dom$createMockDiv as createMockDiv };
         export { _ol_dom$getSharedCanvasContext2D as getSharedCanvasContext2D };
+        export { _ol_dom$isCanvas as isCanvas };
         export { _ol_dom$outerHeight as outerHeight };
         export { _ol_dom$outerWidth as outerWidth };
         export { _ol_dom$releaseCanvas as releaseCanvas };
@@ -181,7 +182,10 @@ declare namespace ol {
             export { _ol_expr_expression$typeName as typeName };
         }
         namespace gpu {
+            export { _ol_expr_gpu$FEATURE_ID_PROPERTY_NAME as FEATURE_ID_PROPERTY_NAME };
+            export { _ol_expr_gpu$GEOMETRY_TYPE_PROPERTY_NAME as GEOMETRY_TYPE_PROPERTY_NAME };
             export { _ol_expr_gpu$PALETTE_TEXTURE_ARRAY as PALETTE_TEXTURE_ARRAY };
+            export { _ol_expr_gpu$UNDEFINED_PROP_VALUE as UNDEFINED_PROP_VALUE };
             export { _ol_expr_gpu$arrayToGlsl as arrayToGlsl };
             export { _ol_expr_gpu$buildExpression as buildExpression };
             export { _ol_expr_gpu$colorToGlsl as colorToGlsl };
@@ -437,6 +441,7 @@ declare namespace ol {
             }
             namespace segments {
                 export { _ol_geom_flat_segments$forEach as forEach };
+                export { _ol_geom_flat_segments$getIntersectionPoint as getIntersectionPoint };
             }
             namespace simplify {
                 export { _ol_geom_flat_simplify$douglasPeucker as douglasPeucker };
@@ -469,7 +474,6 @@ declare namespace ol {
     export namespace has {
         export { _ol_has$CREATE_IMAGE_BITMAP as CREATE_IMAGE_BITMAP };
         export { _ol_has$DEVICE_PIXEL_RATIO as DEVICE_PIXEL_RATIO };
-        export { _ol_has$FIREFOX as FIREFOX };
         export { _ol_has$IMAGE_DECODE as IMAGE_DECODE };
         export { _ol_has$MAC as MAC };
         export { _ol_has$PASSIVE_EVENT_LISTENERS as PASSIVE_EVENT_LISTENERS };
@@ -522,6 +526,8 @@ declare namespace ol {
         export { $ol$layer$VectorTile as VectorTile };
         export { $ol$layer$WebGLPoints as WebGLPoints };
         export { $ol$layer$WebGLTile as WebGLTile };
+        export { $ol$layer$WebGLVector as WebGLVector };
+        export { $ol$layer$WebGLVectorTile as WebGLVectorTile };
     }
     export namespace loadingstrategy {
         export { _ol_loadingstrategy$all as all };
@@ -541,6 +547,7 @@ declare namespace ol {
         export { _ol_math$toDegrees as toDegrees };
         export { _ol_math$toFixed as toFixed };
         export { _ol_math$toRadians as toRadians };
+        export { _ol_math$wrap as wrap };
     }
     export namespace net {
         export { _ol_net$ClientError as ClientError };
@@ -630,6 +637,11 @@ declare namespace ol {
             export { _ol_proj_transforms$remove as remove };
         }
         export { _ol_proj$useGeographic as useGeographic };
+        export namespace utm {
+            export { _ol_proj_utm$makeProjection as makeProjection };
+            export { _ol_proj_utm$makeTransforms as makeTransforms };
+            export { _ol_proj_utm$zoneFromCode as zoneFromCode };
+        }
     }
     export namespace render {
         export { $ol$render$Box as Box };
@@ -691,21 +703,41 @@ declare namespace ol {
         export { _ol_render$toContext as toContext };
         export namespace webgl {
             export { $ol$render$webgl$MixedGeometryBatch as MixedGeometryBatch };
+            export namespace ShaderBuilder {
+                export { _ol_render_webgl_ShaderBuilder$COMMON_HEADER as COMMON_HEADER };
+                export { _ol_render_webgl_ShaderBuilder$ShaderBuilder as ShaderBuilder };
+            }
             export { $ol$render$webgl$VectorStyleRenderer as VectorStyleRenderer };
+            export namespace bufferUtil {
+                export { _ol_render_webgl_bufferUtil$LINESTRING_ANGLE_COSINE_CUTOFF as LINESTRING_ANGLE_COSINE_CUTOFF };
+                export { _ol_render_webgl_bufferUtil$writeLineSegmentToBuffers as writeLineSegmentToBuffers };
+                export { _ol_render_webgl_bufferUtil$writePointFeatureToBuffers as writePointFeatureToBuffers };
+                export { _ol_render_webgl_bufferUtil$writePolygonTrianglesToBuffers as writePolygonTrianglesToBuffers };
+            }
+            export namespace compileUtil {
+                export { _ol_render_webgl_compileUtil$UNPACK_COLOR_FN as UNPACK_COLOR_FN };
+                export { _ol_render_webgl_compileUtil$applyContextToBuilder as applyContextToBuilder };
+                export { _ol_render_webgl_compileUtil$expressionToGlsl as expressionToGlsl };
+                export { _ol_render_webgl_compileUtil$generateAttributesFromContext as generateAttributesFromContext };
+                export { _ol_render_webgl_compileUtil$generateUniformsFromContext as generateUniformsFromContext };
+                export { _ol_render_webgl_compileUtil$getGlslSizeFromType as getGlslSizeFromType };
+                export { _ol_render_webgl_compileUtil$getGlslTypeFromType as getGlslTypeFromType };
+                export { _ol_render_webgl_compileUtil$packColor as packColor };
+                export { _ol_render_webgl_compileUtil$unpackColor as unpackColor };
+            }
+            export namespace encodeUtil {
+                export { _ol_render_webgl_encodeUtil$colorDecodeId as colorDecodeId };
+                export { _ol_render_webgl_encodeUtil$colorEncodeIdAndPack as colorEncodeIdAndPack };
+            }
             export namespace renderinstructions {
                 export { _ol_render_webgl_renderinstructions$generateLineStringRenderInstructions as generateLineStringRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$generatePointRenderInstructions as generatePointRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions as generatePolygonRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$getCustomAttributesSize as getCustomAttributesSize };
             }
-            export namespace utils {
-                export { _ol_render_webgl_utils$LINESTRING_ANGLE_COSINE_CUTOFF as LINESTRING_ANGLE_COSINE_CUTOFF };
-                export { _ol_render_webgl_utils$colorDecodeId as colorDecodeId };
-                export { _ol_render_webgl_utils$colorEncodeId as colorEncodeId };
-                export { _ol_render_webgl_utils$getBlankImageData as getBlankImageData };
-                export { _ol_render_webgl_utils$writeLineSegmentToBuffers as writeLineSegmentToBuffers };
-                export { _ol_render_webgl_utils$writePointFeatureToBuffers as writePointFeatureToBuffers };
-                export { _ol_render_webgl_utils$writePolygonTrianglesToBuffers as writePolygonTrianglesToBuffers };
+            export namespace style {
+                export { _ol_render_webgl_style$computeHash as computeHash };
+                export { _ol_render_webgl_style$parseLiteralStyle as parseLiteralStyle };
             }
         }
     }
@@ -748,6 +780,12 @@ declare namespace ol {
         export namespace common {
             export { _ol_reproj_common$ERROR_THRESHOLD as ERROR_THRESHOLD };
         }
+        export namespace glreproj {
+            export { _ol_reproj_glreproj$canvasGLPool as canvasGLPool };
+            export { _ol_reproj_glreproj$createCanvasContextWebGL as createCanvasContextWebGL };
+            export { _ol_reproj_glreproj$releaseGLCanvas as releaseGLCanvas };
+            export { _ol_reproj_glreproj$render as render };
+        }
         export { _ol_reproj$render as render };
     }
     export namespace resolution {
@@ -789,6 +827,7 @@ declare namespace ol {
         export { $ol$source$OGCVectorTile as OGCVectorTile };
         export { $ol$source$OSM as OSM };
         export { $ol$source$Raster as Raster };
+        export { $ol$source$SentinelHub as SentinelHub };
         export { $ol$source$Source as Source };
         export { $ol$source$StadiaMaps as StadiaMaps };
         export { $ol$source$Tile as Tile };
@@ -814,6 +853,9 @@ declare namespace ol {
         }
         export namespace mapguide {
             export { _ol_source_mapguide$createLoader as createLoader };
+        }
+        export namespace mapserver {
+            export { _ol_source_mapserver$createLoader as createLoader };
         }
         export namespace ogcTileUtil {
             export { _ol_source_ogcTileUtil$appendCollectionsQueryParam as appendCollectionsQueryParam };
@@ -870,6 +912,7 @@ declare namespace ol {
     export namespace tilecoord {
         export { _ol_tilecoord$createOrUpdate as createOrUpdate };
         export { _ol_tilecoord$fromKey as fromKey };
+        export { _ol_tilecoord$getCacheKey as getCacheKey };
         export { _ol_tilecoord$getCacheKeyForTileKey as getCacheKeyForTileKey };
         export { _ol_tilecoord$getKey as getKey };
         export { _ol_tilecoord$getKeyZXY as getKeyZXY };
@@ -903,6 +946,8 @@ declare namespace ol {
         export { _ol_transform$composeCssTransform as composeCssTransform };
         export { _ol_transform$create as create };
         export { _ol_transform$determinant as determinant };
+        export { _ol_transform$equivalent as equivalent };
+        export { _ol_transform$fromString as fromString };
         export { _ol_transform$invert as invert };
         export { _ol_transform$makeInverse as makeInverse };
         export { _ol_transform$makeScale as makeScale };
@@ -930,12 +975,20 @@ declare namespace ol {
         namespace mat4 {
             export { _ol_vec_mat4$create as create };
             export { _ol_vec_mat4$fromTransform as fromTransform };
+            export { _ol_vec_mat4$orthographic as orthographic };
+            export { _ol_vec_mat4$scale as scale };
+            export { _ol_vec_mat4$translate as translate };
+            export { _ol_vec_mat4$translation as translation };
         }
     }
     export namespace webgl {
         export { _ol_webgl$ARRAY_BUFFER as ARRAY_BUFFER };
         export { $ol$webgl$BaseTileRepresentation as BaseTileRepresentation };
         export { $ol$webgl$Buffer as Buffer };
+        export namespace Canvas {
+            export { _ol_webgl_Canvas$Canvas as Canvas };
+            export { _ol_webgl_Canvas$createProgram as createProgram };
+        }
         export { _ol_webgl$DYNAMIC_DRAW as DYNAMIC_DRAW };
         export { _ol_webgl$ELEMENT_ARRAY_BUFFER as ELEMENT_ARRAY_BUFFER };
         export { _ol_webgl$FLOAT as FLOAT };
@@ -945,10 +998,6 @@ declare namespace ol {
         export { $ol$webgl$RenderTarget as RenderTarget };
         export { _ol_webgl$STATIC_DRAW as STATIC_DRAW };
         export { _ol_webgl$STREAM_DRAW as STREAM_DRAW };
-        export namespace ShaderBuilder {
-            export { _ol_webgl_ShaderBuilder$COMMON_HEADER as COMMON_HEADER };
-            export { _ol_webgl_ShaderBuilder$ShaderBuilder as ShaderBuilder };
-        }
         export { $ol$webgl$TileGeometry as TileGeometry };
         export { $ol$webgl$TileTexture as TileTexture };
         export { _ol_webgl$UNSIGNED_BYTE as UNSIGNED_BYTE };
@@ -956,12 +1005,6 @@ declare namespace ol {
         export { _ol_webgl$UNSIGNED_SHORT as UNSIGNED_SHORT };
         export { _ol_webgl$getContext as getContext };
         export { _ol_webgl$getSupportedExtensions as getSupportedExtensions };
-        export namespace styleparser {
-            export { _ol_webgl_styleparser$computeHash as computeHash };
-            export { _ol_webgl_styleparser$expressionToGlsl as expressionToGlsl };
-            export { _ol_webgl_styleparser$packColor as packColor };
-            export { _ol_webgl_styleparser$parseLiteralStyle as parseLiteralStyle };
-        }
     }
     export namespace xml {
         export { _ol_xml$OBJECT_PROPERTY_NODE_FACTORY as OBJECT_PROPERTY_NODE_FACTORY };
@@ -1013,7 +1056,6 @@ import $ol$Object from '../../ol/Object.js';
 import $ol$Observable from '../../ol/Observable.js';
 import $ol$Overlay from '../../ol/Overlay.js';
 import $ol$Tile from '../../ol/Tile.js';
-import $ol$TileCache from '../../ol/TileCache.js';
 import $ol$TileQueue from '../../ol/TileQueue.js';
 import $ol$TileRange from '../../ol/TileRange.js';
 import $ol$VectorRenderTile from '../../ol/VectorRenderTile.js';
@@ -1038,7 +1080,6 @@ import { asString as _ol_color$asString } from '../../ol/color.js';
 import { fromString as _ol_color$fromString } from '../../ol/color.js';
 import { isStringColor as _ol_color$isStringColor } from '../../ol/color.js';
 import { lchaToRgba as _ol_color$lchaToRgba } from '../../ol/color.js';
-import { normalize as _ol_color$normalize } from '../../ol/color.js';
 import { rgbaToLcha as _ol_color$rgbaToLcha } from '../../ol/color.js';
 import { toString as _ol_color$toString } from '../../ol/color.js';
 import { withAlpha as _ol_color$withAlpha } from '../../ol/color.js';
@@ -1080,9 +1121,12 @@ import { CLASS_HIDDEN as _ol_css$CLASS_HIDDEN } from '../../ol/css.js';
 import { CLASS_SELECTABLE as _ol_css$CLASS_SELECTABLE } from '../../ol/css.js';
 import { CLASS_UNSELECTABLE as _ol_css$CLASS_UNSELECTABLE } from '../../ol/css.js';
 import { CLASS_UNSUPPORTED as _ol_css$CLASS_UNSUPPORTED } from '../../ol/css.js';
+import { fontWeights as _ol_css$fontWeights } from '../../ol/css.js';
 import { getFontParameters as _ol_css$getFontParameters } from '../../ol/css.js';
 import { createCanvasContext2D as _ol_dom$createCanvasContext2D } from '../../ol/dom.js';
+import { createMockDiv as _ol_dom$createMockDiv } from '../../ol/dom.js';
 import { getSharedCanvasContext2D as _ol_dom$getSharedCanvasContext2D } from '../../ol/dom.js';
+import { isCanvas as _ol_dom$isCanvas } from '../../ol/dom.js';
 import { outerHeight as _ol_dom$outerHeight } from '../../ol/dom.js';
 import { outerWidth as _ol_dom$outerWidth } from '../../ol/dom.js';
 import { releaseCanvas as _ol_dom$releaseCanvas } from '../../ol/dom.js';
@@ -1141,7 +1185,10 @@ import { newParsingContext as _ol_expr_expression$newParsingContext } from '../.
 import { overlapsType as _ol_expr_expression$overlapsType } from '../../ol/expr/expression.js';
 import { parse as _ol_expr_expression$parse } from '../../ol/expr/expression.js';
 import { typeName as _ol_expr_expression$typeName } from '../../ol/expr/expression.js';
+import { FEATURE_ID_PROPERTY_NAME as _ol_expr_gpu$FEATURE_ID_PROPERTY_NAME } from '../../ol/expr/gpu.js';
+import { GEOMETRY_TYPE_PROPERTY_NAME as _ol_expr_gpu$GEOMETRY_TYPE_PROPERTY_NAME } from '../../ol/expr/gpu.js';
 import { PALETTE_TEXTURE_ARRAY as _ol_expr_gpu$PALETTE_TEXTURE_ARRAY } from '../../ol/expr/gpu.js';
+import { UNDEFINED_PROP_VALUE as _ol_expr_gpu$UNDEFINED_PROP_VALUE } from '../../ol/expr/gpu.js';
 import { arrayToGlsl as _ol_expr_gpu$arrayToGlsl } from '../../ol/expr/gpu.js';
 import { buildExpression as _ol_expr_gpu$buildExpression } from '../../ol/expr/gpu.js';
 import { colorToGlsl as _ol_expr_gpu$colorToGlsl } from '../../ol/expr/gpu.js';
@@ -1350,6 +1397,7 @@ import { orientLinearRings as _ol_geom_flat_orient$orientLinearRings } from '../
 import { orientLinearRingsArray as _ol_geom_flat_orient$orientLinearRingsArray } from '../../ol/geom/flat/orient.js';
 import { coordinates as _ol_geom_flat_reverse$coordinates } from '../../ol/geom/flat/reverse.js';
 import { forEach as _ol_geom_flat_segments$forEach } from '../../ol/geom/flat/segments.js';
+import { getIntersectionPoint as _ol_geom_flat_segments$getIntersectionPoint } from '../../ol/geom/flat/segments.js';
 import { douglasPeucker as _ol_geom_flat_simplify$douglasPeucker } from '../../ol/geom/flat/simplify.js';
 import { douglasPeuckerArray as _ol_geom_flat_simplify$douglasPeuckerArray } from '../../ol/geom/flat/simplify.js';
 import { douglasPeuckerMultiArray as _ol_geom_flat_simplify$douglasPeuckerMultiArray } from '../../ol/geom/flat/simplify.js';
@@ -1368,7 +1416,6 @@ import { transform2D as _ol_geom_flat_transform$transform2D } from '../../ol/geo
 import { translate as _ol_geom_flat_transform$translate } from '../../ol/geom/flat/transform.js';
 import { CREATE_IMAGE_BITMAP as _ol_has$CREATE_IMAGE_BITMAP } from '../../ol/has.js';
 import { DEVICE_PIXEL_RATIO as _ol_has$DEVICE_PIXEL_RATIO } from '../../ol/has.js';
-import { FIREFOX as _ol_has$FIREFOX } from '../../ol/has.js';
 import { IMAGE_DECODE as _ol_has$IMAGE_DECODE } from '../../ol/has.js';
 import { MAC as _ol_has$MAC } from '../../ol/has.js';
 import { PASSIVE_EVENT_LISTENERS as _ol_has$PASSIVE_EVENT_LISTENERS } from '../../ol/has.js';
@@ -1415,6 +1462,8 @@ import $ol$layer$VectorImage from '../../ol/layer/VectorImage.js';
 import $ol$layer$VectorTile from '../../ol/layer/VectorTile.js';
 import $ol$layer$WebGLPoints from '../../ol/layer/WebGLPoints.js';
 import $ol$layer$WebGLTile from '../../ol/layer/WebGLTile.js';
+import $ol$layer$WebGLVector from '../../ol/layer/WebGLVector.js';
+import $ol$layer$WebGLVectorTile from '../../ol/layer/WebGLVectorTile.js';
 import { all as _ol_loadingstrategy$all } from '../../ol/loadingstrategy.js';
 import { bbox as _ol_loadingstrategy$bbox } from '../../ol/loadingstrategy.js';
 import { tile as _ol_loadingstrategy$tile } from '../../ol/loadingstrategy.js';
@@ -1430,6 +1479,7 @@ import { squaredSegmentDistance as _ol_math$squaredSegmentDistance } from '../..
 import { toDegrees as _ol_math$toDegrees } from '../../ol/math.js';
 import { toFixed as _ol_math$toFixed } from '../../ol/math.js';
 import { toRadians as _ol_math$toRadians } from '../../ol/math.js';
+import { wrap as _ol_math$wrap } from '../../ol/math.js';
 import { ClientError as _ol_net$ClientError } from '../../ol/net.js';
 import { ResponseError as _ol_net$ResponseError } from '../../ol/net.js';
 import { getJSON as _ol_net$getJSON } from '../../ol/net.js';
@@ -1501,6 +1551,9 @@ import { clear as _ol_proj_transforms$clear } from '../../ol/proj/transforms.js'
 import { get as _ol_proj_transforms$get } from '../../ol/proj/transforms.js';
 import { remove as _ol_proj_transforms$remove } from '../../ol/proj/transforms.js';
 import { useGeographic as _ol_proj$useGeographic } from '../../ol/proj.js';
+import { makeProjection as _ol_proj_utm$makeProjection } from '../../ol/proj/utm.js';
+import { makeTransforms as _ol_proj_utm$makeTransforms } from '../../ol/proj/utm.js';
+import { zoneFromCode as _ol_proj_utm$zoneFromCode } from '../../ol/proj/utm.js';
 import $ol$render$Box from '../../ol/render/Box.js';
 import $ol$render$Event from '../../ol/render/Event.js';
 import $ol$render$Feature from '../../ol/render/Feature.js';
@@ -1551,18 +1604,30 @@ import { getRenderPixel as _ol_render$getRenderPixel } from '../../ol/render.js'
 import { getVectorContext as _ol_render$getVectorContext } from '../../ol/render.js';
 import { toContext as _ol_render$toContext } from '../../ol/render.js';
 import $ol$render$webgl$MixedGeometryBatch from '../../ol/render/webgl/MixedGeometryBatch.js';
+import { COMMON_HEADER as _ol_render_webgl_ShaderBuilder$COMMON_HEADER } from '../../ol/render/webgl/ShaderBuilder.js';
+import { ShaderBuilder as _ol_render_webgl_ShaderBuilder$ShaderBuilder } from '../../ol/render/webgl/ShaderBuilder.js';
 import $ol$render$webgl$VectorStyleRenderer from '../../ol/render/webgl/VectorStyleRenderer.js';
+import { LINESTRING_ANGLE_COSINE_CUTOFF as _ol_render_webgl_bufferUtil$LINESTRING_ANGLE_COSINE_CUTOFF } from '../../ol/render/webgl/bufferUtil.js';
+import { writeLineSegmentToBuffers as _ol_render_webgl_bufferUtil$writeLineSegmentToBuffers } from '../../ol/render/webgl/bufferUtil.js';
+import { writePointFeatureToBuffers as _ol_render_webgl_bufferUtil$writePointFeatureToBuffers } from '../../ol/render/webgl/bufferUtil.js';
+import { writePolygonTrianglesToBuffers as _ol_render_webgl_bufferUtil$writePolygonTrianglesToBuffers } from '../../ol/render/webgl/bufferUtil.js';
+import { UNPACK_COLOR_FN as _ol_render_webgl_compileUtil$UNPACK_COLOR_FN } from '../../ol/render/webgl/compileUtil.js';
+import { applyContextToBuilder as _ol_render_webgl_compileUtil$applyContextToBuilder } from '../../ol/render/webgl/compileUtil.js';
+import { expressionToGlsl as _ol_render_webgl_compileUtil$expressionToGlsl } from '../../ol/render/webgl/compileUtil.js';
+import { generateAttributesFromContext as _ol_render_webgl_compileUtil$generateAttributesFromContext } from '../../ol/render/webgl/compileUtil.js';
+import { generateUniformsFromContext as _ol_render_webgl_compileUtil$generateUniformsFromContext } from '../../ol/render/webgl/compileUtil.js';
+import { getGlslSizeFromType as _ol_render_webgl_compileUtil$getGlslSizeFromType } from '../../ol/render/webgl/compileUtil.js';
+import { getGlslTypeFromType as _ol_render_webgl_compileUtil$getGlslTypeFromType } from '../../ol/render/webgl/compileUtil.js';
+import { packColor as _ol_render_webgl_compileUtil$packColor } from '../../ol/render/webgl/compileUtil.js';
+import { unpackColor as _ol_render_webgl_compileUtil$unpackColor } from '../../ol/render/webgl/compileUtil.js';
+import { colorDecodeId as _ol_render_webgl_encodeUtil$colorDecodeId } from '../../ol/render/webgl/encodeUtil.js';
+import { colorEncodeIdAndPack as _ol_render_webgl_encodeUtil$colorEncodeIdAndPack } from '../../ol/render/webgl/encodeUtil.js';
 import { generateLineStringRenderInstructions as _ol_render_webgl_renderinstructions$generateLineStringRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { generatePointRenderInstructions as _ol_render_webgl_renderinstructions$generatePointRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { generatePolygonRenderInstructions as _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { getCustomAttributesSize as _ol_render_webgl_renderinstructions$getCustomAttributesSize } from '../../ol/render/webgl/renderinstructions.js';
-import { LINESTRING_ANGLE_COSINE_CUTOFF as _ol_render_webgl_utils$LINESTRING_ANGLE_COSINE_CUTOFF } from '../../ol/render/webgl/utils.js';
-import { colorDecodeId as _ol_render_webgl_utils$colorDecodeId } from '../../ol/render/webgl/utils.js';
-import { colorEncodeId as _ol_render_webgl_utils$colorEncodeId } from '../../ol/render/webgl/utils.js';
-import { getBlankImageData as _ol_render_webgl_utils$getBlankImageData } from '../../ol/render/webgl/utils.js';
-import { writeLineSegmentToBuffers as _ol_render_webgl_utils$writeLineSegmentToBuffers } from '../../ol/render/webgl/utils.js';
-import { writePointFeatureToBuffers as _ol_render_webgl_utils$writePointFeatureToBuffers } from '../../ol/render/webgl/utils.js';
-import { writePolygonTrianglesToBuffers as _ol_render_webgl_utils$writePolygonTrianglesToBuffers } from '../../ol/render/webgl/utils.js';
+import { computeHash as _ol_render_webgl_style$computeHash } from '../../ol/render/webgl/style.js';
+import { parseLiteralStyle as _ol_render_webgl_style$parseLiteralStyle } from '../../ol/render/webgl/style.js';
 import $ol$renderer$Composite from '../../ol/renderer/Composite.js';
 import $ol$renderer$Layer from '../../ol/renderer/Layer.js';
 import $ol$renderer$Map from '../../ol/renderer/Map.js';
@@ -1591,6 +1656,10 @@ import { calculateSourceExtentResolution as _ol_reproj$calculateSourceExtentReso
 import { calculateSourceResolution as _ol_reproj$calculateSourceResolution } from '../../ol/reproj.js';
 import { canvasPool as _ol_reproj$canvasPool } from '../../ol/reproj.js';
 import { ERROR_THRESHOLD as _ol_reproj_common$ERROR_THRESHOLD } from '../../ol/reproj/common.js';
+import { canvasGLPool as _ol_reproj_glreproj$canvasGLPool } from '../../ol/reproj/glreproj.js';
+import { createCanvasContextWebGL as _ol_reproj_glreproj$createCanvasContextWebGL } from '../../ol/reproj/glreproj.js';
+import { releaseGLCanvas as _ol_reproj_glreproj$releaseGLCanvas } from '../../ol/reproj/glreproj.js';
+import { render as _ol_reproj_glreproj$render } from '../../ol/reproj/glreproj.js';
 import { render as _ol_reproj$render } from '../../ol/reproj.js';
 import { fromResolutionLike as _ol_resolution$fromResolutionLike } from '../../ol/resolution.js';
 import { createMinMaxResolution as _ol_resolutionconstraint$createMinMaxResolution } from '../../ol/resolutionconstraint.js';
@@ -1622,6 +1691,7 @@ import $ol$source$OGCMapTile from '../../ol/source/OGCMapTile.js';
 import $ol$source$OGCVectorTile from '../../ol/source/OGCVectorTile.js';
 import $ol$source$OSM from '../../ol/source/OSM.js';
 import $ol$source$Raster from '../../ol/source/Raster.js';
+import $ol$source$SentinelHub from '../../ol/source/SentinelHub.js';
 import $ol$source$Source from '../../ol/source/Source.js';
 import $ol$source$StadiaMaps from '../../ol/source/StadiaMaps.js';
 import $ol$source$Tile from '../../ol/source/Tile.js';
@@ -1642,6 +1712,7 @@ import { getRequestUrl as _ol_source_arcgisRest$getRequestUrl } from '../../ol/s
 import { DECIMALS as _ol_source_common$DECIMALS } from '../../ol/source/common.js';
 import { DEFAULT_WMS_VERSION as _ol_source_common$DEFAULT_WMS_VERSION } from '../../ol/source/common.js';
 import { createLoader as _ol_source_mapguide$createLoader } from '../../ol/source/mapguide.js';
+import { createLoader as _ol_source_mapserver$createLoader } from '../../ol/source/mapserver.js';
 import { appendCollectionsQueryParam as _ol_source_ogcTileUtil$appendCollectionsQueryParam } from '../../ol/source/ogcTileUtil.js';
 import { getMapTileUrlTemplate as _ol_source_ogcTileUtil$getMapTileUrlTemplate } from '../../ol/source/ogcTileUtil.js';
 import { getTileSetInfo as _ol_source_ogcTileUtil$getTileSetInfo } from '../../ol/source/ogcTileUtil.js';
@@ -1678,6 +1749,7 @@ import $ol$style$Text from '../../ol/style/Text.js';
 import { createDefaultStyle as _ol_style_flat$createDefaultStyle } from '../../ol/style/flat.js';
 import { createOrUpdate as _ol_tilecoord$createOrUpdate } from '../../ol/tilecoord.js';
 import { fromKey as _ol_tilecoord$fromKey } from '../../ol/tilecoord.js';
+import { getCacheKey as _ol_tilecoord$getCacheKey } from '../../ol/tilecoord.js';
 import { getCacheKeyForTileKey as _ol_tilecoord$getCacheKeyForTileKey } from '../../ol/tilecoord.js';
 import { getKey as _ol_tilecoord$getKey } from '../../ol/tilecoord.js';
 import { getKeyZXY as _ol_tilecoord$getKeyZXY } from '../../ol/tilecoord.js';
@@ -1703,6 +1775,8 @@ import { compose as _ol_transform$compose } from '../../ol/transform.js';
 import { composeCssTransform as _ol_transform$composeCssTransform } from '../../ol/transform.js';
 import { create as _ol_transform$create } from '../../ol/transform.js';
 import { determinant as _ol_transform$determinant } from '../../ol/transform.js';
+import { equivalent as _ol_transform$equivalent } from '../../ol/transform.js';
+import { fromString as _ol_transform$fromString } from '../../ol/transform.js';
 import { invert as _ol_transform$invert } from '../../ol/transform.js';
 import { makeInverse as _ol_transform$makeInverse } from '../../ol/transform.js';
 import { makeScale as _ol_transform$makeScale } from '../../ol/transform.js';
@@ -1723,9 +1797,15 @@ import { abstract as _ol_util$abstract } from '../../ol/util.js';
 import { getUid as _ol_util$getUid } from '../../ol/util.js';
 import { create as _ol_vec_mat4$create } from '../../ol/vec/mat4.js';
 import { fromTransform as _ol_vec_mat4$fromTransform } from '../../ol/vec/mat4.js';
+import { orthographic as _ol_vec_mat4$orthographic } from '../../ol/vec/mat4.js';
+import { scale as _ol_vec_mat4$scale } from '../../ol/vec/mat4.js';
+import { translate as _ol_vec_mat4$translate } from '../../ol/vec/mat4.js';
+import { translation as _ol_vec_mat4$translation } from '../../ol/vec/mat4.js';
 import { ARRAY_BUFFER as _ol_webgl$ARRAY_BUFFER } from '../../ol/webgl.js';
 import $ol$webgl$BaseTileRepresentation from '../../ol/webgl/BaseTileRepresentation.js';
 import $ol$webgl$Buffer from '../../ol/webgl/Buffer.js';
+import { Canvas as _ol_webgl_Canvas$Canvas } from '../../ol/webgl/Canvas.js';
+import { createProgram as _ol_webgl_Canvas$createProgram } from '../../ol/webgl/Canvas.js';
 import { DYNAMIC_DRAW as _ol_webgl$DYNAMIC_DRAW } from '../../ol/webgl.js';
 import { ELEMENT_ARRAY_BUFFER as _ol_webgl$ELEMENT_ARRAY_BUFFER } from '../../ol/webgl.js';
 import { FLOAT as _ol_webgl$FLOAT } from '../../ol/webgl.js';
@@ -1735,8 +1815,6 @@ import $ol$webgl$PostProcessingPass from '../../ol/webgl/PostProcessingPass.js';
 import $ol$webgl$RenderTarget from '../../ol/webgl/RenderTarget.js';
 import { STATIC_DRAW as _ol_webgl$STATIC_DRAW } from '../../ol/webgl.js';
 import { STREAM_DRAW as _ol_webgl$STREAM_DRAW } from '../../ol/webgl.js';
-import { COMMON_HEADER as _ol_webgl_ShaderBuilder$COMMON_HEADER } from '../../ol/webgl/ShaderBuilder.js';
-import { ShaderBuilder as _ol_webgl_ShaderBuilder$ShaderBuilder } from '../../ol/webgl/ShaderBuilder.js';
 import $ol$webgl$TileGeometry from '../../ol/webgl/TileGeometry.js';
 import $ol$webgl$TileTexture from '../../ol/webgl/TileTexture.js';
 import { UNSIGNED_BYTE as _ol_webgl$UNSIGNED_BYTE } from '../../ol/webgl.js';
@@ -1744,10 +1822,6 @@ import { UNSIGNED_INT as _ol_webgl$UNSIGNED_INT } from '../../ol/webgl.js';
 import { UNSIGNED_SHORT as _ol_webgl$UNSIGNED_SHORT } from '../../ol/webgl.js';
 import { getContext as _ol_webgl$getContext } from '../../ol/webgl.js';
 import { getSupportedExtensions as _ol_webgl$getSupportedExtensions } from '../../ol/webgl.js';
-import { computeHash as _ol_webgl_styleparser$computeHash } from '../../ol/webgl/styleparser.js';
-import { expressionToGlsl as _ol_webgl_styleparser$expressionToGlsl } from '../../ol/webgl/styleparser.js';
-import { packColor as _ol_webgl_styleparser$packColor } from '../../ol/webgl/styleparser.js';
-import { parseLiteralStyle as _ol_webgl_styleparser$parseLiteralStyle } from '../../ol/webgl/styleparser.js';
 import { OBJECT_PROPERTY_NODE_FACTORY as _ol_xml$OBJECT_PROPERTY_NODE_FACTORY } from '../../ol/xml.js';
 import { XML_SCHEMA_INSTANCE_URI as _ol_xml$XML_SCHEMA_INSTANCE_URI } from '../../ol/xml.js';
 import { createElementNS as _ol_xml$createElementNS } from '../../ol/xml.js';
