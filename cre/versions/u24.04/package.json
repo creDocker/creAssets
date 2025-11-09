@@ -33,6 +33,7 @@
     "openseadragon": "^5.0.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.9",
+    "reveal.js": "^5.2.1",
     "semantic-ui-css": "^2.5.0",
     "tambora-leaflet": "^0.0.1",
     "three": "^0.180.0",
