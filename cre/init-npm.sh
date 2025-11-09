@@ -14,6 +14,9 @@ if [ ! -z $GITHUB_REPOSITORY ]; then
     currentRoot="$(pwd)"
     echo "current root: $currentRoot"
 fi
+
+cat /cre/node/package.json
+
 packageFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package.json"  
 lockFile="$currentRoot/cre/versions/u$UBUNTU_VERSION/package-lock.json"
 publicAssets="$currentRoot/cre/versions/u$UBUNTU_VERSION/assets/"
@@ -135,12 +138,7 @@ cp -f /cre/node/node_modules/leaflet-extra-markers/dist/img/*.png /cre/assets/pu
 cp -f /cre/node/node_modules/leaflet.markercluster/dist/*.js /cre/assets/public/leaflet/js
 cp -f /cre/node/node_modules/leaflet.markercluster/dist/*.css /cre/assets/public/leaflet/css
 
-
-
-
-## NOT WORKING !?!
-ls -l /cre/node/node_modules/
-ls -l /cre/node/node_modules/gl-transitions/
+# gl-slideshow
 mkdir -p /cre/assets/public/gl-slideshow/js
 mkdir -p /cre/assets/public/gl-slideshow/css
 mkdir -p /cre/assets/public/gl-slideshow/transitions
@@ -148,7 +146,7 @@ cp -f /cre/node/node_modules/gl-transitions/*.js /cre/assets/public/gl-slideshow
 cp -f /cre/node/node_modules/gl-transitions/transitions/*.glsl /cre/assets/public/gl-slideshow/transitions
 cp -f /cre/node/node_modules/GLSlideshow/dist/*.js /cre/assets/public/gl-slideshow/js
 
-##
+## reveal.js
 echo "reveal.js ??"
 ls -l /cre/node/node_modules/
 
