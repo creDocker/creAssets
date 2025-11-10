@@ -25,7 +25,7 @@
     "jquery.cookie": "^1.4.1",
     "jquery.fancytree": "^2.38.5",
     "jspdf": "^3.0.3",
-    "jsts": "^2.12.1",
+    "jsts": "^2.9.3",
     "jszip": "^3.10.1",
     "leaflet": "^1.9.4",
     "leaflet-dvf": "^0.3.1",
