@@ -22,12 +22,13 @@ WORKDIR "/cre/node"
 
 RUN npm config list
 
-RUN npm config set init-author-name "kmicha"
-RUN npm config set init-author-email "your-email@example.com"
-RUN npm config set init-author-url  "https://my-domain/user"
+
+#RUN npm config set init-author-name "kmicha"
+#RUN npm config set init-author-email "your-email@example.com"
+RUN npm config set init-author-url  "https://github.com/creDocker/creAssets"
 #RUN npm config set init-version 2024.0.0
-RUN npm config set init-license "MIT"
-RUN npm config --init-version 2024.0.0
+#RUN npm config set init-license "MIT"
+#RUN npm config --init-version 2024.0.0
 
 RUN npm init -y
 
