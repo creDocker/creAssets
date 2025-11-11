@@ -25,7 +25,8 @@ RUN npm config list
 RUN npm config set init-author-name "kmicha"
 RUN npm config set init-author-email "your-email@example.com"
 RUN npm config set init-author-url  "https://my-domain/user"
-RUN npm config set init-version 2024.0.0
+#RUN npm config set init-version 2024.0.0
+RUN npm --init-version 2024.0.0
 RUN npm config set init-license "MIT"
 RUN npm init -y
 
@@ -45,7 +46,7 @@ RUN npm install primevue primeicons
 RUN npm install leaflet leaflet.markercluster leaflet-extra-markers leaflet-dvf tambora-leaflet
 # https://github.com/bjornharrtell/jsts
 RUN npm install ol 
-RUN npm install jsts
+RUN npm install jsts@2.9.3
 ## RUN npm install tambora-openlayer
 # https://www.npmjs.com/package/javascript.util & http://bjornharrtell.github.io/javascript.util/doc/
 RUN npm install javascript.util
