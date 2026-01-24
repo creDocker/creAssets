@@ -9,7 +9,7 @@ creBuild 	 2026.01
    pandas 	 2.3.3
    Flask 	 
  creNode 	 16
-  ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.11) 2.35
+  ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.12) 2.35
   node 	 v16.20.2
   npm 	 8.19.4
   sdk 	 5.20.0
@@ -18,10 +18,10 @@ creBuild 	 2026.01
   └── c3@0.7.20
   │ └── d3@5.16.0
 └── d3@7.9.0
-  ├── jquery@3.7.1
+  ├── jquery@4.0.0
   └── jquery-ui@1.14.1
   └── jspdf@4.0.0
   └── jszip@3.10.1
   
   ├─┬ primevue@4.5.4
-├─┬ vue@3.5.26
+├─┬ vue@3.5.27
