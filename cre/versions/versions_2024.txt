@@ -1,4 +1,4 @@
-creBuild 	 2026.01
+creBuild 	 2026.02
  creUbuntu 	 24.04.3 LTS
   UbuntuName 	 noble
   OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
@@ -20,7 +20,7 @@ creBuild 	 2026.01
   │ └── d3@5.16.0
 └── d3@7.9.0
   ├── jquery@4.0.0
-  └── jquery-ui@1.14.1
+  └── jquery-ui@1.14.2
   └── jspdf@4.0.0
   └── jszip@3.10.1
   └── ol@10.7.0
