@@ -3,14 +3,14 @@ creBuild 	 2026.02
   UbuntuName 	 noble
   OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
   msmtp version 1.8.24
-  Java 	 openjdk version "21.0.9" 2025-10-21
+  Java 	 openjdk version "21.0.10" 2026-01-20
   Python3 	 Python 3.12.3
    numpy 	 1.26.4
    scipy 	 1.11.4
    pandas 	 3.0.0
    Flask 	 
  creNode 	 16
-  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.6) 2.39
+  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.7) 2.39
   node 	 v16.20.2
   npm 	 8.19.4
   sdk 	 5.20.0
@@ -21,7 +21,7 @@ creBuild 	 2026.02
 └── d3@7.9.0
   ├── jquery@4.0.0
   └── jquery-ui@1.14.2
-  └── jspdf@4.0.0
+  └── jspdf@4.1.0
   └── jszip@3.10.1
   └── ol@10.7.0
   ├─┬ primevue@4.5.4
