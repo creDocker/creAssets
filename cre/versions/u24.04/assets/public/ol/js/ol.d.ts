@@ -78,6 +78,7 @@ declare namespace ol {
     }
     export namespace coordinate {
         export { _ol_coordinate$add as add };
+        export { _ol_coordinate$angleBetween as angleBetween };
         export { _ol_coordinate$closestOnCircle as closestOnCircle };
         export { _ol_coordinate$closestOnSegment as closestOnSegment };
         export { _ol_coordinate$createStringXY as createStringXY };
@@ -611,10 +612,13 @@ declare namespace ol {
         export namespace proj4 {
             export { _ol_proj_proj4$epsgLookupMapTiler as epsgLookupMapTiler };
             export { _ol_proj_proj4$fromEPSGCode as fromEPSGCode };
+            export { _ol_proj_proj4$fromProjectionCode as fromProjectionCode };
             export { _ol_proj_proj4$getEPSGLookup as getEPSGLookup };
+            export { _ol_proj_proj4$getProjectionCodeLookup as getProjectionCodeLookup };
             export { _ol_proj_proj4$isRegistered as isRegistered };
             export { _ol_proj_proj4$register as register };
             export { _ol_proj_proj4$setEPSGLookup as setEPSGLookup };
+            export { _ol_proj_proj4$setProjectionCodeLookup as setProjectionCodeLookup };
             export { _ol_proj_proj4$unregister as unregister };
         }
         export namespace projections {
@@ -675,6 +679,7 @@ declare namespace ol {
             export { _ol_render_canvas$defaultLineWidth as defaultLineWidth };
             export { _ol_render_canvas$defaultMiterLimit as defaultMiterLimit };
             export { _ol_render_canvas$defaultPadding as defaultPadding };
+            export { _ol_render_canvas$defaultStrokeOffset as defaultStrokeOffset };
             export { _ol_render_canvas$defaultStrokeStyle as defaultStrokeStyle };
             export { _ol_render_canvas$defaultTextAlign as defaultTextAlign };
             export { _ol_render_canvas$defaultTextBaseline as defaultTextBaseline };
@@ -814,6 +819,7 @@ declare namespace ol {
         export { $ol$source$Cluster as Cluster };
         export { $ol$source$DataTile as DataTile };
         export { $ol$source$GeoTIFF as GeoTIFF };
+        export { $ol$source$GeoZarr as GeoZarr };
         export { $ol$source$Google as Google };
         export { $ol$source$IIIF as IIIF };
         export { $ol$source$Image as Image };
@@ -823,6 +829,7 @@ declare namespace ol {
         export { $ol$source$ImageStatic as ImageStatic };
         export { $ol$source$ImageTile as ImageTile };
         export { $ol$source$ImageWMS as ImageWMS };
+        export { $ol$source$OGCMap as OGCMap };
         export { $ol$source$OGCMapTile as OGCMapTile };
         export { $ol$source$OGCVectorTile as OGCVectorTile };
         export { $ol$source$OSM as OSM };
@@ -857,11 +864,17 @@ declare namespace ol {
         export namespace mapserver {
             export { _ol_source_mapserver$createLoader as createLoader };
         }
+        export namespace ogcMapUtil {
+            export { _ol_source_ogcMapUtil$createLoader as createLoader };
+            export { _ol_source_ogcMapUtil$getImageSrc as getImageSrc };
+            export { _ol_source_ogcMapUtil$getRequestUrl as getRequestUrl };
+        }
         export namespace ogcTileUtil {
             export { _ol_source_ogcTileUtil$appendCollectionsQueryParam as appendCollectionsQueryParam };
             export { _ol_source_ogcTileUtil$getMapTileUrlTemplate as getMapTileUrlTemplate };
             export { _ol_source_ogcTileUtil$getTileSetInfo as getTileSetInfo };
             export { _ol_source_ogcTileUtil$getVectorTileUrlTemplate as getVectorTileUrlTemplate };
+            export { _ol_source_ogcTileUtil$parseTileMatrixSet as parseTileMatrixSet };
         }
         export { _ol_source$sourcesFromTileGrid as sourcesFromTileGrid };
         namespace _static {
@@ -1100,6 +1113,7 @@ import $ol$control$ZoomSlider from '../../ol/control/ZoomSlider.js';
 import $ol$control$ZoomToExtent from '../../ol/control/ZoomToExtent.js';
 import { defaults as _ol_control_defaults$defaults } from '../../ol/control/defaults.js';
 import { add as _ol_coordinate$add } from '../../ol/coordinate.js';
+import { angleBetween as _ol_coordinate$angleBetween } from '../../ol/coordinate.js';
 import { closestOnCircle as _ol_coordinate$closestOnCircle } from '../../ol/coordinate.js';
 import { closestOnSegment as _ol_coordinate$closestOnSegment } from '../../ol/coordinate.js';
 import { createStringXY as _ol_coordinate$createStringXY } from '../../ol/coordinate.js';
@@ -1530,10 +1544,13 @@ import { getUserProjection as _ol_proj$getUserProjection } from '../../ol/proj.j
 import { identityTransform as _ol_proj$identityTransform } from '../../ol/proj.js';
 import { epsgLookupMapTiler as _ol_proj_proj4$epsgLookupMapTiler } from '../../ol/proj/proj4.js';
 import { fromEPSGCode as _ol_proj_proj4$fromEPSGCode } from '../../ol/proj/proj4.js';
+import { fromProjectionCode as _ol_proj_proj4$fromProjectionCode } from '../../ol/proj/proj4.js';
 import { getEPSGLookup as _ol_proj_proj4$getEPSGLookup } from '../../ol/proj/proj4.js';
+import { getProjectionCodeLookup as _ol_proj_proj4$getProjectionCodeLookup } from '../../ol/proj/proj4.js';
 import { isRegistered as _ol_proj_proj4$isRegistered } from '../../ol/proj/proj4.js';
 import { register as _ol_proj_proj4$register } from '../../ol/proj/proj4.js';
 import { setEPSGLookup as _ol_proj_proj4$setEPSGLookup } from '../../ol/proj/proj4.js';
+import { setProjectionCodeLookup as _ol_proj_proj4$setProjectionCodeLookup } from '../../ol/proj/proj4.js';
 import { unregister as _ol_proj_proj4$unregister } from '../../ol/proj/proj4.js';
 import { add as _ol_proj_projections$add } from '../../ol/proj/projections.js';
 import { clear as _ol_proj_projections$clear } from '../../ol/proj/projections.js';
@@ -1582,6 +1599,7 @@ import { defaultLineJoin as _ol_render_canvas$defaultLineJoin } from '../../ol/r
 import { defaultLineWidth as _ol_render_canvas$defaultLineWidth } from '../../ol/render/canvas.js';
 import { defaultMiterLimit as _ol_render_canvas$defaultMiterLimit } from '../../ol/render/canvas.js';
 import { defaultPadding as _ol_render_canvas$defaultPadding } from '../../ol/render/canvas.js';
+import { defaultStrokeOffset as _ol_render_canvas$defaultStrokeOffset } from '../../ol/render/canvas.js';
 import { defaultStrokeStyle as _ol_render_canvas$defaultStrokeStyle } from '../../ol/render/canvas.js';
 import { defaultTextAlign as _ol_render_canvas$defaultTextAlign } from '../../ol/render/canvas.js';
 import { defaultTextBaseline as _ol_render_canvas$defaultTextBaseline } from '../../ol/render/canvas.js';
@@ -1678,6 +1696,7 @@ import $ol$source$CartoDB from '../../ol/source/CartoDB.js';
 import $ol$source$Cluster from '../../ol/source/Cluster.js';
 import $ol$source$DataTile from '../../ol/source/DataTile.js';
 import $ol$source$GeoTIFF from '../../ol/source/GeoTIFF.js';
+import $ol$source$GeoZarr from '../../ol/source/GeoZarr.js';
 import $ol$source$Google from '../../ol/source/Google.js';
 import $ol$source$IIIF from '../../ol/source/IIIF.js';
 import $ol$source$Image from '../../ol/source/Image.js';
@@ -1687,6 +1706,7 @@ import $ol$source$ImageMapGuide from '../../ol/source/ImageMapGuide.js';
 import $ol$source$ImageStatic from '../../ol/source/ImageStatic.js';
 import $ol$source$ImageTile from '../../ol/source/ImageTile.js';
 import $ol$source$ImageWMS from '../../ol/source/ImageWMS.js';
+import $ol$source$OGCMap from '../../ol/source/OGCMap.js';
 import $ol$source$OGCMapTile from '../../ol/source/OGCMapTile.js';
 import $ol$source$OGCVectorTile from '../../ol/source/OGCVectorTile.js';
 import $ol$source$OSM from '../../ol/source/OSM.js';
@@ -1713,10 +1733,14 @@ import { DECIMALS as _ol_source_common$DECIMALS } from '../../ol/source/common.j
 import { DEFAULT_WMS_VERSION as _ol_source_common$DEFAULT_WMS_VERSION } from '../../ol/source/common.js';
 import { createLoader as _ol_source_mapguide$createLoader } from '../../ol/source/mapguide.js';
 import { createLoader as _ol_source_mapserver$createLoader } from '../../ol/source/mapserver.js';
+import { createLoader as _ol_source_ogcMapUtil$createLoader } from '../../ol/source/ogcMapUtil.js';
+import { getImageSrc as _ol_source_ogcMapUtil$getImageSrc } from '../../ol/source/ogcMapUtil.js';
+import { getRequestUrl as _ol_source_ogcMapUtil$getRequestUrl } from '../../ol/source/ogcMapUtil.js';
 import { appendCollectionsQueryParam as _ol_source_ogcTileUtil$appendCollectionsQueryParam } from '../../ol/source/ogcTileUtil.js';
 import { getMapTileUrlTemplate as _ol_source_ogcTileUtil$getMapTileUrlTemplate } from '../../ol/source/ogcTileUtil.js';
 import { getTileSetInfo as _ol_source_ogcTileUtil$getTileSetInfo } from '../../ol/source/ogcTileUtil.js';
 import { getVectorTileUrlTemplate as _ol_source_ogcTileUtil$getVectorTileUrlTemplate } from '../../ol/source/ogcTileUtil.js';
+import { parseTileMatrixSet as _ol_source_ogcTileUtil$parseTileMatrixSet } from '../../ol/source/ogcTileUtil.js';
 import { sourcesFromTileGrid as _ol_source$sourcesFromTileGrid } from '../../ol/source.js';
 import { createLoader as _ol_source_static$createLoader } from '../../ol/source/static.js';
 import { DEFAULT_VERSION as _ol_source_wms$DEFAULT_VERSION } from '../../ol/source/wms.js';

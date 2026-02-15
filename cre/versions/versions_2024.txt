@@ -1,5 +1,5 @@
 creBuild 	 2026.02
- creUbuntu 	 24.04.3 LTS
+ creUbuntu 	 24.04.4 LTS
   UbuntuName 	 noble
   OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
   msmtp version 1.8.24
@@ -23,6 +23,6 @@ creBuild 	 2026.02
   └── jquery-ui@1.14.2
   └── jspdf@4.1.0
   └── jszip@3.10.1
-  └── ol@10.7.0
+  └── ol@10.8.0
   ├─┬ primevue@4.5.4
-├─┬ vue@3.5.27
+├─┬ vue@3.5.28
