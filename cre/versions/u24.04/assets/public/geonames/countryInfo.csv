@@ -86,7 +86,7 @@ GL,GRL,304,GL,Greenland,Nuuk,2166086,56025,NA,.gl,DKK,Krone,299,####,^(\d{4})$,k
 GM,GMB,270,GA,Gambia,Banjul,11300,2280102,AF,.gm,GMD,Dalasi,220,,,en-GM;mnk;wof;wo;ff,2413451,SN,
 GN,GIN,324,GV,Guinea,Conakry,245857,12414318,AF,.gn,GNF,Franc,224,,,fr-GN,2420477,LR;SN;SL;CI;GW;ML,
 GP,GLP,312,GP,Guadeloupe,Basse-Terre,1780,443000,NA,.gp,EUR,Euro,590,#####,^((97|98)\d{3})$,fr-GP,3579143,,
-GQ,GNQ,226,EK,Equatorial Guinea,Malabo,28051,1308974,AF,.gq,XAF,Franc,240,,,es-GQ;fr;pt,2309096,GA;CM,
+GQ,GNQ,226,EK,Equatorial Guinea,Ciudad de la Paz,28051,1308974,AF,.gq,XAF,Franc,240,,,es-GQ;fr;pt,2309096,GA;CM,
 GR,GRC,300,GR,Greece,Athens,131940,10727668,EU,.gr,EUR,Euro,30,### ##,^(\d{5})$,el-GR;en;fr,390903,AL;MK;TR;BG,
 GS,SGS,239,SX,South Georgia and the South Sandwich Islands,Grytviken,3903,30,AN,.gs,GBP,Pound,,SIQQ 1ZZ,SIQQ 1ZZ,en,3474415,,
 GT,GTM,320,GT,Guatemala,Guatemala City,108890,17247807,NA,.gt,GTQ,Quetzal,502,#####,^(\d{5})$,es-GT,3595528,MX;HN;BZ;SV,
