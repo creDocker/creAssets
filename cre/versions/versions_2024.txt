@@ -13,7 +13,7 @@ creBuild 	 2026.03
   ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.7) 2.39
   node 	 v16.20.2
   npm 	 8.19.4
-  sdk 	 5.20.0
+  sdk 	 5.21.0
  creAssets 	 2024.0
   └── bootstrap@5.3.8
   └── c3@0.7.20
@@ -25,4 +25,4 @@ creBuild 	 2026.03
   └── jszip@3.10.1
   └── ol@10.8.0
   ├─┬ primevue@4.5.4
-├─┬ vue@3.5.29
+├─┬ vue@3.5.30
