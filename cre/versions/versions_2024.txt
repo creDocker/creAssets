@@ -6,7 +6,6 @@ creBuild 	 2026.03
   Java 	 openjdk version "21.0.10" 2026-01-20
   Python3 	 Python 3.12.3
    numpy 	 1.26.4
-   scipy 	 1.11.4
    pandas 	 3.0.1
    Flask 	 
  creNode 	 16
@@ -21,7 +20,7 @@ creBuild 	 2026.03
 └── d3@7.9.0
   ├── jquery@4.0.0
   └── jquery-ui@1.14.2
-  └── jspdf@4.2.0
+  └── jspdf@4.2.1
   └── jszip@3.10.1
   └── ol@10.8.0
   ├─┬ primevue@4.5.4
