@@ -163,8 +163,7 @@ RUN mkdir -p /cre && touch /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list jspdf | grep -v deduped | grep 'jspdf@')" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list jszip | grep -v deduped | grep 'jszip@')" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list ol | grep -v deduped | grep 'ol@')" >> /cre/versions.txt && \
-    echo "$(date +'%F %R') \t  $(npm list vue | grep -v deduped | grep 'vue@' | grep -i 'element-plus')" >> /cre/versions.txt
-&& \
+    echo "$(date +'%F %R') \t  $(npm list vue | grep -v deduped | grep 'vue@' | grep -i 'element-plus')" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list vue | grep -v deduped | grep 'element-plus@')" >> /cre/versions.txt
 
 WORKDIR "/cre/assets"
