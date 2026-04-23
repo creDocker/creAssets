@@ -36,7 +36,7 @@ RUN npm install semantic-ui-css
 # https://jqueryui.com
 RUN npm install jquery-ui
 # https://vueuse.org/  
-RUN npm install vue vuex axios @vueuse/core
+RUN npm install vue vuex axios @vueuse/core vue-i18n
 RUN npm install element-plus --save
 # RUN npm install @formkit/vue @formkit/themes
 RUN npm install primevue primeicons
@@ -163,7 +163,9 @@ RUN mkdir -p /cre && touch /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list jspdf | grep -v deduped | grep 'jspdf@')" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list jszip | grep -v deduped | grep 'jszip@')" >> /cre/versions.txt && \
     echo "$(date +'%F %R') \t  $(npm list ol | grep -v deduped | grep 'ol@')" >> /cre/versions.txt && \
-    echo "$(date +'%F %R') \t  $(npm list vue | grep -v deduped | grep 'vue@')" >> /cre/versions.txt
+    echo "$(date +'%F %R') \t  $(npm list vue | grep -v deduped | grep 'vue@' | grep -i 'element-plus')" >> /cre/versions.txt
+&& \
+    echo "$(date +'%F %R') \t  $(npm list vue | grep -v deduped | grep 'element-plus@')" >> /cre/versions.txt
 
 WORKDIR "/cre/assets"
 #EXPOSE 8080 

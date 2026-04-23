@@ -11,6 +11,18 @@
    "other": []
   }
 },
+{"name": "vue",
+ "latest": { 
+   "js": ["https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js", "https://unpkg.com/vue-i18n@8.24.3/dist/vue-i18n.js", "https://unpkg.com/axios/dist/axios.min.js", "https://cdn.jsdelivr.net/npm/element-plus"],
+   "css": ["https://cdn.jsdelivr.net/npm/element-plus/dist/index.css"],
+   "other": []
+  },
+ "versioned": {
+   "js": ["https://cdn.jsdelivr.net/npm/vue@<version>/dist/vue.min.js", "https://unpkg.com/vue-i18n@<version>/dist/vue-i18n.js", "https://unpkg.com/axios<version>/dist/axios.min.js", "https//cdn.jsdelivr.net/npm/element-plus"],
+   "css": ["https://cdn.jsdelivr.net/npm/element-plus/dist/index.css"],
+   "other": []
+  }
+},
 {"name": "jspdf",
  "latest": { 
    "js": ["https://cdn.jsdelivr.net/npm/jspdf/dist/jspdf.es.min.js"],

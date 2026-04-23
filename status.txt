@@ -4,6 +4,7 @@ JS,CSS
 =vue,axios, 
  https://formkit.com/  https://github.com/formkit/formkit
  https://github.com/element-plus/element-plus
+ https://element-plus.org/en-US/guide/i18n
  https://element-plus.org/
 =leaflet
 =openlayer
