@@ -3,7 +3,9 @@ JS,CSS
 =jquery
 =vue,axios, 
  https://formkit.com/  https://github.com/formkit/formkit
-leaflet
+ https://github.com/element-plus/element-plus
+ https://element-plus.org/
+=leaflet
 =openlayer
 openseadragon
 konami
@@ -18,12 +20,53 @@ treefolder fancytree
 https://dev.to/jon_snow789/glassmorphism-css-generator-k90
 intro.js : https://github.com/usablica/intro.js/   https://introjs.com/
 
+
 slideshow
 ==========
-https://github.com/yomotsu/gl-slideshow
-https://github.com/gl-transitions/gl-transitions          https://gl-transitions.com/
+=https://github.com/yomotsu/gl-slideshow
+=https://github.com/gl-transitions/gl-transitions          https://gl-transitions.com/
+
+
+zip
+=http://stuartk.com/jszip
+=https://stuk.github.io/jszip/
+=https://github.com/Stuk/jszip
+https://davidwalsh.name/javascript-zip (How to)
+(https://github.com/eligrey/FileSaver.js/, https://github.com/jimmywarting/StreamSaver.js, https://github.com/whatwg/fs -> large files)
+
+
+
+CANDIDATES================
+++++++++++++++++++++++++++
+
 
 https://revealjs.com/  (presentation: to decide)
+
+
+physics engine (with three.js)
+==================
+https://wellcaffeinated.net/PhysicsJS/
+https://threejs-journey.com/lessons/physics-with-r3f
+https://github.com/pmndrs/cannon-es
+https://github.com/lo-th/phy
+https://threejs-journey.com/lessons/physics
+https://github.com/chandlerprall/Physijs
+https://github.com/kripken/ammo.js
+https://github.com/Oxynt/AmmoPhysics-extended
+https://github.com/saharan/OimoPhysics
+https://github.com/schteppe/cannon.js/
+https://threejsresources.com/tool/cannon-js
+
+https://threejs.org/docs/#JoltPhysics
+https://threejs.org/docs/#AmmoPhysics
+https://threejs.org/docs/#RapierPhysics
+
+https://rapier.rs/
+https://github.com/dimforge/rapier
+https://rapier.rs/docs/user_guides/javascript/getting_started_js/#using-rapier-without-a-bundler
+https://medium.com/javascript-alliance/integrating-physics-in-three-js-with-rapier-a-complete-guide-55620630621c
+
+
 
 timeline (to decide)
 ========
@@ -35,11 +78,6 @@ timeline (to decide)
  https://github.com/NUKnightLab/TimelineJS3
  https://www.npmjs.com/package/@knight-lab/timelinejs
 
-zip
-=https://stuk.github.io/jszip/
-=https://github.com/Stuk/jszip
-https://davidwalsh.name/javascript-zip (How to)
-(https://github.com/eligrey/FileSaver.js/, https://github.com/jimmywarting/StreamSaver.js, https://github.com/whatwg/fs -> large files)
 
 Map Visualization
 https://github.com/visgl/deck.gl
@@ -51,6 +89,8 @@ https://github.com/visgl/luma.gl
 
 https://cesium.com/platform/cesiumjs/  (GLOBE)
 
+
+https://echarts.apache.org (js)
 
 
 pdf (same?)
@@ -83,6 +123,9 @@ FONTS
 
 google-fonts
  weather
+
+
+https://github.com/chenglou/pretext
 
 
 DATA
