@@ -54,6 +54,7 @@ mkdir -p /cre/assets/public/vue/js
 cp -f /cre/node/node_modules/vue/dist/vue.global.js /cre/assets/public/vue/js
 cp -f /cre/node/node_modules/vuex/dist/vuex.global.js /cre/assets/public/vue/js
 cp -f /cre/node/node_modules/axios/dist/axios.* /cre/assets/public/vue/js
+cp -f /cre/node/node_modules/vue-i18n/dist/vue-i18n.global.js /cre/assets/public/vue/js
 ls -l /cre/node/node_modules/element-plus/dist/
 cp -f /cre/node/node_modules/element-plus/dist/index.full.min.js /cre/assets/public/vue/js/element-plus.js
 #cp -f /cre/node/node_modules/element-plus/dist/locale/??-??.min.js /cre/assets/public/vue/js
