@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.0
+  * vue-i18n v11.4.2
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -2562,7 +2562,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.0';
+  const VERSION$1 = '11.4.2';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -3691,7 +3691,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.0';
+  const VERSION = '11.4.2';
   /**
    * This is only called development env
    * istanbul-ignore-next
@@ -5574,22 +5574,26 @@ var VueI18n = (function (exports, Vue) {
                   __useComponent: true
               });
           return () => {
-              const keys = Object.keys(slots).filter(key => key[0] !== '_');
-              const options = create();
-              if (props.locale) {
-                  options.locale = props.locale;
-              }
-              if (props.plural !== undefined) {
-                  options.plural = isString(props.plural) ? +props.plural : props.plural;
-              }
-              const arg = getInterpolateArg(context, keys);
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const children = i18n[TranslateVNodeSymbol](props.keypath, arg, options);
+              const renderChildren = () => {
+                  const keys = Object.keys(slots).filter(key => key[0] !== '_');
+                  const options = create();
+                  if (props.locale) {
+                      options.locale = props.locale;
+                  }
+                  if (props.plural !== undefined) {
+                      options.plural = isString(props.plural) ? +props.plural : props.plural;
+                  }
+                  const arg = getInterpolateArg(context, keys);
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  return i18n[TranslateVNodeSymbol](props.keypath, arg, options);
+              };
               const assignedAttrs = assign(create(), attrs);
               const tag = isString(props.tag) || isObject(props.tag)
                   ? props.tag
                   : getFragmentableTag();
-              return Vue.h(tag, assignedAttrs, children);
+              return isObject(tag)
+                  ? Vue.h(tag, assignedAttrs, { default: renderChildren })
+                  : Vue.h(tag, assignedAttrs, renderChildren());
           };
       }
   });
@@ -5655,49 +5659,54 @@ var VueI18n = (function (exports, Vue) {
   function renderFormatter(props, context, slotKeys, partFormatter) {
       const { slots, attrs } = context;
       return () => {
-          const options = { part: true };
-          let overrides = create();
-          if (props.locale) {
-              options.locale = props.locale;
-          }
-          if (isString(props.format)) {
-              options.key = props.format;
-          }
-          else if (isObject(props.format)) {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              if (isString(props.format.key)) {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  options.key = props.format.key;
+          const renderChildren = () => {
+              const options = { part: true };
+              let overrides = create();
+              if (props.locale) {
+                  options.locale = props.locale;
               }
-              // Filter out number format options only
-              overrides = Object.keys(props.format).reduce((options, prop) => {
-                  return slotKeys.includes(prop)
-                      ? assign(create(), options, { [prop]: props.format[prop] }) // eslint-disable-line @typescript-eslint/no-explicit-any
-                      : options;
-              }, create());
-          }
-          const parts = partFormatter(...[props.value, options, overrides]);
-          let children = [options.key];
-          if (isArray(parts)) {
-              children = parts.map((part, index) => {
-                  const slot = slots[part.type];
-                  const node = slot
-                      ? slot({ [part.type]: part.value, index, parts })
-                      : [part.value];
-                  if (isVNode(node)) {
-                      node[0].key = `${part.type}-${index}`;
+              if (isString(props.format)) {
+                  options.key = props.format;
+              }
+              else if (isObject(props.format)) {
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  if (isString(props.format.key)) {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      options.key = props.format.key;
                   }
-                  return node;
-              });
-          }
-          else if (isString(parts)) {
-              children = [parts];
-          }
+                  // Filter out number format options only
+                  overrides = Object.keys(props.format).reduce((options, prop) => {
+                      return slotKeys.includes(prop)
+                          ? assign(create(), options, { [prop]: props.format[prop] }) // eslint-disable-line @typescript-eslint/no-explicit-any
+                          : options;
+                  }, create());
+              }
+              const parts = partFormatter(...[props.value, options, overrides]);
+              let children = [options.key];
+              if (isArray(parts)) {
+                  children = parts.map((part, index) => {
+                      const slot = slots[part.type];
+                      const node = slot
+                          ? slot({ [part.type]: part.value, index, parts })
+                          : [part.value];
+                      if (isVNode(node)) {
+                          node[0].key = `${part.type}-${index}`;
+                      }
+                      return node;
+                  });
+              }
+              else if (isString(parts)) {
+                  children = [parts];
+              }
+              return children;
+          };
           const assignedAttrs = assign(create(), attrs);
           const tag = isString(props.tag) || isObject(props.tag)
               ? props.tag
               : getFragmentableTag();
-          return Vue.h(tag, assignedAttrs, children);
+          return isObject(tag)
+              ? Vue.h(tag, assignedAttrs, { default: renderChildren })
+              : Vue.h(tag, assignedAttrs, renderChildren());
       };
   }
 
