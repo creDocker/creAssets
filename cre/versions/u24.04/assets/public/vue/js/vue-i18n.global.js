@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.4
+  * vue-i18n v11.4.5
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -2612,7 +2612,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.4';
+  const VERSION$1 = '11.4.5';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -2893,7 +2893,8 @@ var VueI18n = (function (exports, Vue) {
       const locales = localeFallbacker(context, // eslint-disable-line @typescript-eslint/no-explicit-any
       fallbackLocale, locale);
       if (!isString(key) || key === '') {
-          return new Intl.DateTimeFormat(locale.replace(/!/g, ''), overrides).format(value);
+          const formatter = new Intl.DateTimeFormat(locale.replace(/!/g, ''), overrides);
+          return !part ? formatter.format(value) : formatter.formatToParts(value);
       }
       // resolve format
       let datetimeFormat = {};
@@ -3075,7 +3076,8 @@ var VueI18n = (function (exports, Vue) {
       const locales = localeFallbacker(context, // eslint-disable-line @typescript-eslint/no-explicit-any
       fallbackLocale, locale);
       if (!isString(key) || key === '') {
-          return new Intl.NumberFormat(locale.replace(/!/g, ''), overrides).format(value);
+          const formatter = new Intl.NumberFormat(locale.replace(/!/g, ''), overrides);
+          return !part ? formatter.format(value) : formatter.formatToParts(value);
       }
       // resolve format
       let numberFormat = {};
@@ -3741,7 +3743,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.4';
+  const VERSION = '11.4.5';
   /**
    * This is only called development env
    * istanbul-ignore-next
