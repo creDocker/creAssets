@@ -1,5 +1,5 @@
-// Author: gre
-// License: MIT
+// author: gre
+// license: MIT
 uniform float intensity; // = 0.1
 const int passes = 6;
 

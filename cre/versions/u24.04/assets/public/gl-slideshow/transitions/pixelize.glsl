@@ -2,10 +2,8 @@
 // License: MIT
 // forked from https://gist.github.com/benraziel/c528607361d90a072e98
 
-// minimum number of squares (when the effect is at its higher level)
-uniform ivec2 squaresMin; // = ivec2(20)
-// zero disable the stepping
-uniform int steps; // = 50
+uniform ivec2 squaresMin/* = ivec2(20) */; // minimum number of squares (when the effect is at its higher level)
+uniform int steps /* = 50 */; // zero disable the stepping
 
 float d = min(progress, 1.0 - progress);
 float dist = steps>0 ? ceil(d * float(steps)) / float(steps) : d;

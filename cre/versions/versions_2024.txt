@@ -26,4 +26,4 @@ creBuild 	 2026.07
   └── jszip@3.10.1
   └── ol@10.9.0
   │ ├─┬ @element-plus/icons-vue@2.3.2
-  ├─┬ element-plus@2.14.2
+  ├─┬ element-plus@2.14.3
