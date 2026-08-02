@@ -1,4 +1,4 @@
-creBuild 	 2026.07
+creBuild 	 2026.08
  creUbuntu 	 24.04.4 LTS
   UbuntuName 	 noble
   OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
@@ -11,7 +11,7 @@ creBuild 	 2026.07
    pandas 	 3.0.5
    Flask 	 
  creNode 	 16
-  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.7) 2.39
+  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.8) 2.39
   node 	 v16.20.2
   npm 	 8.19.4
   sdk 	 5.23.0
@@ -24,6 +24,6 @@ creBuild 	 2026.07
   └── jquery-ui@1.14.2
   └── jspdf@4.2.1
   └── jszip@3.10.1
-  └── ol@10.9.0
+  └── ol@10.10.0
   │ ├─┬ @element-plus/icons-vue@2.3.2
   ├─┬ element-plus@2.14.3

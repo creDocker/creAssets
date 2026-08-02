@@ -229,6 +229,7 @@ declare namespace ol {
         export { _ol_extent$getBottomRight as getBottomRight };
         export { _ol_extent$getCenter as getCenter };
         export { _ol_extent$getCorner as getCorner };
+        export { _ol_extent$getDifference as getDifference };
         export { _ol_extent$getEnlargedArea as getEnlargedArea };
         export { _ol_extent$getForViewAndSize as getForViewAndSize };
         export { _ol_extent$getHeight as getHeight };
@@ -245,6 +246,7 @@ declare namespace ol {
         export { _ol_extent$isEmpty as isEmpty };
         export { _ol_extent$returnOrUpdate as returnOrUpdate };
         export { _ol_extent$scaleFromCenter as scaleFromCenter };
+        export { _ol_extent$subtractExtents as subtractExtents };
         export { _ol_extent$wrapAndSliceX as wrapAndSliceX };
         export { _ol_extent$wrapX as wrapX };
     }
@@ -375,6 +377,9 @@ declare namespace ol {
             }
             namespace center {
                 export { _ol_geom_flat_center$linearRingss as linearRingss };
+            }
+            namespace clip {
+                export { _ol_geom_flat_clip$clipFlatLineStrings as clipFlatLineStrings };
             }
             namespace closest {
                 export { _ol_geom_flat_closest$arrayMaxSquaredDelta as arrayMaxSquaredDelta };
@@ -613,6 +618,7 @@ declare namespace ol {
             export { _ol_proj_proj4$epsgLookupMapTiler as epsgLookupMapTiler };
             export { _ol_proj_proj4$fromEPSGCode as fromEPSGCode };
             export { _ol_proj_proj4$fromProjectionCode as fromProjectionCode };
+            export { _ol_proj_proj4$fromProjectionDefinition as fromProjectionDefinition };
             export { _ol_proj_proj4$getEPSGLookup as getEPSGLookup };
             export { _ol_proj_proj4$getProjectionCodeLookup as getProjectionCodeLookup };
             export { _ol_proj_proj4$isRegistered as isRegistered };
@@ -698,6 +704,7 @@ declare namespace ol {
             export namespace style {
                 export { _ol_render_canvas_style$buildRuleSet as buildRuleSet };
                 export { _ol_render_canvas_style$buildStyle as buildStyle };
+                export { _ol_render_canvas_style$flatStyleLikeToStyleFunction as flatStyleLikeToStyleFunction };
                 export { _ol_render_canvas_style$flatStylesToStyleFunction as flatStylesToStyleFunction };
                 export { _ol_render_canvas_style$rulesToStyleFunction as rulesToStyleFunction };
             }
@@ -740,9 +747,22 @@ declare namespace ol {
                 export { _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions as generatePolygonRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$getCustomAttributesSize as getCustomAttributesSize };
             }
+            export namespace serialize {
+                export { _ol_render_webgl_serialize$deserializeFrameState as deserializeFrameState };
+                export { _ol_render_webgl_serialize$serializeFrameState as serializeFrameState };
+            }
             export namespace style {
                 export { _ol_render_webgl_style$computeHash as computeHash };
                 export { _ol_render_webgl_style$parseLiteralStyle as parseLiteralStyle };
+            }
+            export namespace textUtil {
+                export { _ol_render_webgl_textUtil$TextUniforms as TextUniforms };
+                export { _ol_render_webgl_textUtil$convertLineStringRenderInstructionsToCanvasTextBuilder as convertLineStringRenderInstructionsToCanvasTextBuilder };
+                export { _ol_render_webgl_textUtil$convertPointRenderInstructionsToCanvasTextBuilder as convertPointRenderInstructionsToCanvasTextBuilder };
+                export { _ol_render_webgl_textUtil$convertPolygonRenderInstructionsToCanvasTextBuilder as convertPolygonRenderInstructionsToCanvasTextBuilder };
+                export { _ol_render_webgl_textUtil$createPostProcessDefinition as createPostProcessDefinition };
+                export { _ol_render_webgl_textUtil$hasTextStyle as hasTextStyle };
+                export { _ol_render_webgl_textUtil$stripNonTextStyleProperties as stripNonTextStyleProperties };
             }
         }
     }
@@ -958,6 +978,7 @@ declare namespace ol {
         export { _ol_tileurlfunction$nullTileUrlFunction as nullTileUrlFunction };
     }
     export namespace transform {
+        export { _ol_transform$IDENTITY_TRANSFORM as IDENTITY_TRANSFORM };
         export { _ol_transform$apply as apply };
         export { _ol_transform$compose as compose };
         export { _ol_transform$composeCssTransform as composeCssTransform };
@@ -993,6 +1014,8 @@ declare namespace ol {
             export { _ol_vec_mat4$create as create };
             export { _ol_vec_mat4$fromTransform as fromTransform };
             export { _ol_vec_mat4$orthographic as orthographic };
+            export { _ol_vec_mat4$reset as reset };
+            export { _ol_vec_mat4$rotate as rotate };
             export { _ol_vec_mat4$scale as scale };
             export { _ol_vec_mat4$translate as translate };
             export { _ol_vec_mat4$translation as translation };
@@ -1010,6 +1033,7 @@ declare namespace ol {
         export { _ol_webgl$ELEMENT_ARRAY_BUFFER as ELEMENT_ARRAY_BUFFER };
         export { _ol_webgl$FLOAT as FLOAT };
         export { $ol$webgl$Helper as Helper };
+        export { $ol$webgl$LabelsArray as LabelsArray };
         export { $ol$webgl$PaletteTexture as PaletteTexture };
         export { $ol$webgl$PostProcessingPass as PostProcessingPass };
         export { $ol$webgl$RenderTarget as RenderTarget };
@@ -1246,6 +1270,7 @@ import { getBottomLeft as _ol_extent$getBottomLeft } from '../../ol/extent.js';
 import { getBottomRight as _ol_extent$getBottomRight } from '../../ol/extent.js';
 import { getCenter as _ol_extent$getCenter } from '../../ol/extent.js';
 import { getCorner as _ol_extent$getCorner } from '../../ol/extent.js';
+import { getDifference as _ol_extent$getDifference } from '../../ol/extent.js';
 import { getEnlargedArea as _ol_extent$getEnlargedArea } from '../../ol/extent.js';
 import { getForViewAndSize as _ol_extent$getForViewAndSize } from '../../ol/extent.js';
 import { getHeight as _ol_extent$getHeight } from '../../ol/extent.js';
@@ -1262,6 +1287,7 @@ import { intersectsSegment as _ol_extent$intersectsSegment } from '../../ol/exte
 import { isEmpty as _ol_extent$isEmpty } from '../../ol/extent.js';
 import { returnOrUpdate as _ol_extent$returnOrUpdate } from '../../ol/extent.js';
 import { scaleFromCenter as _ol_extent$scaleFromCenter } from '../../ol/extent.js';
+import { subtractExtents as _ol_extent$subtractExtents } from '../../ol/extent.js';
 import { wrapAndSliceX as _ol_extent$wrapAndSliceX } from '../../ol/extent.js';
 import { wrapX as _ol_extent$wrapX } from '../../ol/extent.js';
 import { loadFeaturesXhr as _ol_featureloader$loadFeaturesXhr } from '../../ol/featureloader.js';
@@ -1374,6 +1400,7 @@ import { linearRing as _ol_geom_flat_area$linearRing } from '../../ol/geom/flat/
 import { linearRings as _ol_geom_flat_area$linearRings } from '../../ol/geom/flat/area.js';
 import { linearRingss as _ol_geom_flat_area$linearRingss } from '../../ol/geom/flat/area.js';
 import { linearRingss as _ol_geom_flat_center$linearRingss } from '../../ol/geom/flat/center.js';
+import { clipFlatLineStrings as _ol_geom_flat_clip$clipFlatLineStrings } from '../../ol/geom/flat/clip.js';
 import { arrayMaxSquaredDelta as _ol_geom_flat_closest$arrayMaxSquaredDelta } from '../../ol/geom/flat/closest.js';
 import { assignClosestArrayPoint as _ol_geom_flat_closest$assignClosestArrayPoint } from '../../ol/geom/flat/closest.js';
 import { assignClosestMultiArrayPoint as _ol_geom_flat_closest$assignClosestMultiArrayPoint } from '../../ol/geom/flat/closest.js';
@@ -1549,6 +1576,7 @@ import { identityTransform as _ol_proj$identityTransform } from '../../ol/proj.j
 import { epsgLookupMapTiler as _ol_proj_proj4$epsgLookupMapTiler } from '../../ol/proj/proj4.js';
 import { fromEPSGCode as _ol_proj_proj4$fromEPSGCode } from '../../ol/proj/proj4.js';
 import { fromProjectionCode as _ol_proj_proj4$fromProjectionCode } from '../../ol/proj/proj4.js';
+import { fromProjectionDefinition as _ol_proj_proj4$fromProjectionDefinition } from '../../ol/proj/proj4.js';
 import { getEPSGLookup as _ol_proj_proj4$getEPSGLookup } from '../../ol/proj/proj4.js';
 import { getProjectionCodeLookup as _ol_proj_proj4$getProjectionCodeLookup } from '../../ol/proj/proj4.js';
 import { isRegistered as _ol_proj_proj4$isRegistered } from '../../ol/proj/proj4.js';
@@ -1619,6 +1647,7 @@ import { registerFont as _ol_render_canvas$registerFont } from '../../ol/render/
 import { rotateAtOffset as _ol_render_canvas$rotateAtOffset } from '../../ol/render/canvas.js';
 import { buildRuleSet as _ol_render_canvas_style$buildRuleSet } from '../../ol/render/canvas/style.js';
 import { buildStyle as _ol_render_canvas_style$buildStyle } from '../../ol/render/canvas/style.js';
+import { flatStyleLikeToStyleFunction as _ol_render_canvas_style$flatStyleLikeToStyleFunction } from '../../ol/render/canvas/style.js';
 import { flatStylesToStyleFunction as _ol_render_canvas_style$flatStylesToStyleFunction } from '../../ol/render/canvas/style.js';
 import { rulesToStyleFunction as _ol_render_canvas_style$rulesToStyleFunction } from '../../ol/render/canvas/style.js';
 import { textHeights as _ol_render_canvas$textHeights } from '../../ol/render/canvas.js';
@@ -1648,8 +1677,17 @@ import { generateLineStringRenderInstructions as _ol_render_webgl_renderinstruct
 import { generatePointRenderInstructions as _ol_render_webgl_renderinstructions$generatePointRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { generatePolygonRenderInstructions as _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { getCustomAttributesSize as _ol_render_webgl_renderinstructions$getCustomAttributesSize } from '../../ol/render/webgl/renderinstructions.js';
+import { deserializeFrameState as _ol_render_webgl_serialize$deserializeFrameState } from '../../ol/render/webgl/serialize.js';
+import { serializeFrameState as _ol_render_webgl_serialize$serializeFrameState } from '../../ol/render/webgl/serialize.js';
 import { computeHash as _ol_render_webgl_style$computeHash } from '../../ol/render/webgl/style.js';
 import { parseLiteralStyle as _ol_render_webgl_style$parseLiteralStyle } from '../../ol/render/webgl/style.js';
+import { TextUniforms as _ol_render_webgl_textUtil$TextUniforms } from '../../ol/render/webgl/textUtil.js';
+import { convertLineStringRenderInstructionsToCanvasTextBuilder as _ol_render_webgl_textUtil$convertLineStringRenderInstructionsToCanvasTextBuilder } from '../../ol/render/webgl/textUtil.js';
+import { convertPointRenderInstructionsToCanvasTextBuilder as _ol_render_webgl_textUtil$convertPointRenderInstructionsToCanvasTextBuilder } from '../../ol/render/webgl/textUtil.js';
+import { convertPolygonRenderInstructionsToCanvasTextBuilder as _ol_render_webgl_textUtil$convertPolygonRenderInstructionsToCanvasTextBuilder } from '../../ol/render/webgl/textUtil.js';
+import { createPostProcessDefinition as _ol_render_webgl_textUtil$createPostProcessDefinition } from '../../ol/render/webgl/textUtil.js';
+import { hasTextStyle as _ol_render_webgl_textUtil$hasTextStyle } from '../../ol/render/webgl/textUtil.js';
+import { stripNonTextStyleProperties as _ol_render_webgl_textUtil$stripNonTextStyleProperties } from '../../ol/render/webgl/textUtil.js';
 import $ol$renderer$Composite from '../../ol/renderer/Composite.js';
 import $ol$renderer$Layer from '../../ol/renderer/Layer.js';
 import $ol$renderer$Map from '../../ol/renderer/Map.js';
@@ -1800,6 +1838,7 @@ import { createFromTemplate as _ol_tileurlfunction$createFromTemplate } from '..
 import { createFromTemplates as _ol_tileurlfunction$createFromTemplates } from '../../ol/tileurlfunction.js';
 import { createFromTileUrlFunctions as _ol_tileurlfunction$createFromTileUrlFunctions } from '../../ol/tileurlfunction.js';
 import { nullTileUrlFunction as _ol_tileurlfunction$nullTileUrlFunction } from '../../ol/tileurlfunction.js';
+import { IDENTITY_TRANSFORM as _ol_transform$IDENTITY_TRANSFORM } from '../../ol/transform.js';
 import { apply as _ol_transform$apply } from '../../ol/transform.js';
 import { compose as _ol_transform$compose } from '../../ol/transform.js';
 import { composeCssTransform as _ol_transform$composeCssTransform } from '../../ol/transform.js';
@@ -1828,6 +1867,8 @@ import { getUid as _ol_util$getUid } from '../../ol/util.js';
 import { create as _ol_vec_mat4$create } from '../../ol/vec/mat4.js';
 import { fromTransform as _ol_vec_mat4$fromTransform } from '../../ol/vec/mat4.js';
 import { orthographic as _ol_vec_mat4$orthographic } from '../../ol/vec/mat4.js';
+import { reset as _ol_vec_mat4$reset } from '../../ol/vec/mat4.js';
+import { rotate as _ol_vec_mat4$rotate } from '../../ol/vec/mat4.js';
 import { scale as _ol_vec_mat4$scale } from '../../ol/vec/mat4.js';
 import { translate as _ol_vec_mat4$translate } from '../../ol/vec/mat4.js';
 import { translation as _ol_vec_mat4$translation } from '../../ol/vec/mat4.js';
@@ -1840,6 +1881,7 @@ import { DYNAMIC_DRAW as _ol_webgl$DYNAMIC_DRAW } from '../../ol/webgl.js';
 import { ELEMENT_ARRAY_BUFFER as _ol_webgl$ELEMENT_ARRAY_BUFFER } from '../../ol/webgl.js';
 import { FLOAT as _ol_webgl$FLOAT } from '../../ol/webgl.js';
 import $ol$webgl$Helper from '../../ol/webgl/Helper.js';
+import $ol$webgl$LabelsArray from '../../ol/webgl/LabelsArray.js';
 import $ol$webgl$PaletteTexture from '../../ol/webgl/PaletteTexture.js';
 import $ol$webgl$PostProcessingPass from '../../ol/webgl/PostProcessingPass.js';
 import $ol$webgl$RenderTarget from '../../ol/webgl/RenderTarget.js';

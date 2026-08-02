@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.7
+  * vue-i18n v11.4.8
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -18,23 +18,6 @@ var VueI18n = (function (exports, Vue) {
   }
 
   var Vue__namespace = /*#__PURE__*/_interopNamespaceDefault(Vue);
-
-  function warn(msg, err) {
-      if (typeof console !== 'undefined') {
-          console.warn(`[intlify] ` + msg);
-          /* istanbul ignore if */
-          if (err) {
-              console.warn(err.stack);
-          }
-      }
-  }
-  const hasWarned = {};
-  function warnOnce(msg) {
-      if (!hasWarned[msg]) {
-          hasWarned[msg] = true;
-          warn(msg);
-      }
-  }
 
   /**
    * Original Utilities
@@ -102,104 +85,6 @@ var VueI18n = (function (exports, Vue) {
                               ? global
                               : create()));
   };
-  function escapeHtml(rawText) {
-      return rawText
-          .replace(/&/g, '&amp;') // escape `&` first to avoid double escaping
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&apos;')
-          .replace(/\//g, '&#x2F;') // escape `/` to prevent closing tags or JavaScript URLs
-          .replace(/=/g, '&#x3D;'); // escape `=` to prevent attribute injection
-  }
-  function escapeAttributeValue(value) {
-      return value
-          .replace(/&(?![a-zA-Z0-9#]{2,6};)/g, '&amp;') // escape unescaped `&`
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&apos;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-  }
-  const javascriptSchemePattern = /^\s*javascript\s*(?::|&#0*58;?|&#x0*3a;?|&colon;?)/i;
-  const urlAttributePattern = /^(?:href|src|action|formaction)$/i;
-  function hasJavascriptScheme(value) {
-      return javascriptSchemePattern.test(value);
-  }
-  function sanitizeStyleValue(value) {
-      const urlPattern = /url\s*\(/gi;
-      let sanitized = '';
-      let cursor = 0;
-      let match;
-      while ((match = urlPattern.exec(value)) !== null) {
-          const urlStart = match.index;
-          const openParenIndex = urlPattern.lastIndex - 1;
-          let index = openParenIndex + 1;
-          let depth = 1;
-          let quote = null;
-          for (; index < value.length; index++) {
-              const char = value[index];
-              if (quote) {
-                  if (char === quote) {
-                      quote = null;
-                  }
-                  continue;
-              }
-              if (char === '"' || char === "'") {
-                  quote = char;
-              }
-              else if (char === '(') {
-                  depth++;
-              }
-              else if (char === ')') {
-                  depth--;
-                  if (depth === 0) {
-                      break;
-                  }
-              }
-          }
-          if (depth !== 0) {
-              break;
-          }
-          const rawUrlValue = value.slice(openParenIndex + 1, index).trim();
-          const unquotedUrlValue = (rawUrlValue.startsWith('"') && rawUrlValue.endsWith('"')) ||
-              (rawUrlValue.startsWith("'") && rawUrlValue.endsWith("'"))
-              ? rawUrlValue.slice(1, -1).trim()
-              : rawUrlValue;
-          sanitized += value.slice(cursor, urlStart);
-          sanitized += hasJavascriptScheme(unquotedUrlValue)
-              ? 'url(about:blank)'
-              : value.slice(urlStart, index + 1);
-          cursor = index + 1;
-      }
-      return sanitized + value.slice(cursor);
-  }
-  function sanitizeAttributeValue(attrName, value) {
-      if (urlAttributePattern.test(attrName) && hasJavascriptScheme(value)) {
-          return 'about:blank';
-      }
-      const sanitizedValue = attrName.toLowerCase() === 'style' ? sanitizeStyleValue(value) : value;
-      return escapeAttributeValue(sanitizedValue);
-  }
-  function sanitizeTranslatedHtml(html) {
-      // Escape dangerous characters in attribute values
-      // Process attributes with double quotes
-      html = html.replace(/([\w:-]+)\s*=\s*"([^"]*)"/g, (_, attrName, attrValue) => `${attrName}="${sanitizeAttributeValue(attrName, attrValue)}"`);
-      // Process attributes with single quotes
-      html = html.replace(/([\w:-]+)\s*=\s*'([^']*)'/g, (_, attrName, attrValue) => `${attrName}='${sanitizeAttributeValue(attrName, attrValue)}'`);
-      // Detect and neutralize event handler attributes
-      const eventHandlerPattern = /\s*on\w+\s*=\s*["']?[^"'>]+["']?/gi;
-      if (eventHandlerPattern.test(html)) {
-          {
-              warn('Potentially dangerous event handlers detected in translation. ' +
-                  'Consider removing onclick, onerror, etc. from your translation messages.');
-          }
-          // Neutralize event handler attributes by escaping 'on'
-          html = html.replace(/(\s+)(on)(\w+\s*=)/gi, '$1&#111;n$3');
-      }
-      // Disable javascript: URLs in unquoted attributes
-      html = html.replace(/(\s+(?:href|src|action|formaction)\s*=\s*)([^\s"'=<>`]+)/gi, (match, prefix, attrValue) => hasJavascriptScheme(attrValue) ? `${prefix}about:blank` : match);
-      return html;
-  }
   const hasOwnProperty = Object.prototype.hasOwnProperty;
   function hasOwn(obj, key) {
       return hasOwnProperty.call(obj, key);
@@ -268,6 +153,142 @@ var VueI18n = (function (exports, Vue) {
           }
       }
       return res.join('\n');
+  }
+
+  function warn(msg, err) {
+      if (typeof console !== 'undefined') {
+          console.warn(`[intlify] ` + msg);
+          /* istanbul ignore if */
+          if (err) {
+              console.warn(err.stack);
+          }
+      }
+  }
+  const hasWarned = {};
+  function warnOnce(msg) {
+      if (!hasWarned[msg]) {
+          hasWarned[msg] = true;
+          warn(msg);
+      }
+  }
+
+  function escapeHtml(rawText) {
+      return rawText
+          .replace(/&/g, '&amp;') // escape `&` first to avoid double escaping
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&apos;')
+          .replace(/\//g, '&#x2F;') // escape `/` to prevent closing tags or JavaScript URLs
+          .replace(/=/g, '&#x3D;'); // escape `=` to prevent attribute injection
+  }
+  function escapeAttributeValue(value) {
+      return value
+          .replace(/&(?![a-z0-9#]{2,6};)/gi, '&amp;') // escape unescaped `&`
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&apos;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+  }
+  const javascriptSchemePattern = /^javascript:/i;
+  const urlAttributePattern = /^(?:href|src|action|formaction)$/i;
+  const numericCharacterReferencePattern = /&#(?:x([0-9a-f]+)|(\d+));?/gi;
+  const namedWhitespaceCharacterReferencePattern = /&(?:Tab|NewLine);/g;
+  const colonCharacterReferencePattern = /&colon;?/gi;
+  // eslint-disable-next-line no-control-regex -- URL scheme normalization requires the full control range
+  const controlOrWhitespacePattern = /[\u0000-\u0020\u007f-\u009f]/g;
+  const eventHandlerPattern = /(?:^|[\s"'<>/])on\w+\s*=\s*["']?[^"'>]+["']?/i;
+  const eventHandlerAttributePattern = /(^|[\s"'<>/])on(\w+\s*=)/gi;
+  const unquotedUrlAttributePattern = /(^|[\s"'<>/])((?:href|src|action|formaction)\s*=\s*)([^\s"'=<>`]+)/gi;
+  function decodeNumericCharacterReference(match, hex, decimal) {
+      const digits = hex || decimal;
+      if (!digits) {
+          return match;
+      }
+      const codePoint = Number.parseInt(digits, hex ? 16 : 10);
+      return codePoint <= 0x7f ? String.fromCharCode(codePoint) : match;
+  }
+  function hasJavascriptScheme(value) {
+      const normalized = value
+          .replace(numericCharacterReferencePattern, decodeNumericCharacterReference)
+          .replace(namedWhitespaceCharacterReferencePattern, '')
+          .replace(colonCharacterReferencePattern, ':')
+          .replace(controlOrWhitespacePattern, '');
+      return javascriptSchemePattern.test(normalized);
+  }
+  function sanitizeStyleValue(value) {
+      const urlPattern = /url\s*\(/gi;
+      let sanitized = '';
+      let cursor = 0;
+      let match;
+      while ((match = urlPattern.exec(value)) !== null) {
+          const urlStart = match.index;
+          const openParenIndex = urlPattern.lastIndex - 1;
+          let index = openParenIndex + 1;
+          let depth = 1;
+          let quote = null;
+          for (; index < value.length; index++) {
+              const char = value[index];
+              if (quote) {
+                  if (char === quote) {
+                      quote = null;
+                  }
+                  continue;
+              }
+              if (char === '"' || char === "'") {
+                  quote = char;
+              }
+              else if (char === '(') {
+                  depth++;
+              }
+              else if (char === ')') {
+                  depth--;
+                  if (depth === 0) {
+                      break;
+                  }
+              }
+          }
+          if (depth !== 0) {
+              break;
+          }
+          const rawUrlValue = value.slice(openParenIndex + 1, index).trim();
+          const unquotedUrlValue = (rawUrlValue.startsWith('"') && rawUrlValue.endsWith('"')) ||
+              (rawUrlValue.startsWith("'") && rawUrlValue.endsWith("'"))
+              ? rawUrlValue.slice(1, -1).trim()
+              : rawUrlValue;
+          sanitized += value.slice(cursor, urlStart);
+          sanitized += hasJavascriptScheme(unquotedUrlValue)
+              ? 'url(about:blank)'
+              : value.slice(urlStart, index + 1);
+          cursor = index + 1;
+      }
+      return sanitized + value.slice(cursor);
+  }
+  function sanitizeAttributeValue(attrName, value) {
+      if (urlAttributePattern.test(attrName) && hasJavascriptScheme(value)) {
+          return 'about:blank';
+      }
+      const sanitizedValue = attrName.toLowerCase() === 'style' ? sanitizeStyleValue(value) : value;
+      return escapeAttributeValue(sanitizedValue);
+  }
+  function sanitizeTranslatedHtml(html) {
+      // Escape dangerous characters in attribute values
+      // Process attributes with double quotes
+      html = html.replace(/([\w:-]+)\s*=\s*"([^"]*)"/g, (_, attrName, attrValue) => `${attrName}="${sanitizeAttributeValue(attrName, attrValue)}"`);
+      // Process attributes with single quotes
+      html = html.replace(/([\w:-]+)\s*=\s*'([^']*)'/g, (_, attrName, attrValue) => `${attrName}='${sanitizeAttributeValue(attrName, attrValue)}'`);
+      // Detect and neutralize event handler attributes
+      if (eventHandlerPattern.test(html)) {
+          {
+              warn('Potentially dangerous event handlers detected in translation. ' +
+                  'Consider removing onclick, onerror, etc. from your translation messages.');
+          }
+          // Neutralize event handler attributes by escaping 'on'
+          html = html.replace(eventHandlerAttributePattern, '$1&#111;n$2');
+      }
+      // Disable javascript: URLs in unquoted attributes
+      html = html.replace(unquotedUrlAttributePattern, (match, boundary, prefix, attrValue) => hasJavascriptScheme(attrValue) ? `${boundary}${prefix}about:blank` : match);
+      return html;
   }
 
   /**
@@ -2612,7 +2633,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.7';
+  const VERSION$1 = '11.4.8';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -2859,6 +2880,88 @@ var VueI18n = (function (exports, Vue) {
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
+  function resolveFormatLocale(context, key, locale, formats, missingWarn, fallbackWarn, type) {
+      const { fallbackLocale, localeFallbacker, onWarn } = context;
+      const locales = localeFallbacker(context, // eslint-disable-line @typescript-eslint/no-explicit-any
+      fallbackLocale, locale);
+      let from = locale;
+      for (let i = 0; i < locales.length; i++) {
+          const targetLocale = locales[i];
+          if (locale !== targetLocale &&
+              isTranslateFallbackWarn(fallbackWarn, key)) {
+              onWarn(getWarnMessage$1(type === 'datetime format'
+                  ? CoreWarnCodes.FALLBACK_TO_DATE_FORMAT
+                  : CoreWarnCodes.FALLBACK_TO_NUMBER_FORMAT, {
+                  key,
+                  target: targetLocale
+              }));
+          }
+          if (locale !== targetLocale) {
+              const emitter = context.__v_emitter;
+              if (emitter) {
+                  emitter.emit('fallback', {
+                      type,
+                      key,
+                      from,
+                      to: targetLocale,
+                      groupId: `${type}:${key}`
+                  });
+              }
+          }
+          const format = (formats[targetLocale] || {})[key];
+          if (isPlainObject(format) && isString(targetLocale)) {
+              return targetLocale;
+          }
+          handleMissing(context, key, targetLocale, missingWarn, type);
+          from = targetLocale;
+      }
+      return null;
+  }
+  function getFormatterCacheKey(locale, key, overrides) {
+      let id = `${locale}__${key}`;
+      if (isPlainObject(overrides) && !isEmptyObject(overrides)) {
+          id = `${id}__${JSON.stringify(overrides)}`;
+      }
+      return id;
+  }
+  function clearFormatCache(formatters, locale, format) {
+      for (const key in format) {
+          const prefix = `${locale}__${key}`;
+          for (const id of formatters.keys()) {
+              if (id === prefix || id.startsWith(`${prefix}__`)) {
+                  formatters.delete(id);
+              }
+          }
+      }
+  }
+  function parseFormatArgs(args, options, initialOverrides, optionsKeys) {
+      const [, arg2, arg3, arg4] = args;
+      let overrides = initialOverrides;
+      if (isString(arg2)) {
+          options.key = arg2;
+      }
+      else if (isPlainObject(arg2)) {
+          Object.keys(arg2).forEach(key => {
+              if (optionsKeys.includes(key)) {
+                  overrides[key] = arg2[key];
+              }
+              else {
+                  options[key] = arg2[key];
+              }
+          });
+      }
+      if (isString(arg3)) {
+          options.locale = arg3;
+      }
+      else if (isPlainObject(arg3)) {
+          overrides = arg3;
+      }
+      if (isPlainObject(arg4)) {
+          overrides = arg4;
+      }
+      return overrides;
+  }
+
   const intlDefined = typeof Intl !== 'undefined';
   const Availabilities = {
       dateTimeFormat: intlDefined && typeof Intl.DateTimeFormat !== 'undefined',
@@ -2867,7 +2970,7 @@ var VueI18n = (function (exports, Vue) {
 
   // implementation of `datetime` function
   function datetime(context, ...args) {
-      const { datetimeFormats, unresolving, fallbackLocale, onWarn, localeFallbacker } = context;
+      const { datetimeFormats, unresolving, onWarn } = context;
       const { __datetimeFormatters } = context;
       if (!Availabilities.dateTimeFormat) {
           onWarn(getWarnMessage$1(CoreWarnCodes.CANNOT_FORMAT_DATE));
@@ -2890,57 +2993,16 @@ var VueI18n = (function (exports, Vue) {
           : context.fallbackWarn;
       const part = !!options.part;
       const locale = getLocale(context, options);
-      const locales = localeFallbacker(context, // eslint-disable-line @typescript-eslint/no-explicit-any
-      fallbackLocale, locale);
       if (!isString(key) || key === '') {
           const formatter = new Intl.DateTimeFormat(locale.replace(/!/g, ''), overrides);
           return !part ? formatter.format(value) : formatter.formatToParts(value);
       }
-      // resolve format
-      let datetimeFormat = {};
-      let targetLocale;
-      let format = null;
-      let from = locale;
-      let to = null;
-      const type = 'datetime format';
-      for (let i = 0; i < locales.length; i++) {
-          targetLocale = to = locales[i];
-          if (locale !== targetLocale &&
-              isTranslateFallbackWarn(fallbackWarn, key)) {
-              onWarn(getWarnMessage$1(CoreWarnCodes.FALLBACK_TO_DATE_FORMAT, {
-                  key,
-                  target: targetLocale
-              }));
-          }
-          // for vue-devtools timeline event
-          if (locale !== targetLocale) {
-              const emitter = context.__v_emitter;
-              if (emitter) {
-                  emitter.emit('fallback', {
-                      type,
-                      key,
-                      from,
-                      to,
-                      groupId: `${type}:${key}`
-                  });
-              }
-          }
-          datetimeFormat =
-              datetimeFormats[targetLocale] || {};
-          format = datetimeFormat[key];
-          if (isPlainObject(format))
-              break;
-          handleMissing(context, key, targetLocale, missingWarn, type); // eslint-disable-line @typescript-eslint/no-explicit-any
-          from = to;
-      }
-      // checking format and target locale
-      if (!isPlainObject(format) || !isString(targetLocale)) {
+      const targetLocale = resolveFormatLocale(context, key, locale, datetimeFormats, missingWarn, fallbackWarn, 'datetime format');
+      if (!isString(targetLocale)) {
           return unresolving ? NOT_REOSLVED : key;
       }
-      let id = `${targetLocale}__${key}`;
-      if (!isEmptyObject(overrides)) {
-          id = `${id}__${JSON.stringify(overrides)}`;
-      }
+      const format = datetimeFormats[targetLocale][key];
+      const id = getFormatterCacheKey(targetLocale, key, overrides);
       let formatter = __datetimeFormatters.get(id);
       if (!formatter) {
           formatter = new Intl.DateTimeFormat(targetLocale, assign({}, format, overrides));
@@ -2973,9 +3035,9 @@ var VueI18n = (function (exports, Vue) {
   ];
   /** @internal */
   function parseDateTimeArgs(...args) {
-      const [arg1, arg2, arg3, arg4] = args;
+      const [arg1] = args;
       const options = create();
-      let overrides = create();
+      const initialOverrides = create();
       let value;
       if (isString(arg1)) {
           // Only allow ISO strings - other date formats are often supported,
@@ -3012,45 +3074,18 @@ var VueI18n = (function (exports, Vue) {
       else {
           throw createCoreError(CoreErrorCodes.INVALID_ARGUMENT);
       }
-      if (isString(arg2)) {
-          options.key = arg2;
-      }
-      else if (isPlainObject(arg2)) {
-          Object.keys(arg2).forEach(key => {
-              if (DATETIME_FORMAT_OPTIONS_KEYS.includes(key)) {
-                  overrides[key] = arg2[key];
-              }
-              else {
-                  options[key] = arg2[key];
-              }
-          });
-      }
-      if (isString(arg3)) {
-          options.locale = arg3;
-      }
-      else if (isPlainObject(arg3)) {
-          overrides = arg3;
-      }
-      if (isPlainObject(arg4)) {
-          overrides = arg4;
-      }
+      const overrides = parseFormatArgs(args, options, initialOverrides, DATETIME_FORMAT_OPTIONS_KEYS);
       return [options.key || '', value, options, overrides];
   }
   /** @internal */
   function clearDateTimeFormat(ctx, locale, format) {
       const context = ctx;
-      for (const key in format) {
-          const id = `${locale}__${key}`;
-          if (!context.__datetimeFormatters.has(id)) {
-              continue;
-          }
-          context.__datetimeFormatters.delete(id);
-      }
+      clearFormatCache(context.__datetimeFormatters, locale, format);
   }
 
   // implementation of `number` function
   function number(context, ...args) {
-      const { numberFormats, unresolving, fallbackLocale, onWarn, localeFallbacker } = context;
+      const { numberFormats, unresolving, onWarn } = context;
       const { __numberFormatters } = context;
       if (!Availabilities.numberFormat) {
           onWarn(getWarnMessage$1(CoreWarnCodes.CANNOT_FORMAT_NUMBER));
@@ -3073,57 +3108,16 @@ var VueI18n = (function (exports, Vue) {
           : context.fallbackWarn;
       const part = !!options.part;
       const locale = getLocale(context, options);
-      const locales = localeFallbacker(context, // eslint-disable-line @typescript-eslint/no-explicit-any
-      fallbackLocale, locale);
       if (!isString(key) || key === '') {
           const formatter = new Intl.NumberFormat(locale.replace(/!/g, ''), overrides);
           return !part ? formatter.format(value) : formatter.formatToParts(value);
       }
-      // resolve format
-      let numberFormat = {};
-      let targetLocale;
-      let format = null;
-      let from = locale;
-      let to = null;
-      const type = 'number format';
-      for (let i = 0; i < locales.length; i++) {
-          targetLocale = to = locales[i];
-          if (locale !== targetLocale &&
-              isTranslateFallbackWarn(fallbackWarn, key)) {
-              onWarn(getWarnMessage$1(CoreWarnCodes.FALLBACK_TO_NUMBER_FORMAT, {
-                  key,
-                  target: targetLocale
-              }));
-          }
-          // for vue-devtools timeline event
-          if (locale !== targetLocale) {
-              const emitter = context.__v_emitter;
-              if (emitter) {
-                  emitter.emit('fallback', {
-                      type,
-                      key,
-                      from,
-                      to,
-                      groupId: `${type}:${key}`
-                  });
-              }
-          }
-          numberFormat =
-              numberFormats[targetLocale] || {};
-          format = numberFormat[key];
-          if (isPlainObject(format))
-              break;
-          handleMissing(context, key, targetLocale, missingWarn, type); // eslint-disable-line @typescript-eslint/no-explicit-any
-          from = to;
-      }
-      // checking format and target locale
-      if (!isPlainObject(format) || !isString(targetLocale)) {
+      const targetLocale = resolveFormatLocale(context, key, locale, numberFormats, missingWarn, fallbackWarn, 'number format');
+      if (!isString(targetLocale)) {
           return unresolving ? NOT_REOSLVED : key;
       }
-      let id = `${targetLocale}__${key}`;
-      if (!isEmptyObject(overrides)) {
-          id = `${id}__${JSON.stringify(overrides)}`;
-      }
+      const format = numberFormats[targetLocale][key];
+      const id = getFormatterCacheKey(targetLocale, key, overrides);
       let formatter = __numberFormatters.get(id);
       if (!formatter) {
           formatter = new Intl.NumberFormat(targetLocale, assign({}, format, overrides));
@@ -3156,47 +3150,20 @@ var VueI18n = (function (exports, Vue) {
   ];
   /** @internal */
   function parseNumberArgs(...args) {
-      const [arg1, arg2, arg3, arg4] = args;
+      const [arg1] = args;
       const options = create();
-      let overrides = create();
+      const initialOverrides = create();
       if (!isNumber(arg1)) {
           throw createCoreError(CoreErrorCodes.INVALID_ARGUMENT);
       }
       const value = arg1;
-      if (isString(arg2)) {
-          options.key = arg2;
-      }
-      else if (isPlainObject(arg2)) {
-          Object.keys(arg2).forEach(key => {
-              if (NUMBER_FORMAT_OPTIONS_KEYS.includes(key)) {
-                  overrides[key] = arg2[key];
-              }
-              else {
-                  options[key] = arg2[key];
-              }
-          });
-      }
-      if (isString(arg3)) {
-          options.locale = arg3;
-      }
-      else if (isPlainObject(arg3)) {
-          overrides = arg3;
-      }
-      if (isPlainObject(arg4)) {
-          overrides = arg4;
-      }
+      const overrides = parseFormatArgs(args, options, initialOverrides, NUMBER_FORMAT_OPTIONS_KEYS);
       return [options.key || '', value, options, overrides];
   }
   /** @internal */
   function clearNumberFormat(ctx, locale, format) {
       const context = ctx;
-      for (const key in format) {
-          const id = `${locale}__${key}`;
-          if (!context.__numberFormatters.has(id)) {
-              continue;
-          }
-          context.__numberFormatters.delete(id);
-      }
+      clearFormatCache(context.__numberFormatters, locale, format);
   }
 
   const DEFAULT_MODIFIER = (str) => str;
@@ -3743,7 +3710,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.7';
+  const VERSION = '11.4.8';
   /**
    * This is only called development env
    * istanbul-ignore-next
