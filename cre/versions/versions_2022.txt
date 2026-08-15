@@ -24,6 +24,6 @@ creBuild 	 2026.08
   └── jszip@3.10.1
   
   │ ├─┬ @element-plus/icons-vue@2.3.2
-├─┬ primevue@5.0.0
+├─┬ primevue@5.0.1
 │ ├─┬ @primeicons/vue@8.0.0
 ├── vue@3.5.41
