@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.8
+  * vue-i18n v11.4.10
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -64,6 +64,9 @@ var VueI18n = (function (exports, Vue) {
       .replace(/\u2029/g, '\\u2029')
       .replace(/\u0027/g, '\\u0027');
   const isNumber = (val) => typeof val === 'number' && isFinite(val);
+  function toDevtoolsGroupId(type, key) {
+      return isString(key) || isNumber(key) ? `${type}:${key}` : type;
+  }
   const isDate = (val) => toTypeString(val) === '[object Date]';
   const isRegExp = (val) => toTypeString(val) === '[object RegExp]';
   const isEmptyObject = (val) => isPlainObject(val) && Object.keys(val).length === 0;
@@ -347,20 +350,22 @@ var VueI18n = (function (exports, Vue) {
               if (key === '__proto__') {
                   return;
               }
-              // if src[key] is an object/array, set des[key]
-              // to empty object/array to prevent setting by reference
-              if (isObject(src[key]) && !isObject(des[key])) {
-                  des[key] = Array.isArray(src[key]) ? [] : create();
+              const value = src[key];
+              if (isArray(value)) {
+                  // replace arrays instead of merging them, without retaining source references
+                  const copied = [];
+                  copied.length = value.length;
+                  des[key] = copied;
+                  stack.push({ src: value, des: copied });
               }
-              if (isNotObjectOrIsArray(des[key]) || isNotObjectOrIsArray(src[key])) {
-                  // replace with src[key] when:
-                  // src[key] or des[key] is not an object, or
-                  // src[key] or des[key] is an array
-                  des[key] = src[key];
+              else if (isObject(value)) {
+                  if (!isObject(des[key]) || isArray(des[key])) {
+                      des[key] = create();
+                  }
+                  stack.push({ src: value, des: des[key] });
               }
               else {
-                  // src[key] and des[key] are both objects, merge them
-                  stack.push({ src: src[key], des: des[key] });
+                  des[key] = value;
               }
           });
       }
@@ -2207,7 +2212,7 @@ var VueI18n = (function (exports, Vue) {
    * @remarks
    * A fallback locale function implemented with a simple fallback algorithm.
    *
-   * Basically, it returns the value as specified in the `fallbackLocale` props, and is processed with the fallback inside intlify.
+   * Basically, the chain consists of `start` plus the specified fallback: for a string or array `fallbackLocale`, the value as specified in the props is used; for a map `fallbackLocale`, the map's **keys** are used and the `default` key is skipped since it is not a locale name.
    *
    * @param ctx - A {@link CoreContext | context}
    * @param fallback - A {@link FallbackLocale | fallback locale}
@@ -2224,7 +2229,7 @@ var VueI18n = (function (exports, Vue) {
               ...(isArray(fallback)
                   ? fallback
                   : isObject(fallback)
-                      ? Object.keys(fallback)
+                      ? Object.keys(fallback).filter(locale => locale !== 'default')
                       : isString(fallback)
                           ? [fallback]
                           : [start])
@@ -2252,29 +2257,36 @@ var VueI18n = (function (exports, Vue) {
       if (!context.__localeChainCache) {
           context.__localeChainCache = new Map();
       }
-      let chain = context.__localeChainCache.get(startLocale);
-      if (!chain) {
-          chain = [];
-          // first block defined by start
-          let block = [start];
-          // while any intervening block found
-          while (isArray(block)) {
-              block = appendBlockToChain(chain, block, fallback);
-          }
-          // prettier-ignore
-          // last block defined by default
-          const defaults = isArray(fallback) || !isPlainObject(fallback)
-              ? fallback
-              : fallback['default']
-                  ? fallback['default']
-                  : null;
-          // convert defaults to array
-          block = isString(defaults) ? [defaults] : defaults;
-          if (isArray(block)) {
-              appendBlockToChain(chain, block, false);
-          }
-          context.__localeChainCache.set(startLocale, chain);
+      const fallbackKey = friendlyJSONstringify(fallback);
+      let chains = context.__localeChainCache.get(startLocale);
+      if (!chains) {
+          chains = new Map();
+          context.__localeChainCache.set(startLocale, chains);
       }
+      const cached = chains.get(fallbackKey);
+      if (cached) {
+          return cached;
+      }
+      const chain = [];
+      // first block defined by start
+      let block = [start];
+      // while any intervening block found
+      while (isArray(block)) {
+          block = appendBlockToChain(chain, block, fallback);
+      }
+      // prettier-ignore
+      // last block defined by default
+      const defaults = isArray(fallback) || !isPlainObject(fallback)
+          ? fallback
+          : fallback['default']
+              ? fallback['default']
+              : null;
+      // convert defaults to array
+      block = isString(defaults) ? [defaults] : defaults;
+      if (isArray(block)) {
+          appendBlockToChain(chain, block, false);
+      }
+      chains.set(fallbackKey, chain);
       return chain;
   }
   function appendBlockToChain(chain, block, blocks) {
@@ -2633,7 +2645,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.8';
+  const VERSION$1 = '11.4.10';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -2838,7 +2850,7 @@ var VueI18n = (function (exports, Vue) {
                   locale,
                   key,
                   type,
-                  groupId: `${type}:${key}`
+                  groupId: toDevtoolsGroupId(type, key)
               });
           }
       }
@@ -2904,7 +2916,7 @@ var VueI18n = (function (exports, Vue) {
                       key,
                       from,
                       to: targetLocale,
-                      groupId: `${type}:${key}`
+                      groupId: toDevtoolsGroupId(type, key)
                   });
               }
           }
@@ -3444,7 +3456,7 @@ var VueI18n = (function (exports, Vue) {
                       key,
                       from,
                       to,
-                      groupId: `${type}:${key}`
+                      groupId: toDevtoolsGroupId(type, key)
                   });
               }
           }
@@ -3473,7 +3485,7 @@ var VueI18n = (function (exports, Vue) {
                       key,
                       message: format,
                       time: end - start,
-                      groupId: `${type}:${key}`
+                      groupId: toDevtoolsGroupId(type, key)
                   });
               }
               if (startTag && endTag && mark && measure) {
@@ -3530,7 +3542,7 @@ var VueI18n = (function (exports, Vue) {
                   type: 'message-compilation',
                   message: format,
                   time: end - start,
-                  groupId: `${'translate'}:${key}`
+                  groupId: toDevtoolsGroupId('translate', key)
               });
           }
           if (startTag && endTag && mark && measure) {
@@ -3565,7 +3577,7 @@ var VueI18n = (function (exports, Vue) {
                   type: 'message-evaluation',
                   value: messaged,
                   time: end - start,
-                  groupId: `${'translate'}:${msg.key}`
+                  groupId: toDevtoolsGroupId('translate', msg.key)
               });
           }
           if (startTag && endTag && mark && measure) {
@@ -3633,7 +3645,7 @@ var VueI18n = (function (exports, Vue) {
                           error: err.message,
                           start: err.location && err.location.start.offset,
                           end: err.location && err.location.end.offset,
-                          groupId: `${'translate'}:${key}`
+                          groupId: toDevtoolsGroupId('translate', key)
                       });
                   }
                   const message = `Message compilation error: ${err.message}`;
@@ -3710,7 +3722,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.8';
+  const VERSION = '11.4.10';
   /**
    * This is only called development env
    * istanbul-ignore-next
@@ -3963,13 +3975,13 @@ var VueI18n = (function (exports, Vue) {
       return Vue.createVNode(Vue.Text, null, key, 0);
   }
   function getCurrentInstance() {
-      // NOTE(kazupon): avoid bundler warning
-      const key = 'currentInstance';
-      if (key in Vue__namespace) {
-          return Vue__namespace[key];
-      }
-      else {
-          return Vue__namespace.getCurrentInstance();
+      {
+          // NOTE(kazupon): avoid missing-export warnings with Vue <= 3.5
+          const key = 'currentInstance';
+          if (key in Vue__namespace) {
+              return Vue__namespace[key];
+          }
+          return Vue.getCurrentInstance();
       }
   }
   /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -4229,7 +4241,7 @@ var VueI18n = (function (exports, Vue) {
                               type: warnType,
                               key,
                               to: 'global',
-                              groupId: `${warnType}:${key}`
+                              groupId: toDevtoolsGroupId(warnType, key)
                           });
                       }
                   }
