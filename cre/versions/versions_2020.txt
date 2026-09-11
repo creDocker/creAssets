@@ -20,6 +20,6 @@ creBuild 	 2026.01
   ├── jquery@4.0.0 
   └── jquery-ui@1.14.2 
   └── jspdf@4.2.1 
-  └── jszip@3.10.1 
+  └── jszip@3.10.2 
   ├── ol@10.10.0 
   └── vue@3.5.42 
