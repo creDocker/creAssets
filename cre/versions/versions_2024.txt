@@ -1,5 +1,5 @@
 creBuild 	 2026.09
- creUbuntu 	 24.04.4 LTS
+ creUbuntu 	 24.04.5 LTS
   UbuntuName 	 noble
   OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
   msmtp version 1.8.24
@@ -7,11 +7,11 @@ creBuild 	 2026.09
   Python3 	 Python 3.12.3
    uv 	 
    uv2 	 
-   numpy 	 2.5.2
+   numpy 	 2.5.3
    pandas 	 3.0.5
    Flask 	 
  creNode 	 16
-  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.8) 2.39
+  ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39
   node 	 v16.20.2
   npm 	 8.19.4
   sdk 	 5.23.0
@@ -23,7 +23,7 @@ creBuild 	 2026.09
   ├── jquery@4.0.0
   └── jquery-ui@1.14.2
   └── jspdf@4.2.1
-  └── jszip@3.10.1
+  └── jszip@3.10.2
   └── ol@10.10.0
   │ ├─┬ @element-plus/icons-vue@2.3.2
   ├─┬ element-plus@2.14.5

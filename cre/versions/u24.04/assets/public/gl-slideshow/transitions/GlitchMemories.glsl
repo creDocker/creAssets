@@ -1,6 +1,6 @@
-// Author: Gunnar Roth
+// author: Gunnar Roth
 // based on work from natewave
-// License: MIT
+// license: MIT
 vec4 transition(vec2 p) {
   vec2 block = floor(p.xy / vec2(16));
   vec2 uv_noise = block / vec2(64);

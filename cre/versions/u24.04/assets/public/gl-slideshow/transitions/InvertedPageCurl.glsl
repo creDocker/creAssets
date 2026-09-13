@@ -1,5 +1,5 @@
-// Author: Hewlett-Packard
-// License: BSD 3 Clause
+// author: Hewlett-Packard
+// license: BSD 3 Clause
 // Adapted by Sergey Kosarevsky from:
 // http://rectalogic.github.io/webvfx/examples_2transition-shader-pagecurl_8html-example.html
 
@@ -36,19 +36,18 @@ in vec2 texCoord;
 
 const float MIN_AMOUNT = -0.16;
 const float MAX_AMOUNT = 1.5;
+float amount = progress * (MAX_AMOUNT - MIN_AMOUNT) + MIN_AMOUNT;
 
 const float PI = 3.141592653589793;
 
 const float scale = 512.0;
 const float sharpness = 3.0;
 
-const float cylinderRadius = 1.0 / PI / 2.0;
+float cylinderCenter = amount;
+// 360 degrees * amount
+float cylinderAngle = 2.0 * PI * amount;
 
-// These depend on the progress uniform and must be computed per-fragment.
-// Global initializers with uniforms are invalid in GLSL ES and fail on Mesa.
-float amount;
-float cylinderCenter;
-float cylinderAngle;
+const float cylinderRadius = 1.0 / PI / 2.0;
 
 vec3 hitPoint(float hitAngle, float yc, vec3 point, mat3 rrotation)
 {
@@ -80,7 +79,7 @@ float distanceToEdge(vec3 point)
 
 vec4 seeThrough(float yc, vec2 p, mat3 rotation, mat3 rrotation)
 {
-        float hitAngle = PI - (acos(clamp(yc / cylinderRadius, -1.0, 1.0)) - cylinderAngle);
+        float hitAngle = PI - (acos(yc / cylinderRadius) - cylinderAngle);
         vec3 point = hitPoint(hitAngle, yc, rotation * vec3(p, 1.0), rrotation);
         if (yc <= 0.0 && (point.x < 0.0 || point.y < 0.0 || point.x > 1.0 || point.y > 1.0))
         {
@@ -114,29 +113,25 @@ vec4 backside(float yc, vec3 point)
 {
         vec4 color = getFromColor(point.xy);
         float gray = (color.r + color.b + color.g) / 15.0;
-        gray += (8.0 / 10.0) * (pow(max(0.0, 1.0 - abs(yc / cylinderRadius)), 2.0 / 10.0) / 2.0 + (5.0 / 10.0));
+        gray += (8.0 / 10.0) * (pow(1.0 - abs(yc / cylinderRadius), 2.0 / 10.0) / 2.0 + (5.0 / 10.0));
         color.rgb = vec3(gray);
         return color;
 }
 
 vec4 behindSurface(vec2 p, float yc, vec3 point, mat3 rrotation)
 {
-        float safeAmount = amount >= 0.0 ? max(amount, 1e-4) : min(amount, -1e-4);
-        float shado = (1.0 - ((-cylinderRadius - yc) / safeAmount * 7.0)) / 6.0;
+        float shado = (1.0 - ((-cylinderRadius - yc) / amount * 7.0)) / 6.0;
         shado *= 1.0 - abs(point.x - 0.5);
 
         yc = (-cylinderRadius - cylinderRadius - yc);
 
-        float hitAngle = (acos(clamp(yc / cylinderRadius, -1.0, 1.0)) + cylinderAngle) - PI;
+        float hitAngle = (acos(yc / cylinderRadius) + cylinderAngle) - PI;
         point = hitPoint(hitAngle, yc, point, rrotation);
 
         if (yc < 0.0 && point.x >= 0.0 && point.y >= 0.0 && point.x <= 1.0 && point.y <= 1.0 && (hitAngle < PI || amount > 0.5))
         {
-                float dx = point.x - 0.5;
-                float dy = point.y - 0.5;
-                shado = 1.0 - (sqrt(dx * dx + dy * dy) / (71.0 / 100.0));
-                float nyc = -yc / cylinderRadius;
-                shado *= nyc * nyc * nyc;
+                shado = 1.0 - (sqrt(pow(point.x - 0.5, 2.0) + pow(point.y - 0.5, 2.0)) / (71.0 / 100.0));
+                shado *= pow(-yc / cylinderRadius, 3.0);
                 shado *= 0.5;
         }
         else
@@ -147,9 +142,6 @@ vec4 behindSurface(vec2 p, float yc, vec3 point, mat3 rrotation)
 }
 
 vec4 transition(vec2 p) {
-  amount = progress * (MAX_AMOUNT - MIN_AMOUNT) + MIN_AMOUNT;
-  cylinderCenter = amount;
-  cylinderAngle = 2.0 * PI * amount;
 
   const float angle = 100.0 * PI / 180.0;
         float c = cos(-angle);
@@ -183,7 +175,7 @@ vec4 transition(vec2 p) {
                 return getFromColor(p);
         }
 
-        float hitAngle = (acos(clamp(yc / cylinderRadius, -1.0, 1.0)) + cylinderAngle) - PI;
+        float hitAngle = (acos(yc / cylinderRadius) + cylinderAngle) - PI;
 
         float hitAngleMod = mod(hitAngle, 2.0 * PI);
         if ((hitAngleMod > PI && amount < 0.5) || (hitAngleMod > PI/2.0 && amount < 0.0))
@@ -203,11 +195,8 @@ vec4 transition(vec2 p) {
         vec4 otherColor;
         if (yc < 0.0)
         {
-                float dx2 = point.x - 0.5;
-                float dy2 = point.y - 0.5;
-                float shado = 1.0 - (sqrt(dx2 * dx2 + dy2 * dy2) / 0.71);
-                float nyc2 = -yc / cylinderRadius;
-                shado *= nyc2 * nyc2 * nyc2;
+                float shado = 1.0 - (sqrt(pow(point.x - 0.5, 2.0) + pow(point.y - 0.5, 2.0)) / 0.71);
+                shado *= pow(-yc / cylinderRadius, 3.0);
                 shado *= 0.5;
                 otherColor = vec4(0.0, 0.0, 0.0, shado);
         }
