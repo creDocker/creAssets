@@ -9,7 +9,7 @@ creBuild 	 2026.09
    pandas 	 2.3.3
    Flask 	 
  creNode 	 16
-  ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.14) 2.35
+  ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.15) 2.35
   node 	 v16.20.2
   npm 	 8.19.4
   sdk 	 5.23.0
@@ -21,9 +21,9 @@ creBuild 	 2026.09
   ├── jquery@4.0.0
   └── jquery-ui@1.14.2
   └── jspdf@4.2.1
-  └── jszip@3.10.1
+  └── jszip@3.10.2
   
   │ ├─┬ @element-plus/icons-vue@2.3.2
 ├─┬ primevue@5.0.1
-│ ├─┬ @primeicons/vue@8.0.0
+│ ├─┬ @primeicons/vue@8.0.1
 ├── vue@3.5.42
