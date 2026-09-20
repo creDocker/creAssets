@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.10
+  * vue-i18n v11.4.12
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -2241,6 +2241,9 @@ var VueI18n = (function (exports, Vue) {
    * @remarks
    * A fallback locale function implemented with a fallback chain algorithm. It's used in VueI18n as default.
    *
+   * Chains are cached per fallback identity. If you mutate an object or array fallback in place,
+   * pass a new object or array instead so that the chain is recomputed.
+   *
    * @param ctx - A {@link CoreContext | context}
    * @param fallback - A {@link FallbackLocale | fallback locale}
    * @param start - A starting {@link Locale | locale}
@@ -2254,16 +2257,31 @@ var VueI18n = (function (exports, Vue) {
   function fallbackWithLocaleChain(ctx, fallback, start) {
       const startLocale = isString(start) ? start : DEFAULT_LOCALE;
       const context = ctx;
-      if (!context.__localeChainCache) {
-          context.__localeChainCache = new Map();
+      // NOTE: chains are cached per fallback value, not per serialized content.
+      // object / array fallbacks are keyed by identity in a WeakMap so that their
+      // entries are released together with the fallback itself.
+      let chains;
+      if (isObject(fallback)) {
+          if (!context.__localeChainObjectCache) {
+              context.__localeChainObjectCache = new WeakMap();
+          }
+          chains = context.__localeChainObjectCache.get(fallback);
+          if (!chains) {
+              chains = new Map();
+              context.__localeChainObjectCache.set(fallback, chains);
+          }
       }
-      const fallbackKey = friendlyJSONstringify(fallback);
-      let chains = context.__localeChainCache.get(startLocale);
-      if (!chains) {
-          chains = new Map();
-          context.__localeChainCache.set(startLocale, chains);
+      else {
+          if (!context.__localeChainCache) {
+              context.__localeChainCache = new Map();
+          }
+          chains = context.__localeChainCache.get(fallback);
+          if (!chains) {
+              chains = new Map();
+              context.__localeChainCache.set(fallback, chains);
+          }
       }
-      const cached = chains.get(fallbackKey);
+      const cached = chains.get(startLocale);
       if (cached) {
           return cached;
       }
@@ -2286,7 +2304,7 @@ var VueI18n = (function (exports, Vue) {
       if (isArray(block)) {
           appendBlockToChain(chain, block, false);
       }
-      chains.set(fallbackKey, chain);
+      chains.set(startLocale, chain);
       return chain;
   }
   function appendBlockToChain(chain, block, blocks) {
@@ -2645,7 +2663,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.10';
+  const VERSION$1 = '11.4.12';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -2865,10 +2883,24 @@ var VueI18n = (function (exports, Vue) {
           return key;
       }
   }
+  function invalidateLocaleChainCache(ctx, fallback) {
+      const context = ctx;
+      if (isObject(fallback)) {
+          context.__localeChainObjectCache?.delete(fallback);
+      }
+      else {
+          context.__localeChainCache?.delete(fallback);
+      }
+  }
   /** @internal */
   function updateFallbackLocale(ctx, locale, fallback) {
-      const context = ctx;
-      context.__localeChainCache = new Map();
+      invalidateLocaleChainCache(ctx, fallback);
+      // NOTE: getMessageContextOptions() queries the root context with *this*
+      // (local) fallback, so the root holds an entry under the same identity key.
+      // Clearing only the local context leaves a stale chain behind.
+      if (ctx.fallbackContext) {
+          invalidateLocaleChainCache(ctx.fallbackContext, fallback);
+      }
       ctx.localeFallbacker(ctx, fallback, locale);
   }
   /** @internal */
@@ -3722,7 +3754,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.10';
+  const VERSION = '11.4.12';
   /**
    * This is only called development env
    * istanbul-ignore-next
@@ -4157,13 +4189,33 @@ var VueI18n = (function (exports, Vue) {
               _locale.value = val;
           }
       });
+      // NOTE: `_context.fallbackContext` points at the root context only while a
+      // translation runs (see `wrapWithDeps`). Point it there while invalidating too,
+      // so that the chain the root cached for this composer's fallbackLocale is dropped.
+      function updateFallbackLocaleWithRoot(fallback) {
+          if (!_isGlobal) {
+              _context.fallbackContext = __root
+                  ? getFallbackContext()
+                  : undefined;
+          }
+          try {
+              updateFallbackLocale(_context, _locale.value, fallback);
+          }
+          finally {
+              if (!_isGlobal) {
+                  _context.fallbackContext = undefined;
+              }
+          }
+      }
       // fallbackLocale
       const fallbackLocale = Vue.computed({
           get: () => _fallbackLocale.value,
           set: val => {
-              _context.fallbackLocale = val;
               _fallbackLocale.value = val;
-              updateFallbackLocale(_context, _locale.value, val);
+              // keep the same reference as `_fallbackLocale` so that `t()` and `te()`
+              // share one cache entry
+              _context.fallbackLocale = _fallbackLocale.value;
+              updateFallbackLocaleWithRoot(_fallbackLocale.value);
           }
       });
       // messages
@@ -4437,6 +4489,10 @@ var VueI18n = (function (exports, Vue) {
       }
       // for debug
       composerID++;
+      // invalidate the locale chain cache when `fallbackLocale` is mutated in place.
+      // `flush: 'sync'` so that a `t()` called right after the mutation sees the new chain.
+      // NOTE: only effective in the browser, where `_fallbackLocale` is deeply reactive.
+      Vue.watch(_fallbackLocale, () => updateFallbackLocaleWithRoot(_fallbackLocale.value), { deep: true, flush: 'sync' });
       // watch root locale & fallbackLocale
       if (__root && inBrowser) {
           Vue.watch(__root.locale, (val) => {
@@ -4449,7 +4505,7 @@ var VueI18n = (function (exports, Vue) {
           Vue.watch(__root.fallbackLocale, (val) => {
               if (_inheritLocale) {
                   _fallbackLocale.value = val;
-                  _context.fallbackLocale = val;
+                  _context.fallbackLocale = _fallbackLocale.value;
                   updateFallbackLocale(_context, _locale.value, _fallbackLocale.value);
               }
           });
@@ -4465,9 +4521,8 @@ var VueI18n = (function (exports, Vue) {
           set inheritLocale(val) {
               _inheritLocale = val;
               if (val && __root) {
-                  _locale.value = __root.locale.value;
-                  _fallbackLocale.value = __root.fallbackLocale.value;
-                  updateFallbackLocale(_context, _locale.value, _fallbackLocale.value);
+                  locale.value = __root.locale.value;
+                  fallbackLocale.value = __root.fallbackLocale.value;
               }
           },
           get availableLocales() {
