@@ -1,9 +1,9 @@
-creBuild 	 2026.09
+creBuild 	 2026.10
  creUbuntu 	 22.04.5 LTS
   UbuntuName 	 jammy
   OpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022)
   msmtp version 1.8.16
-  Java 	 openjdk version "17.0.20" 2026-07-21
+  Java 	 openjdk version "17.0.20.1" 2026-08-18
   Python3 	 Python 3.10.12
    numpy 	 2.2.6
    pandas 	 2.3.3
@@ -12,7 +12,7 @@ creBuild 	 2026.09
   ldd 	 ldd (Ubuntu GLIBC 2.35-0ubuntu3.15) 2.35
   node 	 v16.20.2
   npm 	 8.19.4
-  sdk 	 5.23.0
+  sdk 	 5.23.1
  creAssets 	 2022.0
   └── bootstrap@5.3.8
   └── c3@0.7.20
@@ -24,6 +24,6 @@ creBuild 	 2026.09
   └── jszip@3.10.2
   
   │ ├─┬ @element-plus/icons-vue@2.3.2
-├─┬ primevue@5.0.1
-│ ├─┬ @primeicons/vue@8.0.1
+├─┬ primevue@5.0.2
+│ ├─┬ @primeicons/vue@8.0.2
 ├── vue@3.5.43
