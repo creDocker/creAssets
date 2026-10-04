@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.12
+  * vue-i18n v11.4.13
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -2663,7 +2663,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.12';
+  const VERSION$1 = '11.4.13';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -3754,7 +3754,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.12';
+  const VERSION = '11.4.13';
   /**
    * This is only called development env
    * istanbul-ignore-next
