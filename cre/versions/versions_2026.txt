@@ -1,4 +1,4 @@
-creBuild 	 2026.09
+creBuild 	 2026.10
  creUbuntu 	 26.04.1 LTS
   UbuntuName 	 resolute
   OpenSSL 3.5.5 27 Jan 2026 (Library: OpenSSL 3.5.5 27 Jan 2026)
@@ -24,6 +24,6 @@ creBuild 	 2026.09
   └── jquery-ui@1.14.2
   └── jspdf@4.2.1
   └── jszip@3.10.2
-  └── ol@10.10.0
+  └── ol@10.11.0
   │ ├─┬ @element-plus/icons-vue@2.3.2
-  ├─┬ element-plus@2.14.6
+  ├─┬ element-plus@2.14.7
