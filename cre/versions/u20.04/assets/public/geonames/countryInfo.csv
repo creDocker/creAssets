@@ -128,7 +128,7 @@ KZ,KAZ,398,KZ,Kazakhstan,Nur-Sultan,2717300,18276499,AS,.kz,KZT,Tenge,7,######,^
 LA,LAO,418,LA,Laos,Vientiane,236800,7061507,AS,.la,LAK,Kip,856,#####,^(\d{5})$,lo;fr;en,1655842,CN;MM;KH;TH;VN,
 LB,LBN,422,LE,Lebanon,Beirut,10400,6848925,AS,.lb,LBP,Pound,961,#### ####|####,^(\d{4}(\d{4})?)$,ar-LB;fr-LB;en;hy,272103,SY;IL,
 LC,LCA,662,ST,Saint Lucia,Castries,616,181889,NA,.lc,XCD,Dollar,+1-758,,,en-LC,3576468,,
-LI,LIE,438,LS,Liechtenstein,Vaduz,160,37910,EU,.li,CHF,Franc,423,####,^(\d{4})$,de-LI,3042058,CH;AT,
+LI,LIE,438,LS,Liechtenstein,Vaduz,160,37910,EU,.li,CHF,Franc,423,94##,^((94\d{2}))$,de-LI,3042058,CH;AT,
 LK,LKA,144,CE,Sri Lanka,Colombo,65610,21670000,AS,.lk,LKR,Rupee,94,#####,^(\d{5})$,si;ta;en,1227603,,
 LR,LBR,430,LI,Liberia,Monrovia,111370,4818977,AF,.lr,LRD,Dollar,231,####,^(\d{4})$,en-LR,2275384,SL;CI;GN,
 LS,LSO,426,LT,Lesotho,Maseru,30355,2108132,AF,.ls,LSL,Loti,266,###,^(\d{3})$,en-LS;st;zu;xh,932692,ZA,
