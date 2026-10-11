@@ -7,14 +7,14 @@ creBuild 	 2026.10
   Python3 	 Python 3.12.3
    uv 	 
    uv2 	 
-   numpy 	 2.5.3
+   numpy 	 2.5.4
    pandas 	 3.0.6
    Flask 	 
  creNode 	 16
   ldd 	 ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39
   node 	 v16.20.2
   npm 	 8.19.4
-  sdk 	 5.23.1
+  sdk 	 5.23.2
  creAssets 	 2024.0
   └── bootstrap@5.3.8
   └── c3@0.7.20
@@ -24,6 +24,6 @@ creBuild 	 2026.10
   └── jquery-ui@1.14.2
   └── jspdf@4.2.1
   └── jszip@3.10.2
-  └── ol@10.10.0
+  └── ol@10.11.0
   │ ├─┬ @element-plus/icons-vue@2.3.2
   ├─┬ element-plus@2.14.7

@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.13
+  * vue-i18n v11.4.14
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -93,6 +93,27 @@ var VueI18n = (function (exports, Vue) {
       return hasOwnProperty.call(obj, key);
   }
   /* eslint-enable */
+  /**
+   * Get `obj[key]` only when `key` is an own property of `obj`, so that a key
+   * such as `constructor` does not read a property inherited from
+   * `Object.prototype`.
+   * The property is read before the check, so that a reactive `obj` tracks
+   * `key` even when it is missing.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function getOwn(obj, key) {
+      const value = obj[key];
+      return hasOwn(obj, key) ? value : undefined;
+  }
+  /**
+   * Whether `key` is a property name of `Object.prototype`, such as `__proto__`,
+   * `constructor` or `toString`.
+   * On a plain object, such a key reads a built-in, and assigning to `__proto__`
+   * replaces the prototype.
+   */
+  function isObjectPrototypeKey(key) {
+      return hasOwn(Object.prototype, key);
+  }
   /**
    * Useful Utilities By Evan you
    * Modified by kazuya kawaguchi
@@ -202,6 +223,10 @@ var VueI18n = (function (exports, Vue) {
   const controlOrWhitespacePattern = /[\u0000-\u0020\u007f-\u009f]/g;
   const eventHandlerPattern = /(?:^|[\s"'<>/])on\w+\s*=\s*["']?[^"'>]+["']?/i;
   const eventHandlerAttributePattern = /(^|[\s"'<>/])on(\w+\s*=)/gi;
+  // `srcdoc` holds a whole HTML document: its value is entity-decoded and then parsed again,
+  // so neither escaping the value nor neutralizing `on*` inside it makes it inert
+  const srcdocPattern = /(?:^|[\s"'<>/])srcdoc\s*=/i;
+  const srcdocAttributePattern = /(^|[\s"'<>/])s(rcdoc\s*=)/gi;
   const unquotedUrlAttributePattern = /(^|[\s"'<>/])((?:href|src|action|formaction)\s*=\s*)([^\s"'=<>`]+)/gi;
   function decodeNumericCharacterReference(match, hex, decimal) {
       const digits = hex || decimal;
@@ -289,6 +314,15 @@ var VueI18n = (function (exports, Vue) {
           // Neutralize event handler attributes by escaping 'on'
           html = html.replace(eventHandlerAttributePattern, '$1&#111;n$2');
       }
+      // Detect and neutralize `srcdoc` attributes
+      if (srcdocPattern.test(html)) {
+          {
+              warn('Potentially dangerous srcdoc attribute detected in translation. ' +
+                  'Consider removing srcdoc from your translation messages.');
+          }
+          // Neutralize `srcdoc` by escaping 's': character references are not decoded in attribute names
+          html = html.replace(srcdocAttributePattern, '$1&#115;$2');
+      }
       // Disable javascript: URLs in unquoted attributes
       html = html.replace(unquotedUrlAttributePattern, (match, boundary, prefix, attrValue) => hasJavascriptScheme(attrValue) ? `${boundary}${prefix}about:blank` : match);
       return html;
@@ -338,8 +372,12 @@ var VueI18n = (function (exports, Vue) {
   const isNotObjectOrIsArray = (val) => !isObject(val) || isArray(val);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function deepCopy(src, des) {
-      // src and des should both be objects, and none of them can be a array
-      if (isNotObjectOrIsArray(src) || isNotObjectOrIsArray(des)) {
+      // src and des should both be objects, and none of them can be a array.
+      // des can't be `Object.prototype` either: copying into it would pollute
+      // every object
+      if (isNotObjectOrIsArray(src) ||
+          isNotObjectOrIsArray(des) ||
+          des === Object.prototype) {
           throw new Error('Invalid value');
       }
       const stack = [{ src, des }];
@@ -2102,9 +2140,7 @@ var VueI18n = (function (exports, Vue) {
           // compose message function from AST
           const msg = format(ast);
           // if occurred compile error, don't cache
-          return !detectError
-              ? (compileCache[cacheKey] = msg)
-              : msg;
+          return !detectError ? (compileCache[cacheKey] = msg) : msg;
       }
       else {
           if (!isMessageAST(message)) {
@@ -2119,8 +2155,7 @@ var VueI18n = (function (exports, Vue) {
                   return cached;
               }
               // compose message function from message (AST)
-              return (compileCache[cacheKey] =
-                  format(message));
+              return (compileCache[cacheKey] = format(message));
           }
           else {
               return format(message);
@@ -2663,7 +2698,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.13';
+  const VERSION$1 = '11.4.14';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -3327,6 +3362,8 @@ var VueI18n = (function (exports, Vue) {
 
   const NOOP_MESSAGE_FUNCTION = () => '';
   const isMessageFunction = (val) => isFunction(val);
+  /** @internal */
+  const isMessageFormat = (val) => isString(val) || isMessageAST(val) || isMessageFunction(val);
   // implementation of `translate` function
   function translate(context, ...args) {
       const { fallbackFormat, postTranslation, unresolving, messageCompiler, fallbackLocale, messages } = context;
@@ -3372,10 +3409,7 @@ var VueI18n = (function (exports, Vue) {
       let format = formatScope;
       // if you use default message, set it as message format!
       let cacheBaseKey = key;
-      if (!resolvedMessage &&
-          !(isString(format) ||
-              isMessageAST(format) ||
-              isMessageFunction(format))) {
+      if (!resolvedMessage && !isMessageFormat(format)) {
           if (enableDefaultMsg) {
               format = defaultMsgOrKey;
               cacheBaseKey = format;
@@ -3383,10 +3417,7 @@ var VueI18n = (function (exports, Vue) {
       }
       // checking message format and target locale
       if (!resolvedMessage &&
-          (!(isString(format) ||
-              isMessageAST(format) ||
-              isMessageFunction(format)) ||
-              !isString(targetLocale))) {
+          (!isMessageFormat(format) || !isString(targetLocale))) {
           return unresolving ? NOT_REOSLVED : key;
       }
       // TODO: refactor
@@ -3448,15 +3479,19 @@ var VueI18n = (function (exports, Vue) {
       return ret;
   }
   function escapeParams(options) {
+      // a call can pass both list and named values, so escape each of them
       if (isArray(options.list)) {
           options.list = options.list.map(item => isString(item) ? escapeHtml(item) : item);
       }
-      else if (isObject(options.named)) {
-          Object.keys(options.named).forEach(key => {
-              if (isString(options.named[key])) {
-                  options.named[key] = escapeHtml(options.named[key]);
-              }
-          });
+      if (isObject(options.named)) {
+          // escape into a new object, so that the values of the caller are not rewritten
+          const source = options.named;
+          const named = create();
+          for (const key of Object.keys(source)) {
+              const value = source[key];
+              named[key] = isString(value) ? escapeHtml(value) : value;
+          }
+          options.named = named;
       }
   }
   function resolveMessageFormat(context, key, locale, fallbackLocale, fallbackWarn, missingWarn) {
@@ -3525,7 +3560,7 @@ var VueI18n = (function (exports, Vue) {
                   measure('intlify message resolve', startTag, endTag);
               }
           }
-          if (isString(format) || isMessageAST(format) || isMessageFunction(format)) {
+          if (isMessageFormat(format)) {
               break;
           }
           if (!isImplicitFallback(targetLocale, locales)) {
@@ -3754,7 +3789,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.13';
+  const VERSION = '11.4.14';
   /**
    * This is only called development env
    * istanbul-ignore-next
@@ -3831,7 +3866,8 @@ var VueI18n = (function (exports, Vue) {
       DEPRECATE_TRANSLATE_CUSTOME_DIRECTIVE: (CORE_WARN_CODES_EXTEND_POINT +
           4),
       // duplicate `useI18n` calling
-      DUPLICATE_USE_I18N_CALLING: (CORE_WARN_CODES_EXTEND_POINT + 5)
+      DUPLICATE_USE_I18N_CALLING: (CORE_WARN_CODES_EXTEND_POINT + 5),
+      IGNORE_UNSAFE_LOCALE: (CORE_WARN_CODES_EXTEND_POINT + 6)
   };
   const warnMessages = {
       [I18nWarnCodes.FALLBACK_TO_ROOT]: `Fall back to {type} '{key}' with root locale.`,
@@ -3845,13 +3881,26 @@ var VueI18n = (function (exports, Vue) {
        * @deprecated will be removed at vue-i18n v12
        */
       [I18nWarnCodes.DEPRECATE_TRANSLATE_CUSTOME_DIRECTIVE]: `'v-t' has been deprecated in v11. Use translate APIs ('t' or '$t') instead.`,
-      [I18nWarnCodes.DUPLICATE_USE_I18N_CALLING]: "Duplicate `useI18n` calling by local scope. Please don't call it on local scope, due to it does not work properly in component."
+      [I18nWarnCodes.DUPLICATE_USE_I18N_CALLING]: "Duplicate `useI18n` calling by local scope. Please don't call it on local scope, due to it does not work properly in component.",
+      [I18nWarnCodes.IGNORE_UNSAFE_LOCALE]: `Ignore '{locale}' locale: it is a property name of Object.prototype`
   };
   function getWarnMessage(code, ...args) {
       return format$1(warnMessages[code], ...args);
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
+  /**
+   * Whether `locale` can't be a key of the locale messages and formats.
+   * A property name of `Object.prototype`, such as `__proto__` or `constructor`,
+   * would read or replace a built-in object, so it is ignored with a warning.
+   */
+  function isUnsafeLocale(locale) {
+      if (isObjectPrototypeKey(locale)) {
+          warn(getWarnMessage(I18nWarnCodes.IGNORE_UNSAFE_LOCALE, { locale }));
+          return true;
+      }
+      return false;
+  }
   /**
    * Transform flat json in obj to normal json in obj
    */
@@ -3939,7 +3988,10 @@ var VueI18n = (function (exports, Vue) {
               if ('locale' in custom && 'resource' in custom) {
                   const { locale, resource } = custom;
                   if (locale) {
-                      ret[locale] = ret[locale] || create();
+                      if (isUnsafeLocale(locale)) {
+                          return;
+                      }
+                      ret[locale] = getOwn(ret, locale) || create();
                       deepCopy(resource, ret[locale]);
                   }
                   else {
@@ -4126,7 +4178,6 @@ var VueI18n = (function (exports, Vue) {
       // pluralRules
       let _pluralRules = options.pluralRules || (__root && __root.pluralRules);
       // runtime context
-      // eslint-disable-next-line prefer-const
       let _context;
       const getCoreContext = () => {
           _isGlobal && setFallbackContext(null);
@@ -4152,22 +4203,12 @@ var VueI18n = (function (exports, Vue) {
           {
               ctxOptions.datetimeFormats = _datetimeFormats.value;
               ctxOptions.numberFormats = _numberFormats.value;
-              ctxOptions.__datetimeFormatters = isPlainObject(_context)
-                  ? _context.__datetimeFormatters
-                  : undefined;
-              ctxOptions.__numberFormatters = isPlainObject(_context)
-                  ? _context.__numberFormatters
-                  : undefined;
-          }
-          {
-              ctxOptions.__v_emitter = isPlainObject(_context)
-                  ? _context.__v_emitter
-                  : undefined;
           }
           const ctx = createCoreContext(ctxOptions);
           _isGlobal && setFallbackContext(ctx);
           return ctx;
       };
+      // eslint-disable-next-line prefer-const
       _context = getCoreContext();
       updateFallbackLocale(_context, _locale.value, _fallbackLocale.value);
       // track reactivity
@@ -4189,23 +4230,24 @@ var VueI18n = (function (exports, Vue) {
               _locale.value = val;
           }
       });
-      // NOTE: `_context.fallbackContext` points at the root context only while a
-      // translation runs (see `wrapWithDeps`). Point it there while invalidating too,
-      // so that the chain the root cached for this composer's fallbackLocale is dropped.
-      function updateFallbackLocaleWithRoot(fallback) {
+      function withRootFallbackContext(fn) {
           if (!_isGlobal) {
-              _context.fallbackContext = __root
-                  ? getFallbackContext()
-                  : undefined;
+              _context.fallbackContext = getFallbackContext();
           }
           try {
-              updateFallbackLocale(_context, _locale.value, fallback);
+              return fn();
           }
           finally {
               if (!_isGlobal) {
                   _context.fallbackContext = undefined;
               }
           }
+      }
+      // NOTE: `_context.fallbackContext` points at the root context only while a
+      // translation runs (see `wrapWithDeps`). Point it there while invalidating too,
+      // so that the chain the root cached for this composer's fallbackLocale is dropped.
+      function updateFallbackLocaleWithRoot(fallback) {
+          withRootFallbackContext(() => updateFallbackLocale(_context, _locale.value, fallback));
       }
       // fallbackLocale
       const fallbackLocale = Vue.computed({
@@ -4256,17 +4298,9 @@ var VueI18n = (function (exports, Vue) {
               if (true || false) {
                   setAdditionalMeta(getMetaInfo());
               }
-              if (!_isGlobal) {
-                  _context.fallbackContext = __root
-                      ? getFallbackContext()
-                      : undefined;
-              }
-              ret = fn(_context);
+              ret = withRootFallbackContext(() => fn(_context));
           }
           finally {
-              if (!_isGlobal) {
-                  _context.fallbackContext = undefined;
-              }
           }
           if ((warnType !== 'translate exists' && // for not `te` (e.g `t`)
               isNumber(ret) &&
@@ -4388,9 +4422,7 @@ var VueI18n = (function (exports, Vue) {
                   if (resolved === null) {
                       resolved = message[key];
                   }
-                  if (isMessageAST(resolved) ||
-                      isMessageFunction(resolved) ||
-                      isString(resolved)) {
+                  if (isMessageFormat(resolved)) {
                       return true;
                   }
               }
@@ -4403,7 +4435,7 @@ var VueI18n = (function (exports, Vue) {
           let messages = null;
           const locales = fallbackWithLocaleChain(_context, _fallbackLocale.value, _locale.value);
           for (let i = 0; i < locales.length; i++) {
-              const targetLocaleMessages = _messages.value[locales[i]] || {};
+              const targetLocaleMessages = getOwn(_messages.value, locales[i]) || {};
               const messageValue = _context.messageResolver(targetLocaleMessages, key);
               if (messageValue != null) {
                   messages = messageValue;
@@ -4424,66 +4456,72 @@ var VueI18n = (function (exports, Vue) {
       }
       // getLocaleMessage
       function getLocaleMessage(locale) {
-          return (_messages.value[locale] || {});
+          return (getOwn(_messages.value, locale) || {});
       }
       // setLocaleMessage
       function setLocaleMessage(locale, message) {
+          if (isUnsafeLocale(locale)) {
+              return;
+          }
           if (flatJson) {
-              const _message = { [locale]: message };
-              for (const key in _message) {
-                  if (hasOwn(_message, key)) {
-                      handleFlatJson(_message[key]);
-                  }
-              }
-              message = _message[locale];
+              handleFlatJson(message);
           }
           _messages.value[locale] = message;
           _context.messages = _messages.value;
       }
       // mergeLocaleMessage
       function mergeLocaleMessage(locale, message) {
-          _messages.value[locale] = _messages.value[locale] || {};
-          const _message = { [locale]: message };
-          if (flatJson) {
-              for (const key in _message) {
-                  if (hasOwn(_message, key)) {
-                      handleFlatJson(_message[key]);
-                  }
-              }
+          if (isUnsafeLocale(locale)) {
+              return;
           }
-          message = _message[locale];
+          _messages.value[locale] = getOwn(_messages.value, locale) || {};
+          if (flatJson) {
+              handleFlatJson(message);
+          }
           deepCopy(message, _messages.value[locale]);
           _context.messages = _messages.value;
       }
       // getDateTimeFormat
       function getDateTimeFormat(locale) {
-          return _datetimeFormats.value[locale] || {};
+          return getOwn(_datetimeFormats.value, locale) || {};
       }
       // setDateTimeFormat
       function setDateTimeFormat(locale, format) {
+          if (isUnsafeLocale(locale)) {
+              return;
+          }
           _datetimeFormats.value[locale] = format;
           _context.datetimeFormats = _datetimeFormats.value;
           clearDateTimeFormat(_context, locale, format);
       }
       // mergeDateTimeFormat
       function mergeDateTimeFormat(locale, format) {
-          _datetimeFormats.value[locale] = assign(_datetimeFormats.value[locale] || {}, format);
+          if (isUnsafeLocale(locale)) {
+              return;
+          }
+          _datetimeFormats.value[locale] = assign(getOwn(_datetimeFormats.value, locale) || {}, format);
           _context.datetimeFormats = _datetimeFormats.value;
           clearDateTimeFormat(_context, locale, format);
       }
       // getNumberFormat
       function getNumberFormat(locale) {
-          return _numberFormats.value[locale] || {};
+          return getOwn(_numberFormats.value, locale) || {};
       }
       // setNumberFormat
       function setNumberFormat(locale, format) {
+          if (isUnsafeLocale(locale)) {
+              return;
+          }
           _numberFormats.value[locale] = format;
           _context.numberFormats = _numberFormats.value;
           clearNumberFormat(_context, locale, format);
       }
       // mergeNumberFormat
       function mergeNumberFormat(locale, format) {
-          _numberFormats.value[locale] = assign(_numberFormats.value[locale] || {}, format);
+          if (isUnsafeLocale(locale)) {
+              return;
+          }
+          _numberFormats.value[locale] = assign(getOwn(_numberFormats.value, locale) || {}, format);
           _context.numberFormats = _numberFormats.value;
           clearNumberFormat(_context, locale, format);
       }
@@ -5214,7 +5252,10 @@ var VueI18n = (function (exports, Vue) {
           const sharedMessages = options.sharedMessages;
           const locales = Object.keys(sharedMessages);
           messages = locales.reduce((messages, locale) => {
-              const message = messages[locale] || (messages[locale] = {});
+              if (isUnsafeLocale(locale)) {
+                  return messages;
+              }
+              const message = getOwn(messages, locale) || (messages[locale] = {});
               assign(message, sharedMessages[locale]);
               return messages;
           }, (messages || {}));

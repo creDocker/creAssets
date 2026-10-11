@@ -94,6 +94,7 @@ declare namespace ol {
         export { _ol_coordinate$toStringHDMS as toStringHDMS };
         export { _ol_coordinate$toStringXY as toStringXY };
         export { _ol_coordinate$wrapX as wrapX };
+        export { _ol_coordinate$wrapXNearest as wrapXNearest };
     }
     export namespace css {
         export { _ol_css$CLASS_COLLAPSED as CLASS_COLLAPSED };
@@ -465,6 +466,7 @@ declare namespace ol {
             }
             namespace textpath {
                 export { _ol_geom_flat_textpath$drawTextOnPath as drawTextOnPath };
+                export { _ol_geom_flat_textpath$rtlRegEx as rtlRegEx };
             }
             namespace topology {
                 export { _ol_geom_flat_topology$lineStringIsClosed as lineStringIsClosed };
@@ -1008,6 +1010,7 @@ declare namespace ol {
         export { _ol_util$VERSION as VERSION };
         export { _ol_util$abstract as abstract };
         export { _ol_util$getUid as getUid };
+        export { _ol_util$isThenable as isThenable };
     }
     export namespace vec {
         namespace mat4 {
@@ -1063,8 +1066,10 @@ declare namespace ol {
         export { _ol_xml$makeChildAppender as makeChildAppender };
         export { _ol_xml$makeObjectPropertyPusher as makeObjectPropertyPusher };
         export { _ol_xml$makeObjectPropertySetter as makeObjectPropertySetter };
+        export { _ol_xml$makeParsersNS as makeParsersNS };
         export { _ol_xml$makeReplacer as makeReplacer };
         export { _ol_xml$makeSequence as makeSequence };
+        export { _ol_xml$makeSerializersNS as makeSerializersNS };
         export { _ol_xml$makeSimpleNodeFactory as makeSimpleNodeFactory };
         export { _ol_xml$makeStructureNS as makeStructureNS };
         export { _ol_xml$parse as parse };
@@ -1157,6 +1162,7 @@ import { squaredDistanceToSegment as _ol_coordinate$squaredDistanceToSegment } f
 import { toStringHDMS as _ol_coordinate$toStringHDMS } from '../../ol/coordinate.js';
 import { toStringXY as _ol_coordinate$toStringXY } from '../../ol/coordinate.js';
 import { wrapX as _ol_coordinate$wrapX } from '../../ol/coordinate.js';
+import { wrapXNearest as _ol_coordinate$wrapXNearest } from '../../ol/coordinate.js';
 import { CLASS_COLLAPSED as _ol_css$CLASS_COLLAPSED } from '../../ol/css.js';
 import { CLASS_CONTROL as _ol_css$CLASS_CONTROL } from '../../ol/css.js';
 import { CLASS_HIDDEN as _ol_css$CLASS_HIDDEN } from '../../ol/css.js';
@@ -1454,6 +1460,7 @@ import { simplifyLineString as _ol_geom_flat_simplify$simplifyLineString } from 
 import { snap as _ol_geom_flat_simplify$snap } from '../../ol/geom/flat/simplify.js';
 import { matchingChunk as _ol_geom_flat_straightchunk$matchingChunk } from '../../ol/geom/flat/straightchunk.js';
 import { drawTextOnPath as _ol_geom_flat_textpath$drawTextOnPath } from '../../ol/geom/flat/textpath.js';
+import { rtlRegEx as _ol_geom_flat_textpath$rtlRegEx } from '../../ol/geom/flat/textpath.js';
 import { lineStringIsClosed as _ol_geom_flat_topology$lineStringIsClosed } from '../../ol/geom/flat/topology.js';
 import { rotate as _ol_geom_flat_transform$rotate } from '../../ol/geom/flat/transform.js';
 import { scale as _ol_geom_flat_transform$scale } from '../../ol/geom/flat/transform.js';
@@ -1864,6 +1871,7 @@ import { renderXYZTemplate as _ol_uri$renderXYZTemplate } from '../../ol/uri.js'
 import { VERSION as _ol_util$VERSION } from '../../ol/util.js';
 import { abstract as _ol_util$abstract } from '../../ol/util.js';
 import { getUid as _ol_util$getUid } from '../../ol/util.js';
+import { isThenable as _ol_util$isThenable } from '../../ol/util.js';
 import { create as _ol_vec_mat4$create } from '../../ol/vec/mat4.js';
 import { fromTransform as _ol_vec_mat4$fromTransform } from '../../ol/vec/mat4.js';
 import { orthographic as _ol_vec_mat4$orthographic } from '../../ol/vec/mat4.js';
@@ -1909,8 +1917,10 @@ import { makeArraySerializer as _ol_xml$makeArraySerializer } from '../../ol/xml
 import { makeChildAppender as _ol_xml$makeChildAppender } from '../../ol/xml.js';
 import { makeObjectPropertyPusher as _ol_xml$makeObjectPropertyPusher } from '../../ol/xml.js';
 import { makeObjectPropertySetter as _ol_xml$makeObjectPropertySetter } from '../../ol/xml.js';
+import { makeParsersNS as _ol_xml$makeParsersNS } from '../../ol/xml.js';
 import { makeReplacer as _ol_xml$makeReplacer } from '../../ol/xml.js';
 import { makeSequence as _ol_xml$makeSequence } from '../../ol/xml.js';
+import { makeSerializersNS as _ol_xml$makeSerializersNS } from '../../ol/xml.js';
 import { makeSimpleNodeFactory as _ol_xml$makeSimpleNodeFactory } from '../../ol/xml.js';
 import { makeStructureNS as _ol_xml$makeStructureNS } from '../../ol/xml.js';
 import { parse as _ol_xml$parse } from '../../ol/xml.js';
