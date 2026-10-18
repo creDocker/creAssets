@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.14
+  * vue-i18n v11.4.16
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -2143,8 +2143,12 @@ var VueI18n = (function (exports, Vue) {
           return !detectError ? (compileCache[cacheKey] = msg) : msg;
       }
       else {
+          // the message compiler is not included in this build (e.g. the runtime-only builds), so return a string message as is
           if (!isMessageAST(message)) {
-              warn(`the message that is resolve with key '${context.key}' is not supported for jit compilation`);
+              {
+                  warn(`Cannot compile the message of '${context.key}' key, because the message compiler is not included in this build. ` +
+                      `Pre-compile the message. So translate function returns the message as is.`);
+              }
               return (() => message);
           }
           // AST case (passed from bundler)
@@ -2599,7 +2603,9 @@ var VueI18n = (function (exports, Vue) {
    * @VueI18nGeneral
    */
   function resolveWithKeyValue(obj, path) {
-      return isObject(obj) ? obj[path] : null;
+      // read only own properties, so that a key such as `toString` does not
+      // resolve a built-in function
+      return isObject(obj) ? getOwn(obj, path) : null;
   }
   /**
    * message resolver
@@ -2679,7 +2685,7 @@ var VueI18n = (function (exports, Vue) {
   const CORE_WARN_CODES_EXTEND_POINT = 10;
   /** @internal */
   const warnMessages$1 = {
-      [CoreWarnCodes.NOT_FOUND_KEY]: `Not found '{key}' key in '{locale}' locale messages.`,
+      [CoreWarnCodes.NOT_FOUND_KEY]: `Not found '{key}' key in '{locale}' locale {resource}.`,
       [CoreWarnCodes.FALLBACK_TO_TRANSLATE]: `Fall back to translate '{key}' key with '{target}' locale.`,
       [CoreWarnCodes.CANNOT_FORMAT_NUMBER]: `Cannot format a number value due to not supported Intl.NumberFormat.`,
       [CoreWarnCodes.FALLBACK_TO_NUMBER_FORMAT]: `Fall back to number format '{key}' key with '{target}' locale.`,
@@ -2698,7 +2704,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.14';
+  const VERSION$1 = '11.4.16';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -2913,7 +2919,15 @@ var VueI18n = (function (exports, Vue) {
       }
       else {
           if (isTranslateMissingWarn(missingWarn, key)) {
-              onWarn(getWarnMessage$1(CoreWarnCodes.NOT_FOUND_KEY, { key, locale }));
+              onWarn(getWarnMessage$1(CoreWarnCodes.NOT_FOUND_KEY, {
+                  key,
+                  locale,
+                  resource: type === 'datetime format'
+                      ? 'datetime formats'
+                      : type === 'number format'
+                          ? 'number formats'
+                          : 'messages'
+              }));
           }
           return key;
       }
@@ -2987,7 +3001,9 @@ var VueI18n = (function (exports, Vue) {
                   });
               }
           }
-          const format = (formats[targetLocale] || {})[key];
+          // read only own properties, so that a locale such as `constructor` does not
+          // read a built-in object
+          const format = getOwn(getOwn(formats, targetLocale) || {}, key);
           if (isPlainObject(format) && isString(targetLocale)) {
               return targetLocale;
           }
@@ -3276,7 +3292,9 @@ var VueI18n = (function (exports, Vue) {
   function createMessageContext(options = {}) {
       const locale = options.locale;
       const pluralIndex = getPluralIndex(options);
-      const pluralRule = isString(locale) && isFunction(options.pluralRules?.[locale])
+      const pluralRule = isString(locale) &&
+          options.pluralRules &&
+          isFunction(getOwn(options.pluralRules, locale))
           ? options.pluralRules[locale]
           : pluralDefault;
       const orgPluralRule = pluralRule === pluralDefault ? undefined : pluralDefault;
@@ -3284,12 +3302,19 @@ var VueI18n = (function (exports, Vue) {
       const _list = options.list || [];
       const list = (index) => _list[index];
       const _named = options.named || create(); // eslint-disable-line @typescript-eslint/no-explicit-any
-      // normalize named
-      if (isNumber(options.pluralIndex)) {
-          _named.count ||= options.pluralIndex;
-          _named.n ||= options.pluralIndex;
-      }
-      const named = (key) => _named[key];
+      // `count` and `n` are the implicit named values of a plural call. supply the
+      // plural index for them, without writing into the named values that the
+      // caller passed
+      const hasPluralIndex = isNumber(options.pluralIndex);
+      const named = (key) => {
+          // read only own properties for the names of Object.prototype properties,
+          // such as `toString`, so that the getters of class instances still work as
+          // named values
+          const value = isObjectPrototypeKey(key) ? getOwn(_named, key) : _named[key];
+          return hasPluralIndex && !value && (key === 'count' || key === 'n')
+              ? options.pluralIndex
+              : value;
+      };
       function message(key, useLinked) {
           // prettier-ignore
           const msg = isFunction(options.messages)
@@ -3304,7 +3329,7 @@ var VueI18n = (function (exports, Vue) {
               : msg;
       }
       const _modifier = (name) => options.modifiers
-          ? options.modifiers[name]
+          ? getOwn(options.modifiers, name)
           : DEFAULT_MODIFIER;
       const normalize = isFunction(options.processor?.normalize)
           ? options.processor.normalize
@@ -3344,7 +3369,20 @@ var VueI18n = (function (exports, Vue) {
           type === 'vnode' && isArray(resolved) && modifier
               ? resolved[0]
               : resolved;
-          return modifier ? _modifier(modifier)(msg, type) : msg;
+          if (!modifier) {
+              return msg;
+          }
+          const modify = _modifier(modifier);
+          if (isFunction(modify)) {
+              return modify(msg, type);
+          }
+          // an unknown modifier, such as a typo, does not stop the translation
+          {
+              warnOnce(`Not found '${modifier}' modifier for the linked message of '${key}' key. ` +
+                  `Use a built-in modifier, or set a custom modifier with 'modifiers' option. ` +
+                  `So the linked message is used as is.`);
+          }
+          return msg;
       };
       const ctx = {
           ["list" /* HelperNameMap.LIST */]: list,
@@ -3355,7 +3393,9 @@ var VueI18n = (function (exports, Vue) {
           ["type" /* HelperNameMap.TYPE */]: type,
           ["interpolate" /* HelperNameMap.INTERPOLATE */]: interpolate,
           ["normalize" /* HelperNameMap.NORMALIZE */]: normalize,
-          ["values" /* HelperNameMap.VALUES */]: assign(create(), _list, _named)
+          // custom message compilers read the values, so give them the same `count`
+          // and `n` as `named()`
+          ["values" /* HelperNameMap.VALUES */]: assign(create(), _list, _named, hasPluralIndex ? { count: named('count'), n: named('n') } : {})
       };
       return ctx;
   }
@@ -3396,11 +3436,7 @@ var VueI18n = (function (exports, Vue) {
       // eslint-disable-next-line prefer-const
       let [formatScope, targetLocale, message] = !resolvedMessage
           ? resolveMessageFormat(context, key, locale, fallbackLocale, fallbackWarn, missingWarn)
-          : [
-              key,
-              locale,
-              messages[locale] || create()
-          ];
+          : [key, locale, getOwn(messages, locale) || create()];
       // NOTE:
       //  Fix to work around `ssrTransfrom` bug in Vite.
       //  https://github.com/vitejs/vite/issues/4306
@@ -3420,13 +3456,12 @@ var VueI18n = (function (exports, Vue) {
           (!isMessageFormat(format) || !isString(targetLocale))) {
           return unresolving ? NOT_REOSLVED : key;
       }
-      // TODO: refactor
+      // without a message compiler, `compileMessageFormat()` returns the message as is
       if (isString(format) && context.messageCompiler == null) {
           warn(`The message format compilation is not supported in this build. ` +
               `Because message compiler isn't included. ` +
               `You need to pre-compilation all message format. ` +
-              `So translate function return '${key}'.`);
-          return key;
+              `So translate function returns the message as is.`);
       }
       // setup compile error detecting
       let occurred = false;
@@ -3527,8 +3562,9 @@ var VueI18n = (function (exports, Vue) {
                   });
               }
           }
-          message =
-              messages[targetLocale] || create();
+          // read only own properties, so that a locale such as `constructor` does not
+          // read a built-in object
+          message = getOwn(messages, targetLocale) || create();
           // for vue-devtools timeline event
           let start = null;
           let startTag;
@@ -3540,8 +3576,8 @@ var VueI18n = (function (exports, Vue) {
               mark && mark(startTag);
           }
           if ((format = resolveValue(message, key)) === null) {
-              // if null, resolve with object key path
-              format = message[key]; // eslint-disable-line @typescript-eslint/no-explicit-any
+              // if null, resolve with object key path, from own properties only
+              format = getOwn(message, key);
           }
           // for vue-devtools timeline event
           if (inBrowser && emitter) {
@@ -3789,7 +3825,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.14';
+  const VERSION = '11.4.16';
   /**
    * This is only called development env
    * istanbul-ignore-next
@@ -3945,30 +3981,26 @@ var VueI18n = (function (exports, Vue) {
                       hasStringValue = true;
                       break;
                   }
+                  // NOTE: if the next object is a message AST and the next key is a message AST prop key,
+                  // or `cacheKey` (the key to cache the compiled message), do not go into the message AST
+                  // and keep the flat key, so that the message AST is not broken
+                  if (isMessageAST(currentObj[subKeys[i]]) &&
+                      (AST_NODE_PROPS_KEYS.includes(subKeys[i + 1]) ||
+                          subKeys[i + 1] === 'cacheKey')) {
+                      hasStringValue = true;
+                      break;
+                  }
                   currentObj = currentObj[subKeys[i]];
               }
               // update last object value, delete old property
               if (!hasStringValue) {
-                  if (!isMessageAST(currentObj)) {
-                      currentObj[subKeys[lastIndex]] = obj[key];
-                      delete obj[key];
-                  }
-                  else {
-                      /**
-                       * NOTE:
-                       * if the last object is a message AST and subKeys[lastIndex] has message AST prop key, ignore to copy and key deletion
-                       */
-                      if (!AST_NODE_PROPS_KEYS.includes(subKeys[lastIndex])) {
-                          delete obj[key];
-                      }
-                  }
+                  currentObj[subKeys[lastIndex]] = obj[key];
+                  delete obj[key];
               }
               // recursive process value if value is also a object
-              if (!isMessageAST(currentObj)) {
-                  const target = currentObj[subKeys[lastIndex]];
-                  if (isObject(target)) {
-                      handleFlatJson(target);
-                  }
+              const target = currentObj[subKeys[lastIndex]];
+              if (isObject(target)) {
+                  handleFlatJson(target);
               }
           }
       }
@@ -4403,6 +4435,15 @@ var VueI18n = (function (exports, Vue) {
           _pluralRules = rules;
           _context.pluralRules = _pluralRules;
       }
+      // resolve the value of `key` in the locale messages of `locale`,
+      // in the same way as `t()`
+      function resolveLocaleMessageValue(locale, key) {
+          const message = getLocaleMessage(locale);
+          const value = _context.messageResolver(message, key);
+          // if null, resolve with object key path (for flat keys containing dots),
+          // from own properties only
+          return value === null ? getOwn(message, key) : value;
+      }
       // te
       function te(key, locale) {
           return wrapWithDeps(() => {
@@ -4411,18 +4452,12 @@ var VueI18n = (function (exports, Vue) {
               }
               const targetLocale = isString(locale) ? locale : _locale.value;
               // When locale is explicitly specified, check only that locale (no fallback chain)
-              // When locale is not specified, check the fallback locale chain
+              // When locale is not specified, check the locale chain, as `t()` does
               const locales = isString(locale)
                   ? [targetLocale]
-                  : fallbackWithLocaleChain(_context, _fallbackLocale.value, targetLocale);
+                  : _context.localeFallbacker(_context, _fallbackLocale.value, targetLocale);
               for (let i = 0; i < locales.length; i++) {
-                  const message = getLocaleMessage(locales[i]);
-                  let resolved = _context.messageResolver(message, key);
-                  // if null, resolve with object key path (for flat keys containing dots)
-                  if (resolved === null) {
-                      resolved = message[key];
-                  }
-                  if (isMessageFormat(resolved)) {
+                  if (isMessageFormat(resolveLocaleMessageValue(locales[i], key))) {
                       return true;
                   }
               }
@@ -4433,10 +4468,10 @@ var VueI18n = (function (exports, Vue) {
       }
       function resolveMessages(key) {
           let messages = null;
-          const locales = fallbackWithLocaleChain(_context, _fallbackLocale.value, _locale.value);
+          // the same locale chain as `t()`
+          const locales = _context.localeFallbacker(_context, _fallbackLocale.value, _locale.value);
           for (let i = 0; i < locales.length; i++) {
-              const targetLocaleMessages = getOwn(_messages.value, locales[i]) || {};
-              const messageValue = _context.messageResolver(targetLocaleMessages, key);
+              const messageValue = resolveLocaleMessageValue(locales[i], key);
               if (messageValue != null) {
                   messages = messageValue;
                   break;
@@ -5493,7 +5528,9 @@ var VueI18n = (function (exports, Vue) {
               }
               const options = this.$options;
               if (options.i18n) {
-                  const optionsI18n = options.i18n;
+                  // copy the option, since it belongs to the component definition,
+                  // which every instance and, on the server, every app shares
+                  const optionsI18n = assign({}, options.i18n);
                   if (options.__i18n) {
                       optionsI18n.__i18n = options.__i18n;
                   }
