@@ -1,5 +1,5 @@
 /*!
-  * vue-i18n v11.4.16
+  * vue-i18n v11.4.18
   * (c) 2026 kazuya kawaguchi
   * Released under the MIT License.
   */
@@ -215,7 +215,8 @@ var VueI18n = (function (exports, Vue) {
           .replace(/>/g, '&gt;');
   }
   const javascriptSchemePattern = /^javascript:/i;
-  const urlAttributePattern = /^(?:href|src|action|formaction)$/i;
+  // `xlink:href` is the older spelling of `href` on SVG elements, and an SVG `<a>` follows either of them
+  const urlAttributePattern = /^(?:href|xlink:href|src|action|formaction)$/i;
   const numericCharacterReferencePattern = /&#(?:x([0-9a-f]+)|(\d+));?/gi;
   const namedWhitespaceCharacterReferencePattern = /&(?:Tab|NewLine);/g;
   const colonCharacterReferencePattern = /&colon;?/gi;
@@ -227,7 +228,13 @@ var VueI18n = (function (exports, Vue) {
   // so neither escaping the value nor neutralizing `on*` inside it makes it inert
   const srcdocPattern = /(?:^|[\s"'<>/])srcdoc\s*=/i;
   const srcdocAttributePattern = /(^|[\s"'<>/])s(rcdoc\s*=)/gi;
-  const unquotedUrlAttributePattern = /(^|[\s"'<>/])((?:href|src|action|formaction)\s*=\s*)([^\s"'=<>`]+)/gi;
+  // `<base>` changes how the page resolves every relative URL after it, and SVG `<animate>` and `<set>`
+  // can set `href` of an SVG `<a>` through `values` or `to`, which the URL check does not look at.
+  // `<script>` does not run when inserted with `innerHTML`, but it runs when the HTML is rendered
+  // on the server (SSR) and the browser parses it as part of the page
+  const dangerousElementPattern = /<(?:base|animate|set|script)(?=[\s/>]|$)/i;
+  const dangerousElementStartTagPattern = /<(base|animate|set|script)(?=[\s/>]|$)/gi;
+  const unquotedUrlAttributePattern = /(^|[\s"'<>/])((?:href|xlink:href|src|action|formaction)\s*=\s*)([^\s"'=<>`]+)/gi;
   function decodeNumericCharacterReference(match, hex, decimal) {
       const digits = hex || decimal;
       if (!digits) {
@@ -322,6 +329,15 @@ var VueI18n = (function (exports, Vue) {
           }
           // Neutralize `srcdoc` by escaping 's': character references are not decoded in attribute names
           html = html.replace(srcdocAttributePattern, '$1&#115;$2');
+      }
+      // Detect and neutralize `<base>`, `<animate>`, `<set>` and `<script>` elements
+      if (dangerousElementPattern.test(html)) {
+          {
+              warn('Potentially dangerous element (<base>, <animate>, <set> or <script>) ' +
+                  'detected in translation. Consider removing it from your translation messages.');
+          }
+          // Neutralize these elements by escaping '<': the start tag becomes text
+          html = html.replace(dangerousElementStartTagPattern, '&lt;$1');
       }
       // Disable javascript: URLs in unquoted attributes
       html = html.replace(unquotedUrlAttributePattern, (match, boundary, prefix, attrValue) => hasJavascriptScheme(attrValue) ? `${boundary}${prefix}about:blank` : match);
@@ -2704,7 +2720,7 @@ var VueI18n = (function (exports, Vue) {
    * Intlify core-base version
    * @internal
    */
-  const VERSION$1 = '11.4.16';
+  const VERSION$1 = '11.4.18';
   const NOT_REOSLVED = -1;
   const DEFAULT_LOCALE = 'en-US';
   const MISSING_RESOLVE_VALUE = '';
@@ -3825,7 +3841,7 @@ var VueI18n = (function (exports, Vue) {
    *
    * @VueI18nGeneral
    */
-  const VERSION = '11.4.16';
+  const VERSION = '11.4.18';
   /**
    * This is only called development env
    * istanbul-ignore-next
@@ -5246,6 +5262,22 @@ var VueI18n = (function (exports, Vue) {
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
+  // `silentTranslationWarn` and `silentFallbackWarn` suppress the warnings for the keys that match a regular expression,
+  // while `missingWarn` and `fallbackWarn` of Composer output the warnings only for the keys that match it, so convert
+  // a regular expression into one that matches the keys that it does not match (and back again)
+  const invertedWarnRegExps = new WeakMap();
+  function invertWarn(warn) {
+      if (!isRegExp(warn)) {
+          return !warn;
+      }
+      let inverted = invertedWarnRegExps.get(warn);
+      if (!inverted) {
+          inverted = new RegExp(`^(?![\\s\\S]*(?:${warn.source}))`, warn.flags.replace(/[gy]/g, ''));
+          invertedWarnRegExps.set(warn, inverted);
+          invertedWarnRegExps.set(inverted, warn);
+      }
+      return inverted;
+  }
   /**
    * Convert to I18n Composer Options from VueI18n Options
    *
@@ -5262,11 +5294,11 @@ var VueI18n = (function (exports, Vue) {
       const missing = isFunction(options.missing) ? options.missing : undefined;
       const missingWarn = isBoolean(options.silentTranslationWarn) ||
           isRegExp(options.silentTranslationWarn)
-          ? !options.silentTranslationWarn
+          ? invertWarn(options.silentTranslationWarn)
           : true;
       const fallbackWarn = isBoolean(options.silentFallbackWarn) ||
           isRegExp(options.silentFallbackWarn)
-          ? !options.silentFallbackWarn
+          ? invertWarn(options.silentFallbackWarn)
           : true;
       const fallbackRoot = isBoolean(options.fallbackRoot)
           ? options.fallbackRoot
@@ -5376,21 +5408,17 @@ var VueI18n = (function (exports, Vue) {
           },
           // silentTranslationWarn
           get silentTranslationWarn() {
-              return isBoolean(composer.missingWarn)
-                  ? !composer.missingWarn
-                  : composer.missingWarn;
+              return invertWarn(composer.missingWarn);
           },
           set silentTranslationWarn(val) {
-              composer.missingWarn = isBoolean(val) ? !val : val;
+              composer.missingWarn = invertWarn(val);
           },
           // silentFallbackWarn
           get silentFallbackWarn() {
-              return isBoolean(composer.fallbackWarn)
-                  ? !composer.fallbackWarn
-                  : composer.fallbackWarn;
+              return invertWarn(composer.fallbackWarn);
           },
           set silentFallbackWarn(val) {
-              composer.fallbackWarn = isBoolean(val) ? !val : val;
+              composer.fallbackWarn = invertWarn(val);
           },
           // modifiers
           get modifiers() {
@@ -6092,7 +6120,7 @@ var VueI18n = (function (exports, Vue) {
                   : 'composition';
           },
           // install plugin
-          async install(app, ...options) {
+          install(app, ...options) {
               {
                   app.__VUE_I18N__ = i18n;
               }
@@ -6129,21 +6157,31 @@ var VueI18n = (function (exports, Vue) {
               };
               // setup vue-devtools plugin
               {
-                  const ret = await enableDevTools(app, i18n);
-                  if (!ret) {
-                      throw createI18nError(I18nErrorCodes.CANNOT_SETUP_VUE_DEVTOOLS_PLUGIN);
-                  }
-                  const emitter = createEmitter();
-                  if (__legacyMode) {
-                      const _vueI18n = __global;
-                      _vueI18n.__enableEmitter && _vueI18n.__enableEmitter(emitter);
-                  }
-                  else {
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      const _composer = __global;
-                      _composer[EnableEmitter] && _composer[EnableEmitter](emitter);
-                  }
-                  emitter.on('*', addTimelineEvent);
+                  // do not wait for the devtools: a Vue plugin installs synchronously, and the devtools call
+                  // the setup only when they are open, so the setup may never finish
+                  enableDevTools(app, i18n)
+                      .then(ret => {
+                      if (!ret) {
+                          throw createI18nError(I18nErrorCodes.CANNOT_SETUP_VUE_DEVTOOLS_PLUGIN);
+                      }
+                      const emitter = createEmitter();
+                      if (__legacyMode) {
+                          const _vueI18n = __global;
+                          _vueI18n.__enableEmitter && _vueI18n.__enableEmitter(emitter);
+                      }
+                      else {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          const _composer = __global;
+                          _composer[EnableEmitter] && _composer[EnableEmitter](emitter);
+                      }
+                      emitter.on('*', addTimelineEvent);
+                  })
+                      .catch(() => {
+                      // a failure of the devtools must not break the app
+                      {
+                          warn(errorMessages[I18nErrorCodes.CANNOT_SETUP_VUE_DEVTOOLS_PLUGIN]);
+                      }
+                  });
               }
           },
           // global accessor

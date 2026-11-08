@@ -19,11 +19,11 @@ creBuild 	 2026.10
   └── bootstrap@5.3.8
   └── c3@0.7.20
   │ └── d3@5.16.0
-└── d3@7.9.0
+└── d3@7.9.2
   ├── jquery@4.0.0
   └── jquery-ui@1.14.2
   └── jspdf@4.2.1
   └── jszip@3.10.2
   └── ol@10.11.0
   │ ├─┬ @element-plus/icons-vue@2.3.2
-  ├─┬ element-plus@2.14.7
+  ├─┬ element-plus@2.14.8
